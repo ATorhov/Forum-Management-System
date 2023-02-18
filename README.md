@@ -32,7 +32,7 @@ Anonymous users able to see a list of the top 10 most commented posts and a list
 
 ### Roadmap:
 - [x] Create a README file.
-- [ ] Images of the database relations.
+- [x] Images of the database relations.
 - [ ] Create classes: User, Admin, Post, Comment, Picture, Tag.
 - [ ] CRUD operations for User. **<ins>Important**
 - [ ] CRUD operations for Admin. **<ins>Important**
