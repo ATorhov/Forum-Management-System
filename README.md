@@ -28,7 +28,7 @@ Anonymous users able to see a list of the top 10 most commented posts and a list
 #### Registered users won't be able to:
 - To change their username once registered. 
 - To create duplicate account with the same email address.
-- To edit someone's else posts.
+- To edit someone else's posts.
 
 ### Roadmap:
 - [x] Create a README file.
