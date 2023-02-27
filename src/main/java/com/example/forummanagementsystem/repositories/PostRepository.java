@@ -7,13 +7,13 @@ import java.util.List;
 public interface PostRepository {
 
     List<Post> getAll();
-    Post getById(int id);
+    Post getById(Long id);
 
     Post getByTitle(String name);
 
     void create(Post post);
     void update(Post post);
-    void delete(int id);
+    void delete(Long id);
 
 
 }

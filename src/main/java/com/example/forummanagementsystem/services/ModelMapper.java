@@ -26,7 +26,7 @@ public class ModelMapper {
         return post;
     }
 
-    public Post fromDto(PostDto postDto, int id){
+    public Post fromDto(PostDto postDto, Long id){
         Post post = postRepository.getById(id);
         dtoToObject(postDto, post);
         return post;

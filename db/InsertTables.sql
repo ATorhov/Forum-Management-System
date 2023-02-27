@@ -1,9 +1,9 @@
 
 
-INSERT INTO users (first_name, last_name, username, email, password, is_deleted, is_blocked)
+INSERT INTO users (first_name, last_name, username, email, password, is_blocked, is_admin)
 VALUES
     ('Atanas', 'Gendov', 'user', 'user1@email.com', 'password1', false, false),
-    ('Aleksandar', 'Torhov', 'admin', 'user2@email.com', 'password2', false, false);
+    ('Aleksandar', 'Torhov', 'admin', 'user2@email.com', 'password2', false, true);
 
 
 INSERT INTO posts (title, rating, content, user_id)

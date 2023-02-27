@@ -35,7 +35,7 @@ public class PostControllers {
     }
 
     @GetMapping("/{id}")
-    public Post getById(@PathVariable int id) {
+    public Post getById(@PathVariable Long id) {
         try {
             return postService.getById(id);
         } catch (EntityNotFoundException e) {
@@ -55,7 +55,7 @@ public class PostControllers {
     }
 
     @PutMapping("/{id}")
-    public Post update(@PathVariable int id, @Valid @RequestBody PostDto postDto) {
+    public Post update(@PathVariable Long id, @Valid @RequestBody PostDto postDto) {
         try {
             Post post = modelMapper.fromDto(postDto, id);
             postService.update(post);
@@ -68,7 +68,7 @@ public class PostControllers {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id) {
+    public void delete(@PathVariable Long id) {
         try {
             postService.delete(id);
         } catch (EntityNotFoundException e) {

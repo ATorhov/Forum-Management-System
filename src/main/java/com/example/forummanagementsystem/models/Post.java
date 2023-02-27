@@ -14,7 +14,7 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
-    private int postId;
+    private Long postId;
 
     @Column(name = "title")
     private String title;
@@ -35,21 +35,21 @@ public class Post {
     @UpdateTimestamp
     private LocalDateTime updateTime;
 
-//    @NonNull
-//    @ManyToOne
-//    @JsonIgnore
-//    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-//    private User user;
+    @NonNull
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    private User user;
 
     public Post() {
 
     }
 
-    public int getPostId() {
+    public Long getPostId() {
         return postId;
     }
 
-    public void setPostId(int postId) {
+    public void setPostId(Long postId) {
         this.postId = postId;
     }
 
@@ -93,14 +93,14 @@ public class Post {
         this.updateTime = updateTime;
     }
 
-//    @NonNull
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(@NonNull User user) {
-//        this.user = user;
-//    }
+    @NonNull
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(@NonNull User user) {
+        this.user = user;
+    }
 
     @Override
     public String toString() {

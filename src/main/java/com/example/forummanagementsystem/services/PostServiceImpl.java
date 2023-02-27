@@ -25,7 +25,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post getById(int id) {
+    public Post getById(Long id) {
         return repository.getById(id);
     }
 
@@ -69,7 +69,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Long id) {
         repository.delete(id);
     }
 }

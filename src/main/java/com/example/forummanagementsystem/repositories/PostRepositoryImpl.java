@@ -30,7 +30,7 @@ public class PostRepositoryImpl implements PostRepository{
 
 
     @Override
-    public Post getById(int id) {
+    public Post getById(Long id) {
         try(Session session = sessionFactory.openSession()) {
             Post post = session.get(Post.class, id);
             if (post == null){
@@ -71,7 +71,7 @@ public class PostRepositoryImpl implements PostRepository{
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Long id) {
         Post postToDelete = getById(id);
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
