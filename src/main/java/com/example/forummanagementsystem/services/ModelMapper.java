@@ -12,12 +12,12 @@ import java.time.LocalDateTime;
 public class ModelMapper {
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
+    //private final UserRepository userRepository;
 
     @Autowired
-    public ModelMapper(PostRepository postRepository, UserRepository userRepository) {
+    public ModelMapper(PostRepository postRepository) {
         this.postRepository = postRepository;
-        this.userRepository = userRepository;
+
     }
 
     public Post fromDto(PostDto postDto){
@@ -40,23 +40,23 @@ public class ModelMapper {
     }
 
 
-    public User fromDto(UserDto userDto){
-        User user = new User();
-        dtoToObject(userDto, user);
-        return user;
-    }
-
-    public User fromDto(UserDto userDto, int id){
-        User user = userRepository.getById(id);
-        dtoToObject(userDto, user);
-        return user;
-    }
-
-    private void dtoToObject(UserDto userDto, User user){
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setPassword(user.getPassword());
-        user.setEmail(userDto.getEmail());
-        user.setUsername(user.getUsername());
-    }
+//    public User fromDto(UserDto userDto){
+//        User user = new User();
+//        dtoToObject(userDto, user);
+//        return user;
+//    }
+//
+//    public User fromDto(UserDto userDto, int id){
+//        User user = userRepository.getById(id);
+//        dtoToObject(userDto, user);
+//        return user;
+//    }
+//
+//    private void dtoToObject(UserDto userDto, User user){
+//        user.setFirstName(userDto.getFirstName());
+//        user.setLastName(userDto.getLastName());
+//        user.setPassword(user.getPassword());
+//        user.setEmail(userDto.getEmail());
+//        user.setUsername(user.getUsername());
+//    }
 }

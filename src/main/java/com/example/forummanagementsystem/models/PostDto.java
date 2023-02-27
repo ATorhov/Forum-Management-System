@@ -24,9 +24,9 @@ public class PostDto {
     @UpdateTimestamp
     private LocalDateTime updateTime;
 
-    @NonNull
-    @ManyToOne
-    private User user;
+//    @NonNull
+//    @ManyToOne
+//    private User user;
 
     public String getTitle() {
         return title;
@@ -68,13 +68,13 @@ public class PostDto {
         this.updateTime = updateTime;
     }
 
-    @NonNull
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(@NonNull User user) {
-        this.user = user;
-    }
+//    @NonNull
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(@NonNull User user) {
+//        this.user = user;
+//    }
 
 }

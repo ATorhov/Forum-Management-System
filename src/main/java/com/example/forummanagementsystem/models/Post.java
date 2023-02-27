@@ -35,11 +35,11 @@ public class Post {
     @UpdateTimestamp
     private LocalDateTime updateTime;
 
-    @NonNull
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private User user;
+//    @NonNull
+//    @ManyToOne
+//    @JsonIgnore
+//    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+//    private User user;
 
     public Post() {
 
@@ -93,14 +93,14 @@ public class Post {
         this.updateTime = updateTime;
     }
 
-    @NonNull
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(@NonNull User user) {
-        this.user = user;
-    }
+//    @NonNull
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(@NonNull User user) {
+//        this.user = user;
+//    }
 
     @Override
     public String toString() {
@@ -111,7 +111,6 @@ public class Post {
                 ", content='" + content + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
-                ", user=" + user +
                 '}';
     }
 }
