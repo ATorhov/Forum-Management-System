@@ -15,7 +15,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long id;
+    private int id;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
@@ -37,17 +37,6 @@ public class User {
     @OneToMany
     private List<Post> posts;
 
-    public User() {
-    }
-
-    public User(Long id, String username, String password, boolean isAdmin) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.isAdmin = isAdmin;
-    }
-
-
     public List<Post> getPosts() {
         return posts;
     }
@@ -56,15 +45,21 @@ public class User {
         this.posts = posts;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public User() {
     }
 
-    public long getId() {
+    public User(int id, String username, String password, boolean isAdmin) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.isAdmin = isAdmin;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
