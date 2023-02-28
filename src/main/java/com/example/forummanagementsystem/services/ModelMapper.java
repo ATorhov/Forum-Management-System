@@ -58,8 +58,9 @@ public class ModelMapper {
     private void dtoToObject(UserDto userDto, User user){
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
-        user.setPassword(user.getPassword());
+        user.setPassword(userDto.getPassword());
         user.setEmail(userDto.getEmail());
-        user.setUsername(user.getUsername());
+        user.setUsername(userDto.getUsername());
+        user.setPhoneNumber(userDto.getPhoneNumber());
     }
 }
