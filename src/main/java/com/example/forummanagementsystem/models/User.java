@@ -1,5 +1,7 @@
 package com.example.forummanagementsystem.models;
 
+import org.springframework.lang.Nullable;
+
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
@@ -23,6 +25,8 @@ public class User {
     private String username;
     @Column
     private String password;
+    @Column(name = "phone_number")
+    private String phoneNumber;
     @Column(name = "registration_date")
     private LocalDateTime localDateTime;
     @Column(name = "is_admin")
@@ -42,6 +46,14 @@ public class User {
         this.username = username;
         this.password = password;
         this.isAdmin = isAdmin;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Long getId() {
