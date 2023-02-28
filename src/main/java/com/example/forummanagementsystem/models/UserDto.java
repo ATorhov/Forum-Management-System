@@ -19,6 +19,16 @@ public class UserDto {
     @Size(min = 4, max = 50, message = "Username must be at least 8 symbols containing letters and digits!")
     private String password;
 
+    @Size(min = 6, max = 10)
+    private String phoneNumber;
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
     public String getFirstName() {
         return firstName;
