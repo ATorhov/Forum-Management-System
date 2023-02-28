@@ -1,32 +1,29 @@
 package com.example.forummanagementsystem.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.lang.NonNull;
 
-import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class PostDto {
 
+    @NotNull(message = "Post title can't be empty")
+    @Size(min = 16, max = 32, message = "Post title should be between 16 and 64 symbols")
     private String title;
 
     private int rating;
 
+    @NotNull(message = "Post content can't be empty")
+    @Size(min = 32, max = 8192, message = "Post content should be between 16 and 8192 symbols")
     private String content;
 
-    @JsonIgnore
-    @CreationTimestamp
     private LocalDateTime createTime;
 
-    @JsonIgnore
-    @UpdateTimestamp
     private LocalDateTime updateTime;
 
-//    @NonNull
-//    @ManyToOne
-//    private User user;
+    private User user;
+
 
     public String getTitle() {
         return title;
@@ -68,13 +65,13 @@ public class PostDto {
         this.updateTime = updateTime;
     }
 
-//    @NonNull
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(@NonNull User user) {
-//        this.user = user;
-//    }
+    @NonNull
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(@NonNull User user) {
+        this.user = user;
+    }
 
 }

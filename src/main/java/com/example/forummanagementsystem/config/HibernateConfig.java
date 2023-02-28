@@ -52,5 +52,4 @@ public class HibernateConfig {
         hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update");
         return hibernateProperties;
     }
-
 }
