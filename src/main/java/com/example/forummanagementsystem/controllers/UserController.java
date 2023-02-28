@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable int id, @RequestHeader HttpHeaders headers) {
+    public User getUserById(@PathVariable Long id, @RequestHeader HttpHeaders headers) {
         try {
             authenticationHelper.tryGetUser(headers);
             return userService.get(id);
@@ -65,7 +65,7 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public User updateUser(@PathVariable int id, @RequestHeader HttpHeaders headers,
+    public User updateUser(@PathVariable Long id, @RequestHeader HttpHeaders headers,
                            @Valid @RequestBody UserDto userDto){
         try {
             authenticationHelper.tryGetUser(headers);

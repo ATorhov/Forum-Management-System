@@ -12,7 +12,7 @@ public interface UserRepository {
 
     List<User> get();
 
-    User get(int id);
+    User get(Long id);
 
     User get(String username);
 

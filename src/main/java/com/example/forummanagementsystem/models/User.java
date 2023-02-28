@@ -1,11 +1,8 @@
 package com.example.forummanagementsystem.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,7 +12,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private int id;
+    private Long id;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
@@ -32,34 +29,26 @@ public class User {
     private boolean isAdmin;
     @Column(name = "is_blocked")
     private boolean isBlocked;
-
-    @JsonIgnore
-    @OneToMany
-    private List<Post> posts;
-
-    public List<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
-    }
+//
+//    @JsonIgnore
+//    @OneToMany
+//    private List<Post> posts;
 
     public User() {
     }
 
-    public User(int id, String username, String password, boolean isAdmin) {
+    public User(Long id, String username, String password, boolean isAdmin) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.isAdmin = isAdmin;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
