@@ -1,15 +1,7 @@
 package com.example.forummanagementsystem.models;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import javax.persistence.ManyToOne;
-import java.time.LocalDateTime;
 
 public class CommentDto {
 
