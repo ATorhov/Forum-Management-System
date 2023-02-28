@@ -1,10 +1,12 @@
 package com.example.forummanagementsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -33,20 +35,14 @@ public class User {
     private boolean isAdmin;
     @Column(name = "is_blocked")
     private boolean isBlocked;
-//
-//    @JsonIgnore
-//    @OneToMany
-//    private List<Post> posts;
+
+    @JsonIgnore
+    @OneToMany
+    private List<Post> posts;
 
     public User() {
     }
 
-    public User(Long id, String username, String password, boolean isAdmin) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.isAdmin = isAdmin;
-    }
 
     public String getPhoneNumber() {
         return phoneNumber;
