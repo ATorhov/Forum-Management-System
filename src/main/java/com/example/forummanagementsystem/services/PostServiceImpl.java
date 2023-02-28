@@ -36,34 +36,34 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void create(Post post) {
-//        boolean duplicateExists = true;
-//        try {
-//            repository.getByTitle(post.getTitle());
-//        } catch (EntityNotFoundException e) {
-//            duplicateExists = false;
-//        }
-//
-//        if (duplicateExists) {
-//            throw new EntityDuplicateException("Post", "title", post.getTitle());
-//        }
+        boolean duplicateExists = true;
+        try {
+            repository.getByTitle(post.getTitle());
+        } catch (EntityNotFoundException e) {
+            duplicateExists = false;
+        }
+
+        if (duplicateExists) {
+            throw new EntityDuplicateException("Post", "title", post.getTitle());
+        }
         repository.create(post);
     }
 
     @Override
     public void update(Post post) {
-//        boolean duplicateExists = true;
-//        try {
-//            Post existingPost = repository.getByTitle(post.getTitle());
-//            if (existingPost.getPostId() == post.getPostId()) {
-//                duplicateExists = false;
-//            }
-//        } catch (EntityNotFoundException e) {
-//            duplicateExists = false;
-//        }
-//
-//        if (duplicateExists) {
-//            throw new EntityDuplicateException("Post", "post", post.getTitle());
-//        }
+        boolean duplicateExists = true;
+        try {
+            Post existingPost = repository.getByTitle(post.getTitle());
+            if (existingPost.getPostId() == post.getPostId()) {
+                duplicateExists = false;
+            }
+        } catch (EntityNotFoundException e) {
+            duplicateExists = false;
+        }
+
+        if (duplicateExists) {
+            throw new EntityDuplicateException("Post", "post", post.getTitle());
+        }
 
         repository.update(post);
     }
@@ -73,3 +73,4 @@ public class PostServiceImpl implements PostService {
         repository.delete(id);
     }
 }
+
