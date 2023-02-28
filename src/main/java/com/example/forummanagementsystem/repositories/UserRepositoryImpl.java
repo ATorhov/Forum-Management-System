@@ -1,16 +1,15 @@
 package com.example.forummanagementsystem.repositories;
 
+import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Repository;
 
 import org.hibernate.query.Query;
-
-import javax.persistence.TypedQuery;
-import java.sql.*;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -61,10 +60,35 @@ public class UserRepositoryImpl implements UserRepository {
     public void update(User user) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
+            user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
             session.update(user);
             session.getTransaction().commit();
         } catch (EntityNotFoundException e){
             throw new EntityNotFoundException("User", "username", user.getUsername());
+        }
+    }
+
+    @Override
+    public void createUser(User user) {
+        boolean alreadyExists;
+        try {
+            get(user.getUsername());
+            alreadyExists = true;
+        }catch (EntityNotFoundException e){
+            alreadyExists = false;
+        }
+
+        if (!alreadyExists) {
+            try (Session session = sessionFactory.openSession()) {
+                String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+                user.setPassword(hashedPassword);
+                user.setLocalDateTime(LocalDateTime.now());
+                session.save(user);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException(e.getMessage());
+            }
+        } else {
+            throw new EntityDuplicateException("User", "username", user.getUsername());
         }
     }
 

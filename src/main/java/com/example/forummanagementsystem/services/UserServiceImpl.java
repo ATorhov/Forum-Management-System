@@ -38,4 +38,9 @@ public class UserServiceImpl implements UserService {
     public void update(User user) {
         userRepository.update(user);
     }
+
+    @Override
+    public void create(User user) {
+        userRepository.createUser(user);
+    }
 }

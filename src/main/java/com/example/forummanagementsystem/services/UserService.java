@@ -15,4 +15,5 @@ public interface UserService {
     User get(String username);
 
     void update(User user);
+    void create(User user);
 }

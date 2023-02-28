@@ -1,5 +1,6 @@
 package com.example.forummanagementsystem.controllers;
 import com.example.forummanagementsystem.exceptions.AuthorizationException;
+import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.helpers.AuthenticationHelper;
 import com.example.forummanagementsystem.models.User;
@@ -78,6 +79,20 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
+
+    @PostMapping("/create")
+    public User createUser(@RequestHeader HttpHeaders headers,
+                           @Valid @RequestBody UserDto userDto){
+        try {
+            authenticationHelper.tryGetUser(headers);
+            User user = modelMapper.fromDto(userDto);
+            userService.create(user);
+            return user;
+        } catch (EntityDuplicateException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+    }
+
 
 
 }
