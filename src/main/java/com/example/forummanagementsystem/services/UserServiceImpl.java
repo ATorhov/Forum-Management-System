@@ -43,4 +43,9 @@ public class UserServiceImpl implements UserService {
     public void create(User user) {
         userRepository.createUser(user);
     }
+
+    @Override
+    public User deleteUser(User user) {
+        return userRepository.delete(user);
+    }
 }

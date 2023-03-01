@@ -93,6 +93,17 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("/delete/{username}")
+    public User deleteUser(@PathVariable String username, @RequestHeader HttpHeaders headers){
+        try {
+            authenticationHelper.tryGetUser(headers);
+            User user = userService.get(username);
+            return userService.deleteUser(user);
+        } catch (EntityNotFoundException e){
+            throw new EntityNotFoundException("User", "username", username);
+        }
+    }
+
 
 
 }

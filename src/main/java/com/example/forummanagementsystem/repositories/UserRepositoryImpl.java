@@ -92,7 +92,13 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-
-
-
+    @Override
+    public User delete(User user) {
+        try(Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            session.delete(user);
+            session.getTransaction().commit();
+        }
+        return user;
+    }
 }
