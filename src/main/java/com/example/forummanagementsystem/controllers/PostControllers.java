@@ -1,5 +1,6 @@
 package com.example.forummanagementsystem.controllers;
 
+import com.example.forummanagementsystem.exceptions.AuthorizationException;
 import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.helpers.AuthenticationHelper;
@@ -61,15 +62,21 @@ public class PostControllers {
         }
 
     @PutMapping("/{id}")
-    public Post update(@PathVariable Long id, @Valid @RequestBody PostDto postDto) {
+    public Post update(@RequestHeader HttpHeaders headers, @PathVariable Long id, @Valid @RequestBody PostDto postDto) {
         try {
-            Post post = modelMapper.fromDto(postDto, id);
-            postService.update(post);
-            return post;
+            User user = authenticationHelper.tryGetUser(headers);
+            Post postToUpdate = postService.getById(id);
+            Post newPost = modelMapper.dtoToObject(postDto, postToUpdate.getUser());
+            authenticationHelper.checkPermissions(postService.getById(id).getUser().getId(), user);
+            newPost.setPostId(id);
+            postService.update(newPost, postToUpdate.getUser());
+            return newPost;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 

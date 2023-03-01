@@ -1,6 +1,7 @@
 package com.example.forummanagementsystem.repositories;
 
 import com.example.forummanagementsystem.models.Post;
+import com.example.forummanagementsystem.models.User;
 
 import java.util.List;
 
@@ -15,5 +16,6 @@ public interface PostRepository {
     void update(Post post);
     void delete(Long id);
 
+    void update(Post post, User user);
 
 }

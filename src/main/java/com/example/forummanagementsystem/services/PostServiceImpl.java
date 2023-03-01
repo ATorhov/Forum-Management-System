@@ -3,6 +3,7 @@ package com.example.forummanagementsystem.services;
 import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.models.Post;
+import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,9 +65,14 @@ public class PostServiceImpl implements PostService {
         if (duplicateExists) {
             throw new EntityDuplicateException("Post", "post", post.getTitle());
         }
-
         repository.update(post);
     }
+
+    @Override
+    public void update(Post post, User user) {
+        repository.update(post);
+    }
+
 
     @Override
     public void delete(Long id) {

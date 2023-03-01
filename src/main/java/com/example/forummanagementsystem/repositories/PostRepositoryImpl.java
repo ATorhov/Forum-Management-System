@@ -2,6 +2,7 @@ package com.example.forummanagementsystem.repositories;
 
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.models.Post;
+import com.example.forummanagementsystem.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,17 @@ public class PostRepositoryImpl implements PostRepository{
             session.getTransaction().commit();
         }
     }
+
+    @Override
+    public void update(Post post, User user) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.update(post);
+            session.update(user);
+            session.getTransaction();
+        }
+    }
+
 
     @Override
     public void delete(Long id) {
