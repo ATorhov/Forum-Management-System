@@ -1,11 +1,11 @@
 package com.example.forummanagementsystem.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.lang.NonNull;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
-import javax.validation.constraints.*;
+
 
 @Entity
 @Table(name = "comments")
@@ -18,18 +18,25 @@ public class Comment {
     private Integer commentId;
 
 
-    @Column(name = "post_id")
-    private int postId;
+//    @Column(name = "post_id")
+//    private int postId;
 
     @Column(name = "content")
     private String content;
 
+
+    @NonNull
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "post_id",referencedColumnName = "post_id", nullable = false)
+    private Post post;
+
     public Comment() {
     }
 
-    public Comment(Integer commentId, int postId, String content) {
+    public Comment(Integer commentId, Post post, String content) {
         this.commentId = commentId;
-        this.postId = postId;
+        this.post =post;
         this.content = content;
     }
 
@@ -41,12 +48,12 @@ public class Comment {
         this.commentId = commentId;
     }
 
-    public int getPostId() {
-        return postId;
+    public Post getPostId() {
+        return post;
     }
 
-    public void setPostId(int postId) {
-        this.postId = postId;
+    public void setPostId(Post post) {
+        this.post = post;
     }
 
     public String getContent() {
@@ -55,5 +62,13 @@ public class Comment {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
     }
 }
