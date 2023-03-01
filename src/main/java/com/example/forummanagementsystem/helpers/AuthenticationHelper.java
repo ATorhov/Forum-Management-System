@@ -5,12 +5,15 @@ import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.services.UserService;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class AuthenticationHelper {
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String INVALID_AUTHENTICATION_ERROR = "Invalid authentication.";
+    private static final String ERROR_MESSAGE = "Permission denied, only admin is authorized for this operation.";
     private final UserService userService;
 
     public AuthenticationHelper(UserService userService) {
@@ -53,7 +56,14 @@ public class AuthenticationHelper {
         if (firstSpace == -1) {
             throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
         }
-
         return userInfo.substring(firstSpace + 1);
     }
+
+    public void checkPermissions(Long targetUserId, User userToCheck) {
+        if (!userToCheck.isAdmin() && userToCheck.getId() != targetUserId) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ERROR_MESSAGE);
+        }
+    }
+
+
 }
