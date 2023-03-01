@@ -81,11 +81,15 @@ public class PostControllers {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@RequestHeader HttpHeaders headers, @PathVariable Long id) {
         try {
+            User user = authenticationHelper.tryGetUser(headers);
+            authenticationHelper.checkPermissions(postService.getById(id).getUser().getId(), user);
             postService.delete(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 }
