@@ -53,7 +53,7 @@ public class PostDto {
         return createTime;
     }
 
-    private void setCreateTime(LocalDateTime createTime) {
+    public void setCreateTime() {
         this.createTime = LocalDateTime.now();
     }
 

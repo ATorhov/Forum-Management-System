@@ -5,7 +5,7 @@ import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.helpers.AuthenticationHelper;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.models.UserDto;
-import com.example.forummanagementsystem.services.ModelMapper;
+import com.example.forummanagementsystem.services.mappers.UserMapper;
 import com.example.forummanagementsystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -22,11 +22,11 @@ public class UserController {
 
     private final UserService userService;
 
-    private final ModelMapper modelMapper;
+    private final UserMapper modelMapper;
     private final AuthenticationHelper authenticationHelper;
 
     @Autowired
-    public UserController(UserService userService, ModelMapper modelMapper, AuthenticationHelper authenticationHelper) {
+    public UserController(UserService userService, UserMapper modelMapper, AuthenticationHelper authenticationHelper) {
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.authenticationHelper = authenticationHelper;

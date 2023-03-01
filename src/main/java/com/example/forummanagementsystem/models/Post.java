@@ -7,6 +7,7 @@ import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "posts")
@@ -81,7 +82,7 @@ public class Post {
         return createTime;
     }
 
-    public void setCreateTime(LocalDateTime createTime) {
+    public void setCreateTime() {
         this.createTime = LocalDateTime.now();
     }
 
@@ -101,6 +102,20 @@ public class Post {
     public void setUser(@NonNull User user) {
         this.user = user;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return postId == post.postId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(postId);
+    }
+
 
     @Override
     public String toString() {

@@ -2,11 +2,14 @@ package com.example.forummanagementsystem.controllers;
 
 import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
+import com.example.forummanagementsystem.helpers.AuthenticationHelper;
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.PostDto;
-import com.example.forummanagementsystem.services.ModelMapper;
+import com.example.forummanagementsystem.models.User;
+import com.example.forummanagementsystem.services.mappers.PostMapper;
 import com.example.forummanagementsystem.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,13 +23,15 @@ public class PostControllers {
 
     private final PostService postService;
 
-    private final ModelMapper modelMapper;
+    private final PostMapper modelMapper;
+
+    private final AuthenticationHelper authenticationHelper;
 
     @Autowired
-    public PostControllers(PostService postService, ModelMapper modelMapper){
+    public PostControllers(PostService postService, PostMapper modelMapper, AuthenticationHelper authenticationHelper){
         this.postService = postService;
         this.modelMapper = modelMapper;
-
+        this.authenticationHelper = authenticationHelper;
     }
 
     @GetMapping
@@ -44,15 +49,16 @@ public class PostControllers {
     }
 
     @PostMapping
-    public Post create(@Valid @RequestBody PostDto postDto) {
+    public PostDto create(@RequestHeader HttpHeaders headers, @Valid @RequestBody PostDto postDto) {
         try {
-            Post post = modelMapper.fromDto(postDto);
+            User user = authenticationHelper.tryGetUser(headers);
+            Post post = modelMapper.dtoToObject(postDto, user);
             postService.create(post);
-            return post;
+            return modelMapper.objectToDto(post);
         } catch (EntityDuplicateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
-    }
+        }
 
     @PutMapping("/{id}")
     public Post update(@PathVariable Long id, @Valid @RequestBody PostDto postDto) {
