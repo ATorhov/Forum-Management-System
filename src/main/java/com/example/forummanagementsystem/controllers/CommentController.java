@@ -5,7 +5,8 @@ import com.example.forummanagementsystem.models.Comment;
 import com.example.forummanagementsystem.models.CommentDto;
 
 import com.example.forummanagementsystem.services.CommentService;
-import com.example.forummanagementsystem.services.ModelMapper;
+import com.example.forummanagementsystem.services.mappers.CommentMapper;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,10 +33,10 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    private final ModelMapper modelMapper;
+    private final CommentMapper modelMapper;
 
     @Autowired
-    public CommentController(CommentService commentService, ModelMapper modelMapper) {
+    public CommentController(CommentService commentService, CommentMapper modelMapper) {
         this.commentService = commentService;
         this.modelMapper = modelMapper;
 

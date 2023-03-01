@@ -11,68 +11,6 @@ import java.util.List;
 
 import com.example.forummanagementsystem.models.Comment;
 
-//
-//@Repository
-//public class CommentRepositoryImpl implements CommentRepository {
-//
-//    // private List<Comment> comments;
-//    private final SessionFactory sessionFactory;
-//
-//    @Autowired
-//    public CommentRepositoryImpl(SessionFactory sessionFactory) {
-//        this.sessionFactory = sessionFactory;
-//
-//    }
-//
-//    @Override
-//    public List<Comment> getAll() {
-//        try (Session session = sessionFactory.openSession()) {
-//            TypedQuery<Comment> query = session.createQuery("from Comment", Comment.class);
-//            return query.getResultList();
-//        }
-//    }
-//
-//
-//    @Override
-//    public Comment getById(int id) {
-//        try (Session session = sessionFactory.openSession()) {
-//            Comment comment = session.get(Comment.class, id);
-//            if (comment == null) {
-//                throw new EntityNotFoundException("Comment", (long) id);
-//            }
-//            return comment;
-//        }
-//    }
-//
-//
-//    @Override
-//    public void create(Comment comment) {
-//
-//        try (Session session = sessionFactory.openSession()) {
-//            session.save(comment);
-//        }
-//    }
-//
-//
-//    @Override
-//    public void update(Comment comment) {
-//        try (Session session = sessionFactory.openSession()) {
-//            session.beginTransaction();
-//            session.update(comment);
-//            session.getTransaction().commit();
-//        }
-//    }
-//
-//    @Override
-//    public void delete(int id) {
-//        Comment commentToDelete = getById(id);
-//        try (Session session = sessionFactory.openSession()) {
-//            session.beginTransaction();
-//            session.delete(commentToDelete);
-//            session.getTransaction().commit();
-//        }
-//    }
-//}
 
 
 @Repository
@@ -81,7 +19,6 @@ public class CommentRepositoryImpl implements CommentRepository {
     private final SessionFactory sessionFactory;
 
     @Autowired
-
     public CommentRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }

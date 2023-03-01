@@ -87,3 +87,7 @@ VALUES ('How to open account on Binance?', 5, 'This is the body of the post 1', 
        ('The impact of government regulations on the cryptocurrency market', 3, 'This is the body of the post 58', 3, NOW()),
        ('How to use cryptocurrency for peer-to-peer lending', 4, 'This is the body of the post 59', 4, NOW()),
        ('Forum Guidelines', 6, 'This is the body of the post 7', 2, NOW());
+
+
+INSERT INTO comments (post_id, content)
+VALUES ( 5, 'Helo how are you');
