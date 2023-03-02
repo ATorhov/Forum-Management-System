@@ -27,6 +27,12 @@ public class Comment {
     @JoinColumn(name = "post_id",referencedColumnName = "post_id", nullable = false)
     private Post post;
 
+    @NonNull
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    private User user;
+
     public Comment() {
     }
 
@@ -34,6 +40,16 @@ public class Comment {
         this.commentId = commentId;
         this.post =post;
         this.content = content;
+    }
+
+
+    @NonNull
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(@NonNull User user) {
+        this.user = user;
     }
 
     public Integer getCommentId() {
@@ -44,13 +60,13 @@ public class Comment {
         this.commentId = commentId;
     }
 
-    public Post getPostId() {
-        return post;
-    }
-
-    public void setPostId(Post post) {
-        this.post = post;
-    }
+//    public Post getPostId() {
+//        return post;
+//    }
+//
+//    public void setPostId(Post post) {
+//        this.post = post;
+//    }
 
     public String getContent() {
         return content;

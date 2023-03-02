@@ -1,8 +1,8 @@
 package com.example.forummanagementsystem.services.mappers;
 
-import com.example.forummanagementsystem.models.Comment;
-import com.example.forummanagementsystem.models.CommentDto;
-import com.example.forummanagementsystem.models.Post;
+import com.example.forummanagementsystem.models.*;
+import com.example.forummanagementsystem.repositories.UserRepository;
+import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.repositories.CommentRepository;
 import com.example.forummanagementsystem.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class CommentMapper {
 
 
     @Autowired
-    public CommentMapper(CommentRepository commentRepository, PostRepository postRepository) {
+    public CommentMapper(CommentRepository commentRepository, PostRepository postRepository, UserRepository userRepository) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
     }
@@ -41,6 +41,12 @@ public class CommentMapper {
         // comment.setPostId(commentDto.setPost_id(new Post()));
         comment.setContent(commentDto.getContent());
         post.setPostId(post.getPostId());
+    }
 
+    public Comment dtoToObjectComment(CommentDto commentDto, User user) {
+        Comment comment = new Comment();
+        comment.setContent(commentDto.getContent());
+        comment.setUser(user);
+        return comment;
     }
 }

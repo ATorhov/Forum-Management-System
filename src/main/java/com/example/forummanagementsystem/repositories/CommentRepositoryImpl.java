@@ -1,6 +1,8 @@
 package com.example.forummanagementsystem.repositories;
 
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
+import com.example.forummanagementsystem.models.Post;
+import com.example.forummanagementsystem.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +59,18 @@ public class CommentRepositoryImpl implements CommentRepository {
             session.beginTransaction();
             session.update(comment);
             session.getTransaction().commit();
+        }
+    }
+
+
+
+    @Override
+    public void update(Comment comment, User user) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.update(comment);
+            session.update(user);
+            session.getTransaction();
         }
     }
 

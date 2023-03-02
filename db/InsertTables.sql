@@ -96,12 +96,12 @@ VALUES ('How to open account on Binance?', 5, 'This is the body of the post 1', 
        ('Forum Guidelines', 6, 'This is the body of the post 7', 2, NOW());
 
 
-INSERT INTO comments (post_id, content)
+INSERT INTO comments (post_id, content,user_id)
 
-VALUES (5, 'Helo how are you'),
-       (5, 'I am fine, how are you'),
-       (5, 'I am fine too'),
-       (5, 'I am fine too, what are you doing right now?'),
-       (5, 'I am coding');
+VALUES (5, 'Helo how are you',1),
+       (5, 'I am fine, how are you',1),
+       (5, 'I am fine too',1),
+       (5, 'I am fine too, what are you doing right now?',1),
+       (5, 'I am coding',1);
 
 
