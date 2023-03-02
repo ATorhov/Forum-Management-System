@@ -1,12 +1,14 @@
 package com.example.forummanagementsystem.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -41,6 +43,9 @@ public class Post {
     @JsonIgnore
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Comment> comments;
 
     public Post() {
 
@@ -103,6 +108,14 @@ public class Post {
         this.user = user;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -116,7 +129,6 @@ public class Post {
         return Objects.hashCode(postId);
     }
 
-
     @Override
     public String toString() {
         return "Post{" +
@@ -126,6 +138,7 @@ public class Post {
                 ", content='" + content + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ", comments=" + comments +
                 '}';
     }
 }

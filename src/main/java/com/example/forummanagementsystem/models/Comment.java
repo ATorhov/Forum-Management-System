@@ -18,12 +18,8 @@ public class Comment {
     private Integer commentId;
 
 
-//    @Column(name = "post_id")
-//    private int postId;
-
     @Column(name = "content")
     private String content;
-
 
     @NonNull
     @ManyToOne

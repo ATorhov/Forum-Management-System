@@ -1,27 +1,28 @@
-INSERT INTO users (first_name, last_name, username, email, password, phone_number, is_blocked, is_admin)
-VALUES ('Iliyan', 'Trenchev', 'user777', 'user777@email.com', 'password7', null, false, true),
-       ('Ivan', 'Belev', 'user888', 'user888@email.com', 'password8', null, false, true),
-       ('Aleksandar', 'Torhov', 'admin', 'user2@email.com', 'password2', null, false, true),
-       ('John', 'Smith', 'jsmith', 'jsmith@email.com', 'password123', null, false, false),
-       ('Mary', 'Johnson', 'mjohnson', 'mjohnson@email.com', 'password123', null, false, false),
-       ('David', 'Brown', 'dbrown', 'dbrown@email.com', 'password123', null, false, false),
-       ('Jennifer', 'Davis', 'jdavis', 'jdavis@email.com', 'password123', null, false, false),
-       ('Michael', 'Wilson', 'mwilson', 'mwilson@email.com', 'password123', null, false, false),
-       ('Sarah', 'Garcia', 'sgarcia', 'sgarcia@email.com', 'password123', null, false, false),
-       ('James', 'Miller', 'jmiller', 'jmiller@email.com', 'password123', null, false, false),
-       ('William', 'Taylor', 'wtaylor', 'wtaylor@email.com', 'password123', null, false, false),
-       ('Karen', 'Anderson', 'kanderson', 'kanderson@email.com', 'password123', null, false, false),
-       ('Charles', 'Martin', 'cmartin', 'cmartin@email.com', 'password123', null, false, false),
-       ('Jessica', 'Moore', 'jmoore', 'jmoore@email.com', 'password123', null, false, false),
-       ('Brian', 'Jackson', 'bjackson', 'bjackson@email.com', 'password123', null, false, false),
-       ('Nancy', 'Lee', 'nlee', 'nlee@email.com', 'password123', null, false, false),
-       ('Kevin', 'Harris', 'kharris', 'kharris@email.com', 'password123', null, false, false),
-       ('Linda', 'Clark', 'lclark', 'lclark@email.com', 'password123', null, false, false),
-       ('Steven', 'Lewis', 'slewis', 'slewis@email.com', 'password123', null, false, false),
-       ('Emily', 'Allen', 'eallen', 'eallen@email.com', 'password123', null, false, false),
-       ('Scott', 'Young', 'syoung', 'syoung@email.com', 'password123', null, false, false),
-       ('Kimberly', 'King', 'kking', 'kking@email.com', 'password123', null, false, false),
-       ('Jason', 'Wright', 'jwright', 'jwright@email.com', 'password123', null, false, false);
+INSERT INTO users (first_name, last_name, username, email, password, phone_number, is_blocked, is_admin, registration_date)
+VALUES
+    ('Iliyan', 'Trenchev', 'user777', 'user777@email.com', 'password7', null, false, true, NOW()),
+    ('Ivan', 'Belev', 'user888', 'user888@email.com', 'password8',null, false, true, NOW()),
+    ('Aleksandar', 'Torhov', 'admin', 'user2@email.com', 'password2', null,false, true, NOW()),
+    ('John', 'Smith', 'jsmith', 'jsmith@email.com', 'password123',null, false, false, NOW()),
+    ('Mary', 'Johnson', 'mjohnson', 'mjohnson@email.com', 'password123',null, false, false, NOW()),
+    ('David', 'Brown', 'dbrown', 'dbrown@email.com', 'password123',null, false, false, NOW()),
+    ('Jennifer', 'Davis', 'jdavis', 'jdavis@email.com', 'password123',null, false, false, NOW()),
+    ('Michael', 'Wilson', 'mwilson', 'mwilson@email.com', 'password123',null, false, false, NOW()),
+    ('Sarah', 'Garcia', 'sgarcia', 'sgarcia@email.com', 'password123',null, false, false, NOW()),
+    ('James', 'Miller', 'jmiller', 'jmiller@email.com', 'password123',null, false, false, NOW()),
+    ('William', 'Taylor', 'wtaylor', 'wtaylor@email.com', 'password123', null,false, false, NOW()),
+    ('Karen', 'Anderson', 'kanderson', 'kanderson@email.com', 'password123', null,false, false, NOW()),
+    ('Charles', 'Martin', 'cmartin', 'cmartin@email.com', 'password123', null,false, false, NOW()),
+    ('Jessica', 'Moore', 'jmoore', 'jmoore@email.com', 'password123', null,false, false, NOW()),
+    ('Brian', 'Jackson', 'bjackson', 'bjackson@email.com', 'password123', null,false, false, NOW()),
+    ('Nancy', 'Lee', 'nlee', 'nlee@email.com', 'password123', null,false, false, NOW()),
+    ('Kevin', 'Harris', 'kharris', 'kharris@email.com', 'password123', null,false, false, NOW()),
+    ('Linda', 'Clark', 'lclark', 'lclark@email.com', 'password123', null,false, false, NOW()),
+    ('Steven', 'Lewis', 'slewis', 'slewis@email.com', 'password123', null,false, false, NOW()),
+    ('Emily', 'Allen', 'eallen', 'eallen@email.com', 'password123', null,false, false, NOW()),
+    ('Scott', 'Young', 'syoung', 'syoung@email.com', 'password123', null,false, false, NOW()),
+    ('Kimberly', 'King', 'kking', 'kking@email.com', 'password123', null,false, false, NOW()),
+    ('Jason', 'Wright', 'jwright', 'jwright@email.com', 'password123', null,false, false, NOW());
 
 
 INSERT INTO posts (title, rating, content, user_id, create_time)
@@ -96,8 +97,11 @@ VALUES ('How to open account on Binance?', 5, 'This is the body of the post 1', 
 
 
 INSERT INTO comments (post_id, content)
+
 VALUES (5, 'Helo how are you'),
        (5, 'I am fine, how are you'),
        (5, 'I am fine too'),
        (5, 'I am fine too, what are you doing right now?'),
        (5, 'I am coding');
+
+
