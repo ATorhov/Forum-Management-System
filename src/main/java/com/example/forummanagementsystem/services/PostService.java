@@ -4,6 +4,7 @@ import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostService {
 
@@ -18,4 +19,9 @@ public interface PostService {
 
     void update(Post post, User user);
 
+    List<Post> getPostsByUserId(Long id);
+
+    List<Post> filter(Optional<String> title, Optional<String> content, Optional<Integer> rating, Optional<String> sort);
+
+    List<Post> getAllSearch(Optional<String> all);
 }

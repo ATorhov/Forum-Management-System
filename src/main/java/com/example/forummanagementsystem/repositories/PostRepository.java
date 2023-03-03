@@ -4,6 +4,7 @@ import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostRepository {
 
@@ -16,6 +17,11 @@ public interface PostRepository {
     void update(Post post);
     void delete(Long id);
 
+    List<Post> getPostsByUserId(Long userId);
+
+    List<Post> filter(Optional<String> title, Optional<String> content, Optional<Integer> rating, Optional<String> sort);
+
     void update(Post post, User user);
 
+    List<Post> search(Optional<String> all);
 }

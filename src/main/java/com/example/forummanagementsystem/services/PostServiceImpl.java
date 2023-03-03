@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -71,6 +72,22 @@ public class PostServiceImpl implements PostService {
     @Override
     public void update(Post post, User user) {
         repository.update(post);
+    }
+
+    @Override
+    public List<Post> getPostsByUserId(Long id) {
+        return repository.getPostsByUserId(id);
+    }
+
+    @Override
+    public List<Post> filter(Optional<String> title, Optional<String> content, Optional<Integer> rating, Optional<String> sort) {
+        //TODO authorization to be implemented
+        return repository.filter(title, content, rating, sort);
+    }
+
+    @Override
+    public List<Post> getAllSearch(Optional<String> all) {
+        return repository.search(all);
     }
 
 
