@@ -17,10 +17,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/posts")
-public class PostControllers {
+public class PostController {
 
     private final PostService postService;
 
@@ -29,7 +30,7 @@ public class PostControllers {
     private final AuthenticationHelper authenticationHelper;
 
     @Autowired
-    public PostControllers(PostService postService, PostMapper modelMapper, AuthenticationHelper authenticationHelper){
+    public PostController(PostService postService, PostMapper modelMapper, AuthenticationHelper authenticationHelper){
         this.postService = postService;
         this.modelMapper = modelMapper;
         this.authenticationHelper = authenticationHelper;
@@ -38,6 +39,31 @@ public class PostControllers {
     @GetMapping
     public List<Post> getAll() {
         return postService.getAll();
+    }
+
+    @GetMapping("/search")
+    public List<Post> getAllSearch(@RequestParam(required = false)Optional<String> search){
+        return postService.getAllSearch(search);
+    }
+
+    @GetMapping("/filter")
+    public List<Post> filter (
+            @RequestParam(required = false) Optional<String> title,
+            @RequestParam(required = false) Optional<String> content,
+            @RequestParam(required = false) Optional<Integer> rating,
+            @RequestParam(required = false) Optional<String> sort
+            )
+    {
+        try {
+            return postService.filter(title, content, rating, sort);
+        } catch (UnsupportedOperationException e){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+    }
+
+    @GetMapping("/user/{id}")
+    public List<Post> getPostsByUserId(@PathVariable Long id) {
+        return postService.getPostsByUserId(id);
     }
 
     @GetMapping("/{id}")
