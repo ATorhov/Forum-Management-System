@@ -118,9 +118,9 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public List<Post> filter(Optional<String> title,
-                             Optional<String> content,
-                             Optional<Integer> rating,
-                             Optional<String> sort) {
+                                     Optional<String> content,
+                                     Optional<Integer> rating,
+                                     Optional<String> sort) {
 
         try (Session session = sessionFactory.openSession()) {
             StringBuilder queryString = new StringBuilder(" from Post ");

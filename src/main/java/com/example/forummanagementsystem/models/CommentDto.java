@@ -3,7 +3,6 @@ package com.example.forummanagementsystem.models;
 import org.springframework.lang.NonNull;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 
 
 public class CommentDto {

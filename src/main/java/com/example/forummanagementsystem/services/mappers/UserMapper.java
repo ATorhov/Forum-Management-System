@@ -2,7 +2,6 @@ package com.example.forummanagementsystem.services.mappers;
 
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.models.UserDto;
-import com.example.forummanagementsystem.repositories.PostRepository;
 import com.example.forummanagementsystem.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

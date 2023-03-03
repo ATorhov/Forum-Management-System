@@ -1,17 +1,14 @@
 package com.example.forummanagementsystem.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -45,6 +42,9 @@ public class Post {
     @JsonIgnore
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Comment> comments;
 
 
     public Post() {

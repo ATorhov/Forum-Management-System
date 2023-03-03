@@ -1,7 +1,6 @@
 package com.example.forummanagementsystem.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
