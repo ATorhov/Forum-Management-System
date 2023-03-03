@@ -7,9 +7,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -44,11 +46,8 @@ public class Post {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Comment> comments;
 
     public Post() {
-
     }
 
     public Long getPostId() {
@@ -108,14 +107,6 @@ public class Post {
         this.user = user;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -138,7 +129,6 @@ public class Post {
                 ", content='" + content + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
-                ", comments=" + comments +
                 '}';
     }
 }
