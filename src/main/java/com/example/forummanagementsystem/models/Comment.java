@@ -9,7 +9,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "comments")
-
 public class Comment {
 
     @Id
@@ -23,8 +22,6 @@ public class Comment {
 
     @NonNull
     @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "post_id",referencedColumnName = "post_id", nullable = false)
     private Post post;
 
     @NonNull
@@ -59,14 +56,6 @@ public class Comment {
     public void setCommentId(Integer commentId) {
         this.commentId = commentId;
     }
-
-//    public Post getPostId() {
-//        return post;
-//    }
-//
-//    public void setPostId(Post post) {
-//        this.post = post;
-//    }
 
     public String getContent() {
         return content;
