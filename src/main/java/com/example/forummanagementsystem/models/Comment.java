@@ -6,6 +6,8 @@ import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 
+import java.util.Objects;
+
 
 @Entity
 @Table(name = "comments")
@@ -72,5 +74,19 @@ public class Comment {
 
     public void setPost(Post post) {
         this.post = post;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return commentId == comment.commentId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(commentId);
     }
 }

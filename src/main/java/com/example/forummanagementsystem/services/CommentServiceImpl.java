@@ -1,11 +1,11 @@
 package com.example.forummanagementsystem.services;
 
+import com.example.forummanagementsystem.exceptions.AuthorizationException;
 import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.models.Comment;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import com.example.forummanagementsystem.models.User;
@@ -18,6 +18,7 @@ import com.example.forummanagementsystem.repositories.CommentRepository;
 @Service
 public class CommentServiceImpl implements CommentService {
 
+    private static final String MODIFY_COMMENT_ERROR_MESSAGE = "Only admin or comment creator can modify a comment.";
 
     private final CommentRepository repository;
 
@@ -25,66 +26,73 @@ public class CommentServiceImpl implements CommentService {
     public CommentServiceImpl(CommentRepository repository) {
         this.repository = repository;
     }
-//
-//    @Override
-//    public List<Comment> getAll() {
-//        return repository.getAll();
-//    }
+
 
     @Override
     public Comment getById(int id) {
         return repository.getById(id);
     }
 
-
     @Override
-    public void create(Comment comment) {
+    public void create(Comment comment, User user) {
+        boolean duplicateExists = false;
+        try {
+            repository.create(comment);
+        } catch (EntityNotFoundException e) {
+            duplicateExists = true;
+        }
 
-        repository.create(comment);
+        if (duplicateExists) {
+            throw new EntityDuplicateException("Comment", "id", comment.getContent());
+        }
+
+        comment.setUser(user);
+        //repository.create(comment);
     }
-
-
-    @Override
-    public void update(Comment comment) {
-        repository.update(comment);
-    }
-
-//    @Override
-//    public void update(Comment comment) {
-//        boolean duplicateExists = true;
-//        try {
-//            Comment existingComment = repository.getById(comment.getCommentId());
-//            if (Objects.equals(existingComment.getCommentId(), comment.getCommentId())) {
-//                duplicateExists = false;
-//            }
-//        } catch (EntityNotFoundException e) {
-//            duplicateExists = false;
-//        }
-//        if (duplicateExists) {
-//            throw new EntityDuplicateException("Comment", "comment", comment.getCommentId().toString());
-//        }
-//        repository.update(comment);
-//    }
-
 
     @Override
     public void update(Comment comment, User user) {
+        checkModifyPermissions(comment.getCommentId(), user);
+
+        boolean duplicateExists = true;
+        try {
+            Comment existingComment = repository.getById(comment.getCommentId());
+            if (existingComment.getCommentId() == comment.getCommentId()) {
+                duplicateExists = false;
+            }
+        } catch (EntityNotFoundException e) {
+            duplicateExists = false;
+        }
+        if (duplicateExists) {
+            throw new EntityDuplicateException("Comment", "id", comment.getContent());
+        }
         repository.update(comment);
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id, User user) {
+        checkModifyPermissions(id, user);
         repository.delete(id);
     }
 
+
+
     @Override
-    public List<Comment> filter(Optional<String> content, Optional<Integer> commentId, Optional<Integer> postId, Optional<Integer> userId, Optional<String> sort) {
-        return repository.filter(content, commentId, postId, userId, sort);
+    public List<Comment> filter(Optional<String> content, Optional<Integer> postId,
+                                Optional<Integer> userId, Optional<String> sort) {
+        return repository.filter(content,  postId, userId, sort);
     }
 
     @Override
     public List<Comment> getAll(Optional<String> search) {
         return repository.getAll(search);
+    }
+
+    private void checkModifyPermissions(int commentId, User user) {
+        Comment comment = repository.getById(commentId);
+        if (!(user.isAdmin() || comment.getUser().equals(user))) {
+            throw new AuthorizationException(MODIFY_COMMENT_ERROR_MESSAGE);
+        }
     }
 }
 

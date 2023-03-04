@@ -45,14 +45,8 @@ public class CommentController {
     public CommentController(CommentService commentService, CommentMapper modelMapper, AuthenticationHelper authenticationHelper) {
         this.commentService = commentService;
         this.modelMapper = modelMapper;
-
         this.authenticationHelper = authenticationHelper;
     }
-
-//    @GetMapping
-//    public List<Comment> getAll() {
-//        return commentService.getAll();
-//    }
 
     @GetMapping
     public List<Comment> getAll(@RequestParam(required = false) Optional<String> search) {
@@ -62,13 +56,16 @@ public class CommentController {
     @GetMapping("/filter")
     public List<Comment> filter(
             @RequestParam(required = false) Optional<String> content,
-            @RequestParam(required = false) Optional<Integer> comment_id,
+            //  @RequestParam(required = false) Optional<Integer> comment_id,
             @RequestParam(required = false) Optional<Integer> post_id,
             @RequestParam(required = false) Optional<Integer> user_id,
             @RequestParam(required = false) Optional<String> sort
-
     ) {
-        return commentService.filter(content, comment_id, post_id, user_id, sort);
+        try {
+            return commentService.filter(content, post_id, user_id, sort);
+        } catch (UnsupportedOperationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
@@ -84,25 +81,31 @@ public class CommentController {
     public Comment create(@RequestHeader HttpHeaders headers, @Valid @RequestBody CommentDto commentDto) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-
-            Comment comment = modelMapper.dtoToObjectComment(commentDto, user,new Post());
-            commentService.create(comment);
+            Comment comment = modelMapper.dtoToObjectComment(commentDto, user, new Post());
+            commentService.create(comment, user);
             return comment;
+
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public Comment update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody CommentDto commentDto) {
+    public Comment update(@RequestHeader HttpHeaders headers, @PathVariable int id,
+                          @Valid @RequestBody CommentDto commentDto) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
+            Comment comment = modelMapper.fromDto(id, commentDto);
             Comment commentToUpdate = commentService.getById(id);
             Comment newComment = modelMapper.dtoToObjectComment(commentDto, commentToUpdate.getUser(), commentToUpdate.getPost());
             authenticationHelper.checkPermissions(commentService.getById(id).getUser().getId(), user);
             newComment.setCommentId(id);
-            commentService.update(newComment, commentToUpdate.getUser());
-            return newComment;
+            commentService.update(comment, commentToUpdate.getUser());
+            return comment;
 
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -118,7 +121,7 @@ public class CommentController {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             authenticationHelper.checkPermissions(commentService.getById(id).getUser().getId(), user);
-            commentService.delete(id);
+            commentService.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (AuthorizationException e) {

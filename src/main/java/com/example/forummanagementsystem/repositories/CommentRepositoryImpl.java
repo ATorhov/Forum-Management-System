@@ -1,15 +1,13 @@
 package com.example.forummanagementsystem.repositories;
 
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
-import com.example.forummanagementsystem.models.User;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-//import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import java.util.*;
 
 import com.example.forummanagementsystem.models.Comment;
@@ -25,13 +23,13 @@ public class CommentRepositoryImpl implements CommentRepository {
         this.sessionFactory = sessionFactory;
     }
 
-//    @Override
-//    public List<Comment> getAll() {
-//        try (Session session = sessionFactory.openSession()) {
-//            TypedQuery<Comment> query = session.createQuery("from Comment", Comment.class);
-//            return query.getResultList();
-//        }
-//    }
+    @Override
+    public List<Comment> getAll() {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Comment> list = session.createQuery(" from Comment ", Comment.class);
+            return list.list();
+        }
+    }
 
     @Override
     public Comment getById(int id) {
@@ -63,16 +61,6 @@ public class CommentRepositoryImpl implements CommentRepository {
 
 
     @Override
-    public void update(Comment comment, User user) {
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            session.update(comment);
-            session.update(user);
-            session.getTransaction();
-        }
-    }
-
-    @Override
     public void delete(int id) {
         Comment commentToDelete = getById(id);
         try (Session session = sessionFactory.openSession()) {
@@ -84,7 +72,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public List<Comment> filter(Optional<String> content,
-                                Optional<Integer> commentId,
+
                                 Optional<Integer> postId,
                                 Optional<Integer> userId,
                                 Optional<String> sort) {
@@ -100,11 +88,11 @@ public class CommentRepositoryImpl implements CommentRepository {
                 filter.add(" content like:content");
                 queryParams.put("content", "%" + value + "%");
             });
-
-            commentId.ifPresent(value -> {
-                filter.add(" commentId = :commentId");
-                queryParams.put("commentId", value);
-            });
+//
+//            commentId.ifPresent(value -> {
+//                filter.add(" commentId = :commentId");
+//                queryParams.put("commentId", value);
+//            });
 
 
             postId.ifPresent(value -> {
@@ -135,6 +123,9 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public List<Comment> getAll(Optional<String> search) {
+        if (search.isEmpty()) {
+            return getAll();
+        }
 
         try (Session session = sessionFactory.openSession()) {
             Query<Comment> list = session.createQuery(" from Comment where content like :content or commentId = :commentId");
@@ -164,9 +155,9 @@ public class CommentRepositoryImpl implements CommentRepository {
 
         switch (params[0]) {
 
-            case "comment_id":
-                queryString.append(" comment_id ");
-                break;
+//            case "comment_id":
+//                queryString.append(" comment_id ");
+//                break;
             case "content":
                 queryString.append(" content ");
                 break;
@@ -184,7 +175,7 @@ public class CommentRepositoryImpl implements CommentRepository {
                     "Sort should have max two params divided by _ symbol!");
         }
         if (params.length == 3 && params[1].equalsIgnoreCase("desc")) {
-            queryString.append("desc");
+            queryString.append(" desc ");
         }
 
         return queryString.toString();

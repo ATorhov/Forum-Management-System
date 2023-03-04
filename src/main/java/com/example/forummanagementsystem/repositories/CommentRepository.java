@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface CommentRepository {
 
-//    List<Comment> getAll();
+    List<Comment> getAll();
 
     Comment getById(int id);
 
@@ -17,11 +17,23 @@ public interface CommentRepository {
 
     void update(Comment comment);
 
-    void update(Comment comment, User user);
+  //      void update(Comment comment, User user);
 
     void delete(int id);
 
-    List<Comment> filter(Optional<String> content, Optional<Integer> commentId, Optional<Integer> postId, Optional<Integer> userId, Optional<String> sort);
+//    List<Comment> filter(Optional<String> content,Optional<Integer> postId, Optional<Integer> userId, Optional<String> sort);
+
+//    List<Comment> filter(Optional<String> content,
+//                         Optional<Integer> commentId,
+//                         Optional<Integer> postId,
+//                         Optional<Integer> userId,
+//                         Optional<String> sort);
+
+    List<Comment> filter(Optional<String> content,
+
+                         Optional<Integer> postId,
+                         Optional<Integer> userId,
+                         Optional<String> sort);
 
     List<Comment> getAll(Optional<String> search);
 }
