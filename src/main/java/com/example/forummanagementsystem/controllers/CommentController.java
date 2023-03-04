@@ -2,6 +2,7 @@ package com.example.forummanagementsystem.controllers;
 
 import com.example.forummanagementsystem.exceptions.AuthorizationException;
 import com.example.forummanagementsystem.helpers.AuthenticationHelper;
+import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.models.Comment;
 import com.example.forummanagementsystem.models.CommentDto;
@@ -19,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 
 import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
@@ -47,9 +49,26 @@ public class CommentController {
         this.authenticationHelper = authenticationHelper;
     }
 
+//    @GetMapping
+//    public List<Comment> getAll() {
+//        return commentService.getAll();
+//    }
+
     @GetMapping
-    public List<Comment> getAll() {
-        return commentService.getAll();
+    public List<Comment> getAll(@RequestParam(required = false) Optional<String> search) {
+        return commentService.getAll(search);
+    }
+
+    @GetMapping("/filter")
+    public List<Comment> filter(
+            @RequestParam(required = false) Optional<String> content,
+            @RequestParam(required = false) Optional<Integer> comment_id,
+            @RequestParam(required = false) Optional<Integer> post_id,
+            @RequestParam(required = false) Optional<Integer> user_id,
+            @RequestParam(required = false) Optional<String> sort
+
+    ) {
+        return commentService.filter(content, comment_id, post_id, user_id, sort);
     }
 
     @GetMapping("/{id}")
@@ -65,7 +84,8 @@ public class CommentController {
     public Comment create(@RequestHeader HttpHeaders headers, @Valid @RequestBody CommentDto commentDto) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            Comment comment = modelMapper.dtoToObjectComment(commentDto, user);
+
+            Comment comment = modelMapper.dtoToObjectComment(commentDto, user,new Post());
             commentService.create(comment);
             return comment;
         } catch (EntityDuplicateException e) {
@@ -78,7 +98,7 @@ public class CommentController {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             Comment commentToUpdate = commentService.getById(id);
-            Comment newComment = modelMapper.dtoToObjectComment(commentDto, commentToUpdate.getUser());
+            Comment newComment = modelMapper.dtoToObjectComment(commentDto, commentToUpdate.getUser(), commentToUpdate.getPost());
             authenticationHelper.checkPermissions(commentService.getById(id).getUser().getId(), user);
             newComment.setCommentId(id);
             commentService.update(newComment, commentToUpdate.getUser());
