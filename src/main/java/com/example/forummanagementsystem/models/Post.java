@@ -27,12 +27,12 @@ public class Post {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @JsonIgnore
-    @Column(name = "create_time")
+   // @JsonIgnore
+    @Column(name = "create_time", updatable = false)
     @CreationTimestamp
     private LocalDateTime createTime;
 
-    @JsonIgnore
+   // @JsonIgnore
     @Column(name = "update_time")
     @UpdateTimestamp
     private LocalDateTime updateTime;
@@ -86,8 +86,8 @@ public class Post {
         return createTime;
     }
 
-    public void setCreateTime() {
-        this.createTime = LocalDateTime.now();
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 
     public LocalDateTime getUpdateTime() {
