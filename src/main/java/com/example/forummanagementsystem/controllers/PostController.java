@@ -4,6 +4,7 @@ import com.example.forummanagementsystem.exceptions.AuthorizationException;
 import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.helpers.AuthenticationHelper;
+import com.example.forummanagementsystem.models.Comment;
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.PostDto;
 import com.example.forummanagementsystem.models.User;
@@ -30,7 +31,7 @@ public class PostController {
     private final AuthenticationHelper authenticationHelper;
 
     @Autowired
-    public PostController(PostService postService, PostMapper modelMapper, AuthenticationHelper authenticationHelper){
+    public PostController(PostService postService, PostMapper modelMapper, AuthenticationHelper authenticationHelper) {
         this.postService = postService;
         this.modelMapper = modelMapper;
         this.authenticationHelper = authenticationHelper;
@@ -42,28 +43,31 @@ public class PostController {
     }
 
     @GetMapping("/search")
-    public List<Post> getAllSearch(@RequestParam(required = false)Optional<String> search){
+    public List<Post> getAllSearch(@RequestParam(required = false) Optional<String> search) {
         return postService.getAllSearch(search);
     }
 
     @GetMapping("/filter")
-    public List<Post> filter (
+    public List<Post> filter(
             @RequestParam(required = false) Optional<String> title,
             @RequestParam(required = false) Optional<String> content,
             @RequestParam(required = false) Optional<Integer> rating,
             @RequestParam(required = false) Optional<String> sort
-            )
-    {
+    ) {
         try {
             return postService.filter(title, content, rating, sort);
-        } catch (UnsupportedOperationException e){
+        } catch (UnsupportedOperationException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
 
     @GetMapping("/user/{id}")
     public List<Post> getPostsByUserId(@PathVariable Long id) {
-        return postService.getPostsByUserId(id);
+        try {
+            return postService.getPostsByUserId(id);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
@@ -73,6 +77,11 @@ public class PostController {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
+    }
+
+    @GetMapping("/{id}/comments")
+    public List<Comment> getCommentsByPostId(@PathVariable Long id) {
+        return postService.getCommentsByPostId(id);
     }
 
     @PostMapping
@@ -85,7 +94,7 @@ public class PostController {
         } catch (EntityDuplicateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
-        }
+    }
 
     @PutMapping("/{id}")
     public Post update(@RequestHeader HttpHeaders headers, @PathVariable Long id, @Valid @RequestBody PostDto postDto) {

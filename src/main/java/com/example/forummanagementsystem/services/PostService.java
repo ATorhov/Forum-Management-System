@@ -1,5 +1,6 @@
 package com.example.forummanagementsystem.services;
 
+import com.example.forummanagementsystem.models.Comment;
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
 
@@ -24,4 +25,6 @@ public interface PostService {
     List<Post> filter(Optional<String> title, Optional<String> content, Optional<Integer> rating, Optional<String> sort);
 
     List<Post> getAllSearch(Optional<String> all);
+
+    List<Comment> getCommentsByPostId(Long id);
 }

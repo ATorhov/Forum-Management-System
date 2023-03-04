@@ -1,5 +1,6 @@
 package com.example.forummanagementsystem.repositories;
 
+import com.example.forummanagementsystem.models.Comment;
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
 
@@ -24,4 +25,6 @@ public interface PostRepository {
     void update(Post post, User user);
 
     List<Post> search(Optional<String> all);
+
+    List<Comment> getCommentsByPostId(Long id);
 }

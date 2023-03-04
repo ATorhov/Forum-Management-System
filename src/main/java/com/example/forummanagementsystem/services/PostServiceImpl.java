@@ -2,6 +2,7 @@ package com.example.forummanagementsystem.services;
 
 import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
+import com.example.forummanagementsystem.models.Comment;
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.repositories.PostRepository;
@@ -88,6 +89,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getAllSearch(Optional<String> all) {
         return repository.search(all);
+    }
+
+    @Override
+    public List<Comment> getCommentsByPostId(Long id) {
+        return repository.getCommentsByPostId(id);
     }
 
 

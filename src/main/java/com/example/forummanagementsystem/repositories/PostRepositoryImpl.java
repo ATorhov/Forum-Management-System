@@ -1,6 +1,7 @@
 package com.example.forummanagementsystem.repositories;
 
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
+import com.example.forummanagementsystem.models.Comment;
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
 import org.hibernate.Session;
@@ -42,6 +43,18 @@ public class PostRepositoryImpl implements PostRepository {
             query.setParameter("content", "%" + all.get() + "%");
             List<Post> result = query.list(); // Execute the query to obtain the result list
             return result;
+        }
+    }
+
+    @Override
+    public List<Comment> getCommentsByPostId(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            TypedQuery<Comment> query = session.createQuery(
+                    "SELECT c FROM Comment c WHERE c.post.id = :postId",
+                    Comment.class
+            );
+            query.setParameter("postId", id);
+            return query.getResultList();
         }
     }
 

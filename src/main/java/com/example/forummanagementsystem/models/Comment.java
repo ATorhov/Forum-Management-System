@@ -22,6 +22,7 @@ public class Comment {
 
     @NonNull
     @ManyToOne
+    @JsonIgnore
     private Post post;
 
     @NonNull
