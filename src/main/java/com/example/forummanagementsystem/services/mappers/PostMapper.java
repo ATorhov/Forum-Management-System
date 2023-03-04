@@ -39,17 +39,18 @@ public class PostMapper {
         post.setUpdateTime(LocalDateTime.now());
     }
 
-    public Post dtoToObject(PostDto postDto, User user) {
+    public Post createDtoToObject(PostDto postDto, User user) {
         Post post = new Post();
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
-        post.setCreateTime();
+        post.setCreateTime(LocalDateTime.now());
+        post.setUpdateTime(post.getCreateTime());
         post.setUser(user);
         post.setRating(postDto.getRating());
         return post;
     }
 
-    public PostDto objectToDto(Post post){
+    public PostDto createObjectToDto(Post post){
         PostDto postDto = new PostDto();
         postDto.setTitle(post.getTitle());
         postDto.setContent(post.getContent());
