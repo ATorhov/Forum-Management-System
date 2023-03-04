@@ -9,6 +9,8 @@ import com.example.forummanagementsystem.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,9 +83,25 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> filter(Optional<String> title, Optional<String> content, Optional<Integer> rating, Optional<String> sort) {
-        //TODO authorization to be implemented
-        return repository.filter(title, content, rating, sort);
+    public List<Post> filter(Optional<String> title,
+                             Optional<String> content,
+                             Optional<Integer> rating,
+                             Optional<String> createTime,
+                             Optional<String> updateTime,
+                             Optional<String> sort) {
+
+        LocalDateTime createDateTime = null;
+        LocalDateTime updateDateTime = null;
+
+        if (createTime.isPresent()) {
+            createDateTime = LocalDateTime.parse(createTime.get());
+        }
+
+        if (updateTime.isPresent()) {
+            updateDateTime = LocalDateTime.parse(updateTime.get());
+        }
+
+        return repository.filter(title, content, rating, Optional.ofNullable(createDateTime), Optional.ofNullable(updateDateTime), sort);
     }
 
     @Override

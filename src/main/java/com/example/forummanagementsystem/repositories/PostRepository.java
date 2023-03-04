@@ -4,6 +4,7 @@ import com.example.forummanagementsystem.models.Comment;
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ public interface PostRepository {
 
     List<Post> getPostsByUserId(Long userId);
 
-    List<Post> filter(Optional<String> title, Optional<String> content, Optional<Integer> rating, Optional<String> sort);
+    List<Post> filter(Optional<String> title, Optional<String> content, Optional<Integer> rating, Optional<LocalDateTime> createTime, Optional<LocalDateTime> updateTime, Optional<String> sort);
 
     void update(Post post, User user);
 

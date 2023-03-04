@@ -52,10 +52,12 @@ public class PostController {
             @RequestParam(required = false) Optional<String> title,
             @RequestParam(required = false) Optional<String> content,
             @RequestParam(required = false) Optional<Integer> rating,
+            @RequestParam(required = false) Optional<String> createTime,
+            @RequestParam(required = false) Optional<String> updateTime,
             @RequestParam(required = false) Optional<String> sort
     ) {
         try {
-            return postService.filter(title, content, rating, sort);
+            return postService.filter(title, content, rating, createTime, updateTime, sort);
         } catch (UnsupportedOperationException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
@@ -88,9 +90,9 @@ public class PostController {
     public PostDto create(@RequestHeader HttpHeaders headers, @Valid @RequestBody PostDto postDto) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            Post post = modelMapper.dtoToObject(postDto, user);
+            Post post = modelMapper.createDtoToObject(postDto, user);
             postService.create(post);
-            return modelMapper.objectToDto(post);
+            return modelMapper.createObjectToDto(post);
         } catch (EntityDuplicateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
@@ -101,11 +103,17 @@ public class PostController {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             Post postToUpdate = postService.getById(id);
-            Post newPost = modelMapper.dtoToObject(postDto, postToUpdate.getUser());
-            authenticationHelper.checkPermissions(postService.getById(id).getUser().getId(), user);
-            newPost.setPostId(id);
-            postService.update(newPost, postToUpdate.getUser());
-            return newPost;
+            authenticationHelper.checkPermissions(postToUpdate.getUser().getId(), user);
+
+            // Only allow title and content to be updated by owners and admins
+            postToUpdate.setTitle(postDto.getTitle());
+            postToUpdate.setContent(postDto.getContent());
+            if (user.isAdmin()) {
+                postToUpdate.setRating(postDto.getRating());
+            }
+
+            postService.update(postToUpdate);
+            return postToUpdate;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {

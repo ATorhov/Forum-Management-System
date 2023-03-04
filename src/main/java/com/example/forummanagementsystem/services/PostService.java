@@ -4,6 +4,7 @@ import com.example.forummanagementsystem.models.Comment;
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public interface PostService {
 
     List<Post> getPostsByUserId(Long id);
 
-    List<Post> filter(Optional<String> title, Optional<String> content, Optional<Integer> rating, Optional<String> sort);
+    List<Post> filter(Optional<String> title, Optional<String> content, Optional<Integer> rating, Optional<String> createTime, Optional<String> updateTime, Optional<String> sort);
 
     List<Post> getAllSearch(Optional<String> all);
 

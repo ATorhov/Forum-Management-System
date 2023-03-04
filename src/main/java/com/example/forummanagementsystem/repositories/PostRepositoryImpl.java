@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Repository
@@ -131,9 +132,11 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public List<Post> filter(Optional<String> title,
-                                     Optional<String> content,
-                                     Optional<Integer> rating,
-                                     Optional<String> sort) {
+                             Optional<String> content,
+                             Optional<Integer> rating,
+                             Optional<LocalDateTime> createDateTime,
+                             Optional<LocalDateTime> updateDateTime,
+                             Optional<String> sort) {
 
         try (Session session = sessionFactory.openSession()) {
             StringBuilder queryString = new StringBuilder(" from Post ");
@@ -154,6 +157,16 @@ public class PostRepositoryImpl implements PostRepository {
             rating.ifPresent(value -> {
                 filter.add(" rating = :rating");
                 queryParams.put("rating", value);
+            });
+
+            createDateTime.ifPresent(value -> {
+                filter.add(" createTime = :createTime");
+                queryParams.put("createTime", value);
+            });
+
+            updateDateTime.ifPresent(value -> {
+                filter.add(" updateTime = :updateTime");
+                queryParams.put("updateTime", value);
             });
 
             if (!filter.isEmpty()) {
