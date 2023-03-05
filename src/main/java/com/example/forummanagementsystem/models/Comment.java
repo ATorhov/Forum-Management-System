@@ -39,19 +39,11 @@ public class Comment {
 
     public Comment(Integer commentId, Post post, String content) {
         this.commentId = commentId;
-        this.post =post;
+        this.post = post;
         this.content = content;
     }
 
 
-    @NonNull
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(@NonNull User user) {
-        this.user = user;
-    }
 
     public Integer getCommentId() {
         return commentId;
@@ -69,11 +61,23 @@ public class Comment {
         this.content = content;
     }
 
+
+
+    @NonNull
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(@NonNull User user) {
+        this.user = user;
+    }
+
+    @NonNull
     public Post getPost() {
         return post;
     }
 
-    public void setPost(Post post) {
+    public void setPost(@NonNull Post post) {
         this.post = post;
     }
 

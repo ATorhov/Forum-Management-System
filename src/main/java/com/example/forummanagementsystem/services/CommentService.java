@@ -1,6 +1,7 @@
 package com.example.forummanagementsystem.services;
 
 import com.example.forummanagementsystem.models.Comment;
+import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
 
 
@@ -12,7 +13,7 @@ public interface CommentService {
 
     Comment getById(int id);
 
-    void create(Comment comment, User user);
+    void create(Comment comment, User user,Post post, Long id);
 
     void update(Comment comment, User user);
 

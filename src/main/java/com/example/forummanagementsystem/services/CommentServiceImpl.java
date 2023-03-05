@@ -8,6 +8,7 @@ import com.example.forummanagementsystem.models.Comment;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,8 +34,9 @@ public class CommentServiceImpl implements CommentService {
         return repository.getById(id);
     }
 
+
     @Override
-    public void create(Comment comment, User user) {
+    public void create(Comment comment, User user, Post post, Long id) {
         boolean duplicateExists = false;
         try {
             repository.create(comment);
@@ -45,9 +47,8 @@ public class CommentServiceImpl implements CommentService {
         if (duplicateExists) {
             throw new EntityDuplicateException("Comment", "id", comment.getContent());
         }
-
         comment.setUser(user);
-        //repository.create(comment);
+        comment.setPost(post);
     }
 
     @Override

@@ -2,10 +2,14 @@ package com.example.forummanagementsystem.controllers;
 
 import com.example.forummanagementsystem.exceptions.AuthorizationException;
 import com.example.forummanagementsystem.helpers.AuthenticationHelper;
+import com.example.forummanagementsystem.models.*;
+
 import com.example.forummanagementsystem.models.Post;
+import com.example.forummanagementsystem.models.PostDto;
 import com.example.forummanagementsystem.models.User;
-import com.example.forummanagementsystem.models.Comment;
-import com.example.forummanagementsystem.models.CommentDto;
+import com.example.forummanagementsystem.services.PostService;
+import com.example.forummanagementsystem.services.mappers.PostMapper;
+
 
 import com.example.forummanagementsystem.services.CommentService;
 import com.example.forummanagementsystem.services.mappers.CommentMapper;
@@ -37,15 +41,22 @@ public class CommentController {
 
     private final CommentService commentService;
 
+    private final PostService postService;
+
     private final CommentMapper modelMapper;
+
+    private final PostMapper modelMapperPost;
 
     private final AuthenticationHelper authenticationHelper;
 
     @Autowired
-    public CommentController(CommentService commentService, CommentMapper modelMapper, AuthenticationHelper authenticationHelper) {
+    public CommentController(CommentService commentService, PostService postService, CommentMapper modelMapper, PostMapper modelMapperPost, AuthenticationHelper authenticationHelper) {
         this.commentService = commentService;
+        this.postService = postService;
         this.modelMapper = modelMapper;
+        this.modelMapperPost = modelMapperPost;
         this.authenticationHelper = authenticationHelper;
+
     }
 
     @GetMapping
@@ -77,12 +88,18 @@ public class CommentController {
         }
     }
 
-    @PostMapping
-    public Comment create(@RequestHeader HttpHeaders headers, @Valid @RequestBody CommentDto commentDto) {
+    @PostMapping("/post/{id}")
+    public Comment create(
+            @RequestHeader HttpHeaders headers,
+            @Valid @RequestBody CommentDto commentDto,
+            @PathVariable Long id) {
+
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            Comment comment = modelMapper.dtoToObjectComment(commentDto, user, new Post());
-            commentService.create(comment, user);
+            Post post = postService.getById(id);
+
+            Comment comment = modelMapper.dtoToObjectCommentForCreate(commentDto, user,post);
+            commentService.create(comment, user, post, id);
             return comment;
 
         } catch (EntityNotFoundException e) {
