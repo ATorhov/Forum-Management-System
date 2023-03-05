@@ -88,18 +88,19 @@ public class CommentController {
         }
     }
 
-    @PostMapping("/post/{id}")
+    @PostMapping
     public Comment create(
             @RequestHeader HttpHeaders headers,
-            @Valid @RequestBody CommentDto commentDto,
-            @PathVariable Long id) {
+            @RequestParam Long postId,
+            @Valid @RequestBody CommentDto commentDto
+    ) {
 
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            Post post = postService.getById(id);
+            Post post = postService.getById(postId);
 
             Comment comment = modelMapper.dtoToObjectCommentForCreate(commentDto, user,post);
-            commentService.create(comment, user, post, id);
+            commentService.create(comment, user, post, postId);
             return comment;
 
         } catch (EntityNotFoundException e) {
