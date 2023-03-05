@@ -13,7 +13,10 @@ public interface CommentService {
 
     Comment getById(int id);
 
-    void create(Comment comment, User user,Post post, Long id);
+
+    List<Comment> getCommentsByUserId(Long id);
+
+    void create(Comment comment, User user, Post post, Long id);
 
     void update(Comment comment, User user);
 

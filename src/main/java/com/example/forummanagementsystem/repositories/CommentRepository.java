@@ -11,6 +11,8 @@ public interface CommentRepository {
 
     List<Comment> getAll();
 
+    List<Comment> getCommentsByUserId(Long id);
+
     Comment getById(int id);
 
     void create(Comment comment);
@@ -36,4 +38,6 @@ public interface CommentRepository {
                          Optional<String> sort);
 
     List<Comment> getAll(Optional<String> search);
+
+
 }

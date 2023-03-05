@@ -12,6 +12,8 @@ import java.util.*;
 
 import com.example.forummanagementsystem.models.Comment;
 
+import javax.persistence.TypedQuery;
+
 
 @Repository
 public class CommentRepositoryImpl implements CommentRepository {
@@ -39,6 +41,19 @@ public class CommentRepositoryImpl implements CommentRepository {
                 throw new EntityNotFoundException("Comment", (long) id);
             }
             return comment;
+        }
+    }
+
+
+    @Override
+    public List<Comment> getCommentsByUserId(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Comment> query = session.createQuery(
+                    "SELECT c FROM Comment c WHERE c.user.id = :userId",
+                    Comment.class
+            );
+            query.setParameter("userId", id);
+            return query.list();
         }
     }
 

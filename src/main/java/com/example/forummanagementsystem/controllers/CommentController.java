@@ -88,6 +88,11 @@ public class CommentController {
         }
     }
 
+    @GetMapping("/user/{id}")
+    public List<Comment> getCommentsByUserId(@PathVariable Long id) {
+        return commentService.getCommentsByUserId(id);
+    }
+
     @PostMapping
     public Comment create(
             @RequestHeader HttpHeaders headers,

@@ -34,6 +34,11 @@ public class CommentServiceImpl implements CommentService {
         return repository.getById(id);
     }
 
+    @Override
+    public List<Comment> getCommentsByUserId(Long id) {
+        return repository.getCommentsByUserId(id);
+    }
+
 
     @Override
     public void create(Comment comment, User user, Post post, Long id) {
