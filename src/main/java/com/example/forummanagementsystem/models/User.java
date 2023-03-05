@@ -36,7 +36,7 @@ public class User {
     private boolean isBlocked;
 
     @JsonIgnore
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Post> posts;
 
     public User() {

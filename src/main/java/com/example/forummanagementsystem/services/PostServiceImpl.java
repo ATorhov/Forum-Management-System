@@ -5,23 +5,26 @@ import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.models.Comment;
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
+import com.example.forummanagementsystem.repositories.CommentRepository;
 import com.example.forummanagementsystem.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
 
     private final PostRepository repository;
+    private final CommentRepository commentRepository;
 
     @Autowired
-    public PostServiceImpl(PostRepository repository) {
+    public PostServiceImpl(PostRepository repository, CommentRepository commentRepository) {
         this.repository = repository;
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -120,4 +123,3 @@ public class PostServiceImpl implements PostService {
         repository.delete(id);
     }
 }
-

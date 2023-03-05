@@ -2,6 +2,8 @@ package com.example.forummanagementsystem.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.lang.NonNull;
 
@@ -27,23 +29,23 @@ public class Post {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-   // @JsonIgnore
+    // @JsonIgnore
     @Column(name = "create_time", updatable = false)
     @CreationTimestamp
     private LocalDateTime createTime;
 
-   // @JsonIgnore
+    // @JsonIgnore
     @Column(name = "update_time")
     @UpdateTimestamp
     private LocalDateTime updateTime;
 
-    @NonNull
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> comments;
 
 
