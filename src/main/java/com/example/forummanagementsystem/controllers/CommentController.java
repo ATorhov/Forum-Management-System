@@ -67,13 +67,13 @@ public class CommentController {
     @GetMapping("/filter")
     public List<Comment> filter(
             @RequestParam(required = false) Optional<String> content,
-            //  @RequestParam(required = false) Optional<Integer> comment_id,
+            @RequestParam(required = false) Optional<Integer> comment_id,
             @RequestParam(required = false) Optional<Integer> post_id,
             @RequestParam(required = false) Optional<Integer> user_id,
             @RequestParam(required = false) Optional<String> sort
     ) {
         try {
-            return commentService.filter(content, post_id, user_id, sort);
+            return commentService.filter(content, comment_id,post_id, user_id, sort);
         } catch (UnsupportedOperationException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
@@ -92,6 +92,15 @@ public class CommentController {
     public List<Comment> getCommentsByUserId(@PathVariable Long id) {
         return commentService.getCommentsByUserId(id);
     }
+
+//    @GetMapping("/{username}")
+//    public List<Comment> getCommentsByUsername(@PathVariable String username
+//    ) {
+//        return commentService.getCommentsByUsername(username);
+//    }
+
+
+
 
     @PostMapping
     public Comment create(

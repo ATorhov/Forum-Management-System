@@ -98,10 +98,10 @@ VALUES ('How to open account on Binance?', 5, 'This is the body of the post 1', 
 
 INSERT INTO comments (post_post_id, content,user_id)
 
-VALUES (5, 'Hello how are you',1),
-       (5, 'I am fine, how are you',1),
-       (5, 'I am fine too',1),
-       (5, 'I am fine too, what are you doing right now?',1),
-       (5, 'I am coding',1);
+VALUES (4, 'Hello how are you',1),
+       (4, 'I am fine, how are you',1),
+       (4, 'I am fine too',1),
+       (4, 'I am fine too, what are you doing right now?',1),
+       (4, 'I am coding',1);
 
 

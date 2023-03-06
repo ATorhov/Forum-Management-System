@@ -16,6 +16,9 @@ public interface CommentService {
 
     List<Comment> getCommentsByUserId(Long id);
 
+//    List<Comment> getCommentsByUsername(String username);
+
+
     void create(Comment comment, User user, Post post, Long id);
 
     void update(Comment comment, User user);
@@ -23,9 +26,9 @@ public interface CommentService {
 
     void delete(int id, User user);
 
-  //  List<Comment> filter(Optional<String> content, Optional<Integer> commentId, Optional<Integer> postId, Optional<Integer> userId, Optional<String> sort);
+    //  List<Comment> filter(Optional<String> content, Optional<Integer> commentId, Optional<Integer> postId, Optional<Integer> userId, Optional<String> sort);
 
-    List<Comment> filter(Optional<String> content, Optional<Integer> postId,
+    List<Comment> filter(Optional<String> content, Optional<Integer> commentId, Optional<Integer> postId,
                          Optional<Integer> userId, Optional<String> sort);
 
     List<Comment> getAll(Optional<String> search);

@@ -25,7 +25,8 @@ public class Comment {
     private String content;
 
     @NonNull
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
+            //(cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Post post;
 

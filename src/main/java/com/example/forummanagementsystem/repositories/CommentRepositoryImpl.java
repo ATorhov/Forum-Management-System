@@ -57,6 +57,18 @@ public class CommentRepositoryImpl implements CommentRepository {
         }
     }
 
+//    @Override
+//    public List<Comment> getCommentsByUsername(String username) {
+//        try (Session session = sessionFactory.openSession()) {
+//            Query<Comment> query = session.createQuery(
+//                    "SELECT c FROM Comment c WHERE c.user.username = :username",
+//                    Comment.class
+//            );
+//            query.setParameter("username", username);
+//            return query.list();
+//        }
+//    }
+
 
     @Override
     public void create(Comment comment) {
@@ -87,7 +99,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public List<Comment> filter(Optional<String> content,
-
+                                Optional<Integer> commentId,
                                 Optional<Integer> postId,
                                 Optional<Integer> userId,
                                 Optional<String> sort) {
@@ -103,11 +115,11 @@ public class CommentRepositoryImpl implements CommentRepository {
                 filter.add(" content like:content");
                 queryParams.put("content", "%" + value + "%");
             });
-//
-//            commentId.ifPresent(value -> {
-//                filter.add(" commentId = :commentId");
-//                queryParams.put("commentId", value);
-//            });
+
+            commentId.ifPresent(value -> {
+                filter.add(" commentId = :commentId");
+                queryParams.put("commentId", value);
+            });
 
 
             postId.ifPresent(value -> {
@@ -170,9 +182,9 @@ public class CommentRepositoryImpl implements CommentRepository {
 
         switch (params[0]) {
 
-//            case "comment_id":
-//                queryString.append(" comment_id ");
-//                break;
+            case "comment_id":
+                queryString.append(" comment_id ");
+                break;
             case "content":
                 queryString.append(" content ");
                 break;
@@ -185,11 +197,11 @@ public class CommentRepositoryImpl implements CommentRepository {
         }
 
 
-        if (params.length > 3) {
+        if (params.length > 2) {
             throw new UnsupportedOperationException(
                     "Sort should have max two params divided by _ symbol!");
         }
-        if (params.length == 3 && params[1].equalsIgnoreCase("desc")) {
+        if (params.length == 2 && params[1].equalsIgnoreCase("desc")) {
             queryString.append(" desc ");
         }
 

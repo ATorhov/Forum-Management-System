@@ -39,6 +39,11 @@ public class CommentServiceImpl implements CommentService {
         return repository.getCommentsByUserId(id);
     }
 
+//    @Override
+//    public List<Comment> getCommentsByUsername(String username) {
+//        return repository.getCommentsByUsername(username);
+//    }
+
 
     @Override
     public void create(Comment comment, User user, Post post, Long id) {
@@ -84,9 +89,9 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public List<Comment> filter(Optional<String> content, Optional<Integer> postId,
+    public List<Comment> filter(Optional<String> content, Optional<Integer> commentId,Optional<Integer> postId,
                                 Optional<Integer> userId, Optional<String> sort) {
-        return repository.filter(content,  postId, userId, sort);
+        return repository.filter(content, commentId, postId, userId, sort);
     }
 
     @Override
