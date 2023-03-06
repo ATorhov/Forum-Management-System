@@ -29,7 +29,7 @@ public class Comment {
     @JsonIgnore
     private Post post;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
