@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -60,6 +62,24 @@ public class UserController {
             authenticationHelper.tryGetUser(headers);
             return userService.get(name);
         }catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+
+    }
+
+    @GetMapping("/filter")
+    public List<User> sort(
+            @RequestHeader HttpHeaders headers,
+            @RequestParam(required = false) Optional<String> name,
+            @RequestParam(required = false) Optional<Integer> userId,
+            @RequestParam(required = false) Optional<String> registeredTime,
+            @RequestParam(required = false) Optional<String> sort
+            ){
+
+        try {
+            authenticationHelper.tryGetUser(headers);
+            return userService.filter(name, userId, registeredTime, sort);
+        } catch (AuthorizationException e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
 

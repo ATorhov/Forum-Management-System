@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import org.hibernate.query.Query;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -82,7 +82,7 @@ public class UserRepositoryImpl implements UserRepository {
             try (Session session = sessionFactory.openSession()) {
                 String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
                 user.setPassword(hashedPassword);
-                user.setLocalDateTime(LocalDateTime.now());
+                user.setRegisteredTime(LocalDateTime.now());
                 session.save(user);
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException(e.getMessage());
@@ -100,5 +100,83 @@ public class UserRepositoryImpl implements UserRepository {
             session.getTransaction().commit();
         }
         return user;
+    }
+
+    @Override
+    public List<User> filter(Optional<String> name,
+                             Optional<Integer> userId,
+                             Optional<LocalDateTime> registeredTime,
+                             Optional<String> sort
+    ) {
+        try(Session session = sessionFactory.openSession()){
+            StringBuilder queryString = new StringBuilder(" from User ");
+
+            Map<String, Object> queryParams = new HashMap<>();
+            ArrayList<String> filter = new ArrayList<>();
+
+            name.ifPresent(v -> {
+                filter.add(" username like :name ");
+                queryParams.put("name", "%" + v + "%");
+            });
+
+            userId.ifPresent(value -> {
+                filter.add(" user_id = :userId ");
+                queryParams.put("userId", value);
+            });
+
+            registeredTime.ifPresent(v ->{
+                filter.add(" registeredTime = :registeredTime");
+                queryParams.put("registeredTime", v);
+            });
+
+            if (!filter.isEmpty()){
+                queryString.append(" where ").append(String.join(" and ", filter));
+            }
+
+            sort.ifPresent(v -> {
+                queryString.append(generateStringFromSort(v));
+            });
+
+            Query<User> queryList = session.createQuery(queryString.toString(), User.class);
+            queryList.setProperties(queryParams);
+
+            return queryList.list();
+        }
+    }
+
+    private String generateStringFromSort(String v) {
+        StringBuilder queryString = new StringBuilder(" order by ");
+        String[] params = v.split("_");
+
+        if (v.isEmpty()){
+            return "";
+        }
+
+        switch (params[0]) {
+            case "username":
+                queryString.append(" username ");
+                break;
+            case "registeredTime":
+                queryString.append(" registration_date ");
+                break;
+            case "userId":
+                queryString.append(" user_id ");
+                break;
+            default:
+                throw new UnsupportedOperationException(
+                        "Sort should have max two params divided by _ symbol!");
+        }
+
+        if (params.length > 2) {
+            throw new UnsupportedOperationException(
+                    "Sort should have max two params divided by _ symbol!");
+        }
+
+        if (params.length == 2 && params[1].equalsIgnoreCase("desc")) {
+            queryString.append(" desc ");
+        }
+
+
+        return queryString.toString();
     }
 }

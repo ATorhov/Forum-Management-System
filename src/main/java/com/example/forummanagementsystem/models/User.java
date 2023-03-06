@@ -29,7 +29,7 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
     @Column(name = "registration_date")
-    private LocalDateTime localDateTime;
+    private LocalDateTime registeredTime;
     @Column(name = "is_admin")
     private boolean isAdmin;
     @Column(name = "is_blocked")
@@ -99,12 +99,12 @@ public class User {
         this.password = password;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
+    public LocalDateTime getRegisteredTime() {
+        return registeredTime;
     }
 
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public void setRegisteredTime(LocalDateTime registeredTime) {
+        this.registeredTime = registeredTime;
     }
 
     public boolean isAdmin() {

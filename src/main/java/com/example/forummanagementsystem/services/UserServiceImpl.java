@@ -5,7 +5,10 @@ import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -47,5 +50,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public User deleteUser(User user) {
         return userRepository.delete(user);
+    }
+
+    @Override
+    public List<User> filter(Optional<String> name,
+                             Optional<Integer> userId,
+                             Optional<String> registeredTime,
+                             Optional<String> sort
+    ) {
+        LocalDateTime parsedRegisteredDate = null;
+
+        if (registeredTime.isPresent()) {
+            parsedRegisteredDate = LocalDateTime.parse(registeredTime.get());
+        }
+        return userRepository.filter(name, userId, Optional.ofNullable(parsedRegisteredDate), sort);
     }
 }
