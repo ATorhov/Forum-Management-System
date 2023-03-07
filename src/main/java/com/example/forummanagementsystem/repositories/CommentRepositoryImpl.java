@@ -132,19 +132,10 @@ public class CommentRepositoryImpl implements CommentRepository {
             return getAll();
         }
         try (Session session = sessionFactory.openSession()) {
-            Query<Comment> list = session.createQuery(" from Comment where content like :content or commentId = :commentId");
+            Query<Comment> list = session.createQuery(" from Comment where content like :content");
             list.setParameter("content", "%" + search.get() + "%");
-            list.setParameter("commentId", getNumberIfPresent(search));
 
             return list.list();
-        }
-    }
-
-    private Integer getNumberIfPresent(Optional<String> search) {
-        try {
-            return Integer.parseInt(search.get());
-        } catch (NumberFormatException e) {
-            return -1;
         }
     }
 
