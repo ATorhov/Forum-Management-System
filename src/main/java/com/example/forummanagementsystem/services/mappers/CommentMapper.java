@@ -6,7 +6,6 @@ import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.repositories.CommentRepository;
 import com.example.forummanagementsystem.repositories.PostRepository;
 import com.example.forummanagementsystem.services.CommentService;
-import com.example.forummanagementsystem.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,8 +45,7 @@ public class CommentMapper {
     }
 
 
-
-    public Comment dtoToObjectComment(CommentDto commentDto, User user,Post post) {
+    public Comment dtoToObjectComment(CommentDto commentDto, User user, Post post) {
         Comment comment = new Comment();
         comment.setContent(commentDto.getContent());
         comment.setUser(user);
@@ -55,7 +53,7 @@ public class CommentMapper {
         return comment;
     }
 
-    public Comment dtoToObjectCommentForCreate(CommentDto commentDto, User user,Post post) {
+    public Comment dtoToObjectCommentForCreate(CommentDto commentDto, User user, Post post) {
         Comment comment = new Comment();
         comment.setContent(commentDto.getContent());
         comment.setUser(user);

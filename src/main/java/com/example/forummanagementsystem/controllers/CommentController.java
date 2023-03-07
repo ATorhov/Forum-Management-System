@@ -5,7 +5,6 @@ import com.example.forummanagementsystem.helpers.AuthenticationHelper;
 import com.example.forummanagementsystem.models.*;
 
 import com.example.forummanagementsystem.models.Post;
-import com.example.forummanagementsystem.models.PostDto;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.services.PostService;
 import com.example.forummanagementsystem.services.mappers.PostMapper;
@@ -73,7 +72,7 @@ public class CommentController {
             @RequestParam(required = false) Optional<String> sort
     ) {
         try {
-            return commentService.filter(content, comment_id,post_id, user_id, sort);
+            return commentService.filter(content, comment_id, post_id, user_id, sort);
         } catch (UnsupportedOperationException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
@@ -93,27 +92,17 @@ public class CommentController {
         return commentService.getCommentsByUserId(id);
     }
 
-//    @GetMapping("/{username}")
-//    public List<Comment> getCommentsByUsername(@PathVariable String username
-//    ) {
-//        return commentService.getCommentsByUsername(username);
-//    }
-
-
-
-
     @PostMapping
     public Comment create(
             @RequestHeader HttpHeaders headers,
             @RequestParam Long postId,
             @Valid @RequestBody CommentDto commentDto
     ) {
-
         try {
             User user = authenticationHelper.tryGetUser(headers);
             Post post = postService.getById(postId);
 
-            Comment comment = modelMapper.dtoToObjectCommentForCreate(commentDto, user,post);
+            Comment comment = modelMapper.dtoToObjectCommentForCreate(commentDto, user, post);
             commentService.create(comment, user, post, postId);
             return comment;
 

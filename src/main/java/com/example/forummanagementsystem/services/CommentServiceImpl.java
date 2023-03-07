@@ -39,10 +39,6 @@ public class CommentServiceImpl implements CommentService {
         return repository.getCommentsByUserId(id);
     }
 
-//    @Override
-//    public List<Comment> getCommentsByUsername(String username) {
-//        return repository.getCommentsByUsername(username);
-//    }
 
 
     @Override

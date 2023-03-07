@@ -1,9 +1,6 @@
 package com.example.forummanagementsystem.models;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
@@ -26,7 +23,6 @@ public class Comment {
 
     @NonNull
     @ManyToOne
-            //(cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Post post;
 
@@ -44,8 +40,6 @@ public class Comment {
         this.content = content;
     }
 
-
-
     public Integer getCommentId() {
         return commentId;
     }
@@ -61,8 +55,6 @@ public class Comment {
     public void setContent(String content) {
         this.content = content;
     }
-
-
 
     @NonNull
     public User getUser() {
@@ -81,7 +73,6 @@ public class Comment {
     public void setPost(@NonNull Post post) {
         this.post = post;
     }
-
 
     @Override
     public boolean equals(Object o) {

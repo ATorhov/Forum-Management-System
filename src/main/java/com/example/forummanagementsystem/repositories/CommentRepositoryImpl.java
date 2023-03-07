@@ -12,8 +12,6 @@ import java.util.*;
 
 import com.example.forummanagementsystem.models.Comment;
 
-import javax.persistence.TypedQuery;
-
 
 @Repository
 public class CommentRepositoryImpl implements CommentRepository {
@@ -57,18 +55,6 @@ public class CommentRepositoryImpl implements CommentRepository {
         }
     }
 
-//    @Override
-//    public List<Comment> getCommentsByUsername(String username) {
-//        try (Session session = sessionFactory.openSession()) {
-//            Query<Comment> query = session.createQuery(
-//                    "SELECT c FROM Comment c WHERE c.user.username = :username",
-//                    Comment.class
-//            );
-//            query.setParameter("username", username);
-//            return query.list();
-//        }
-//    }
-
 
     @Override
     public void create(Comment comment) {
@@ -110,33 +96,25 @@ public class CommentRepositoryImpl implements CommentRepository {
             Map<String, Object> queryParams = new HashMap<>();
             ArrayList<String> filter = new ArrayList<>();
 
-
             content.ifPresent(value -> {
                 filter.add(" content like:content");
                 queryParams.put("content", "%" + value + "%");
             });
-
             commentId.ifPresent(value -> {
                 filter.add(" commentId = :commentId");
                 queryParams.put("commentId", value);
             });
-
-
             postId.ifPresent(value -> {
                 filter.add(" postId = :postId");
                 queryParams.put("postId", value);
             });
-
             userId.ifPresent(value -> {
                 filter.add(" userId = :userId");
                 queryParams.put("userId", value);
             });
-
-
             if (!filter.isEmpty()) {
                 queryString.append(" where ").append(String.join(" and ", filter));
             }
-
             sort.ifPresent(value -> queryString.append(generateStringFromSort(value)));
 
             Query<Comment> queryList = session.createQuery(queryString.toString(), Comment.class);
@@ -153,7 +131,6 @@ public class CommentRepositoryImpl implements CommentRepository {
         if (search.isEmpty()) {
             return getAll();
         }
-
         try (Session session = sessionFactory.openSession()) {
             Query<Comment> list = session.createQuery(" from Comment where content like :content or commentId = :commentId");
             list.setParameter("content", "%" + search.get() + "%");
@@ -174,12 +151,10 @@ public class CommentRepositoryImpl implements CommentRepository {
     private String generateStringFromSort(String value) {
         StringBuilder queryString = new StringBuilder(" order by ");
         String[] params = value.split("_");
-
         if (value.isEmpty()) {
             throw new UnsupportedOperationException(
                     "Sort should have max two params divided by _ symbol!");
         }
-
         switch (params[0]) {
 
             case "comment_id":
@@ -195,8 +170,6 @@ public class CommentRepositoryImpl implements CommentRepository {
                 queryString.append(" user_id ");
                 break;
         }
-
-
         if (params.length > 2) {
             throw new UnsupportedOperationException(
                     "Sort should have max two params divided by _ symbol!");
@@ -204,18 +177,6 @@ public class CommentRepositoryImpl implements CommentRepository {
         if (params.length == 2 && params[1].equalsIgnoreCase("desc")) {
             queryString.append(" desc ");
         }
-
         return queryString.toString();
-
     }
-
-//    public List<Comment> filter(List<Comment> comments, Integer comment_id, String content, Integer post_id, Integer user_id) {
-//
-//        comments = filterByCommentId(comments, comment_id);
-//        comments = filterByContent(comments, content);
-//        comments = filterByPostId(comments, post_id);
-//        comments = filterByUserId(comments, user_id);
-//
-//        return comments;
-//    }
 }
