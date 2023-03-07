@@ -33,14 +33,14 @@ Anonymous users able to see a list of the top 10 most commented posts and a list
 ### Roadmap:
 - [x] Create a README file.
 - [x] Images of the database relations.
-- [ ] Create classes: User, Post, Comment.
-- [ ] CRUD operations for User. **<ins>Important**
-- [ ] CRUD operations for Post. **<ins>Important**
-- [ ] CRUD operations for Comment. **<ins>Important**
-- [ ] Search by username, email, or first name for User class. **<ins>Important**
-- [ ] Filter and sort certain users’ posts for User class. **<ins>Important**
+- [x] Create classes: User, Post, Comment.
+- [x] CRUD operations for User. **<ins>Important**
+- [x] CRUD operations for Post. **<ins>Important**
+- [x] CRUD operations for Comment. **<ins>Important**
+- [x] Search by username, email, or first name for User class. **<ins>Important**
+- [x] Filter and sort certain users’ posts for User class. **<ins>Important**
 - [ ] Implement `make other user admin` feature. **<ins>Important**
-- [ ] Implement `delete post` feature. **<ins>Important**
+- [x] Implement `delete post` feature. **<ins>Important**
 - [ ] Implement `block/unblock user` feature. **<ins>Important**
 - [ ] List and edit user’s own posts for Post class. **<ins>Important**
 - [ ] Comment on and like other users' posts. **<ins>Important**

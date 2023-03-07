@@ -52,6 +52,12 @@ public class Post {
     public Post() {
     }
 
+    public Post(Long postId, String title, String content) {
+        this.postId = postId;
+        this.title = title;
+        this.content = content;
+    }
+
     public Long getPostId() {
         return postId;
     }
