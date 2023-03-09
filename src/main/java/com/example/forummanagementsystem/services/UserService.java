@@ -4,7 +4,6 @@ package com.example.forummanagementsystem.services;
 
 import com.example.forummanagementsystem.models.User;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +23,10 @@ public interface UserService {
     List<User> filter(Optional<String> name,
                       Optional<Integer> userId,
                       Optional<String> registeredTime,
+                      Optional<Boolean> isAdmin,
+                      Optional<Boolean> isBlocked,
                       Optional<String> sort
     );
+
+    void changeIsAdmin(User user, boolean to);
 }

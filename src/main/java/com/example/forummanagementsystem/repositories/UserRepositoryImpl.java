@@ -68,6 +68,8 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
+
+
     @Override
     public void createUser(User user) {
         boolean alreadyExists;
@@ -106,6 +108,8 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> filter(Optional<String> name,
                              Optional<Integer> userId,
                              Optional<LocalDateTime> registeredTime,
+                             Optional<Boolean> isAdmin,
+                             Optional<Boolean> isBlocked,
                              Optional<String> sort
     ) {
         try(Session session = sessionFactory.openSession()){
@@ -129,6 +133,16 @@ public class UserRepositoryImpl implements UserRepository {
                 queryParams.put("registeredTime", v);
             });
 
+            isAdmin.ifPresent(v -> {
+                filter.add(" isAdmin = :isAdmin");
+                queryParams.put("isAdmin", v);
+            });
+
+            isBlocked.ifPresent(v ->{
+                filter.add(" isBlocked = :isBlocked");
+                queryParams.put("isBlocked", v);
+            });
+
             if (!filter.isEmpty()){
                 queryString.append(" where ").append(String.join(" and ", filter));
             }
@@ -142,6 +156,11 @@ public class UserRepositoryImpl implements UserRepository {
 
             return queryList.list();
         }
+    }
+
+    @Override
+    public void changeIsAdmin(User user, boolean to) {
+        user.setAdmin(to);
     }
 
     private String generateStringFromSort(String v) {

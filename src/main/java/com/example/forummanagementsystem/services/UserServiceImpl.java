@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -56,13 +55,19 @@ public class UserServiceImpl implements UserService {
     public List<User> filter(Optional<String> name,
                              Optional<Integer> userId,
                              Optional<String> registeredTime,
+                             Optional<Boolean> isAdmin,
+                             Optional<Boolean> isBlocked,
                              Optional<String> sort
     ) {
         LocalDateTime parsedRegisteredDate = null;
-
         if (registeredTime.isPresent()) {
             parsedRegisteredDate = LocalDateTime.parse(registeredTime.get());
         }
-        return userRepository.filter(name, userId, Optional.ofNullable(parsedRegisteredDate), sort);
+        return userRepository.filter(name, userId, Optional.ofNullable(parsedRegisteredDate), isAdmin, isBlocked, sort);
+    }
+
+    @Override
+    public void changeIsAdmin(User user, boolean to) {
+        userRepository.changeIsAdmin(user, to);
     }
 }

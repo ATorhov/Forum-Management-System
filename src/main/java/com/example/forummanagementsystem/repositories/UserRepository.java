@@ -27,6 +27,10 @@ public interface UserRepository {
     List<User> filter(Optional<String> name,
                       Optional<Integer> userId,
                       Optional<LocalDateTime> registeredTime,
+                      Optional<Boolean> isAdmin,
+                      Optional<Boolean> isBLocked,
                       Optional<String> sort
     );
+
+    void changeIsAdmin(User user, boolean to);
 }

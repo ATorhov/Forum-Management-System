@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,12 +72,14 @@ public class UserController {
             @RequestParam(required = false) Optional<String> name,
             @RequestParam(required = false) Optional<Integer> userId,
             @RequestParam(required = false) Optional<String> registeredTime,
+            @RequestParam(required = false) Optional<Boolean> isAdmin,
+            @RequestParam(required = false) Optional<Boolean> isBlocked,
             @RequestParam(required = false) Optional<String> sort
             ){
 
         try {
             authenticationHelper.tryGetUser(headers);
-            return userService.filter(name, userId, registeredTime, sort);
+            return userService.filter(name, userId, registeredTime, isAdmin, isBlocked,sort);
         } catch (AuthorizationException e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
@@ -100,6 +101,20 @@ public class UserController {
         }
     }
 
+    @PutMapping("/changeIsAdmin/{to}/{username}")
+    public User makeAdmin(@PathVariable String username, @PathVariable boolean to, @RequestHeader HttpHeaders headers){
+        try {
+            authenticationHelper.tryGetUser(headers);
+            User user = userService.get(username);
+            userService.changeIsAdmin(user, to);
+            return user;
+        } catch (AuthorizationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
     @PostMapping("/create")
     public User createUser(@RequestHeader HttpHeaders headers,
                            @Valid @RequestBody UserDto userDto){
@@ -116,6 +131,7 @@ public class UserController {
     @DeleteMapping("/delete/{username}")
     public User deleteUser(@PathVariable String username, @RequestHeader HttpHeaders headers){
         try {
+            authenticationHelper.getLoggedInUser(headers);
             authenticationHelper.tryGetUser(headers);
             User user = userService.get(username);
             return userService.deleteUser(user);

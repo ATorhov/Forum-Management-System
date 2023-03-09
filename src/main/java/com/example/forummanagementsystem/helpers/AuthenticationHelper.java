@@ -8,6 +8,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 @Component
 public class AuthenticationHelper {
@@ -15,9 +17,12 @@ public class AuthenticationHelper {
     private static final String INVALID_AUTHENTICATION_ERROR = "Invalid authentication.";
     private static final String ERROR_MESSAGE = "Permission denied, only admin is authorized for this operation.";
     private final UserService userService;
+    private final SessionFactory sessionFactory;
 
-    public AuthenticationHelper(UserService userService) {
+
+    public AuthenticationHelper(UserService userService, SessionFactory sessionFactory) {
         this.userService = userService;
+        this.sessionFactory = sessionFactory;
     }
 
 
@@ -66,4 +71,12 @@ public class AuthenticationHelper {
     }
 
 
+    public User getLoggedInUser(HttpHeaders headers) {
+        Session session = sessionFactory.openSession(); // Get the session, but don't create one if it doesn't exist
+        if (session != null) {
+            return (User) session.getTransaction(); // Retrieve the user from the session
+        } else {
+            throw new AuthorizationException("You are not logged in"); // No session, no logged in user
+        }
+    }
 }

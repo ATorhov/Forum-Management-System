@@ -35,6 +35,7 @@ public class User {
     @Column(name = "is_blocked")
     private boolean isBlocked;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> comments;
     @JsonIgnore
