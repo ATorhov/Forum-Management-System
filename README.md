@@ -39,9 +39,9 @@ Anonymous users able to see a list of the top 10 most commented posts and a list
 - [x] CRUD operations for Comment. **<ins>Important**
 - [x] Search by username, email, or first name for User class. **<ins>Important**
 - [x] Filter and sort certain users’ posts for User class. **<ins>Important**
-- [ ] Implement `make other user admin` feature. **<ins>Important**
+- [x] Implement `make other user admin` feature. **<ins>Important**
 - [x] Implement `delete post` feature. **<ins>Important**
-- [ ] Implement `block/unblock user` feature. **<ins>Important**
+- [x] Implement `block/unblock user` feature. **<ins>Important**
 - [ ] List and edit user’s own posts for Post class. **<ins>Important**
 - [ ] Comment on and like other users' posts. **<ins>Important**
 - [ ] Create and provide a link to the Swagger documentation. **<ins> Very Important**
