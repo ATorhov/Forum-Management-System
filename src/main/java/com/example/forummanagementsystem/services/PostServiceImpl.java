@@ -1,5 +1,6 @@
 package com.example.forummanagementsystem.services;
 
+import com.example.forummanagementsystem.exceptions.BlockedUserException;
 import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.models.Comment;
@@ -50,10 +51,14 @@ public class PostServiceImpl implements PostService {
         } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
+        if (post.getUser().isBlocked()){
+            throw new BlockedUserException("Blocked users are not allowed creating posts, please contact admin for more information.");
+        }
 
         if (duplicateExists) {
             throw new EntityDuplicateException("Post", "title", post.getTitle());
         }
+
         repository.create(post);
     }
 

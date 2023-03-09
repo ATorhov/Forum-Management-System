@@ -1,9 +1,12 @@
 package com.example.forummanagementsystem.services;
 
+import com.example.forummanagementsystem.exceptions.BlockedUserException;
 import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.models.Post;
+import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.repositories.PostRepository;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,6 +15,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.example.forummanagementsystem.Helpers.createMockPost;
+import static com.example.forummanagementsystem.Helpers.createMockUser;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class PostServiceTests {
@@ -21,19 +26,33 @@ public class PostServiceTests {
     @InjectMocks
     PostServiceImpl mockService;
 
+    @BeforeEach
+    public void setUp() {
+        Mockito.reset(mockRepository);
+    }
+
+    @Test
+    public void get_Should_CallRepository() {
+        //Arrange
+        Mockito.when(mockRepository.getAll()).thenReturn(null);
+        //Act
+        mockService.getAll();
+        //Assert
+        Mockito.verify(mockRepository, Mockito.times(1)).getAll();
+    }
+
     @Test
     public void getById_Should_ReturnPost_When_MatchExists() {
         // Arrange
-        Mockito.when(mockRepository.getById(2L))
-                .thenReturn(new Post(2L, "Some Title", "Some body of the post"));
+        Post post = createMockPost();
+        Mockito.when(mockRepository.getById(Mockito.anyLong()))
+                .thenReturn(post);
 
         // Act
-        Post result = mockService.getById(2L);
+        Post result = mockService.getById(post.getPostId());
 
         // Assert
-        Assertions.assertEquals(2L, result.getPostId());
-        Assertions.assertEquals("Some Title", result.getTitle());
-        Assertions.assertEquals("Some body of the post", result.getContent());
+        Assertions.assertEquals(post, result);
     }
 
     @Test
@@ -41,11 +60,35 @@ public class PostServiceTests {
         // Arrange
         var mockPost = createMockPost();
 
-        Mockito.when(mockRepository.getByTitle(mockPost.getTitle()))
-                .thenReturn(mockPost);
+        Mockito.when(mockRepository.getByTitle(mockPost.getTitle())).thenReturn(mockPost);
         // Act, Assert
-        Assertions.assertThrows(EntityDuplicateException.class, () -> mockService.create(mockPost));
+        assertThrows(EntityDuplicateException.class, () -> mockService.create(mockPost));
     }
 
+    @Test
+    public void create_Should_returnPost_When_UserIsNotBlocked() {
+        //Arrange
+        var mockUser = createMockUser();
+        mockUser.setBlocked(false);
+        var mockPost = createMockPost();
+        mockPost.setUser(mockUser);
 
+        //Act, Assert
+        assertThrows(EntityDuplicateException.class,
+                () -> mockService.create(mockPost));
+    }
+
+    @Test
+    public void create_Should_Throw_When_UserIsBlocked() {
+// Arrange
+        User mockUser = createMockUser();
+        mockUser.setBlocked(true);
+        Post mockPost = createMockPost();
+        mockPost.setUser(mockUser);
+
+        // Act, Assert
+        assertThrows(BlockedUserException.class,
+                () -> mockService.create(mockPost));
+
+    }
 }
