@@ -1,5 +1,6 @@
 package com.example.forummanagementsystem;
 
+import com.example.forummanagementsystem.models.Comment;
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.PostDto;
 import com.example.forummanagementsystem.models.User;
@@ -20,7 +21,7 @@ public class Helpers {
         return mockPost;
     }
 
-    public static Post createUniqueMockPost () {
+    public static Post createUniqueMockPost() {
         var mockPost = new Post();
         mockPost.setPostId(4L);
         mockPost.setTitle("Unique Mock Title");
@@ -31,7 +32,7 @@ public class Helpers {
         return mockPost;
     }
 
-public static User createMockUser() {
+    public static User createMockUser() {
         var mockUser = new User();
         mockUser.setId(1L);
         mockUser.setUsername("mockUsername");
@@ -43,7 +44,7 @@ public static User createMockUser() {
         mockUser.setBlocked(false);
         mockUser.setRegisteredTime(LocalDateTime.now());
         return mockUser;
-}
+    }
 
     public static PostDto createPostDto() {
         PostDto dto = new PostDto();
@@ -63,5 +64,22 @@ public static User createMockUser() {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static User createMockAdmin() {
+        User mockUser = createMockUser();
+        mockUser.setAdmin(true);
+        return mockUser;
+    }
+
+    public static Comment createMockComment() {
+        var mockComment = new Comment();
+        mockComment.setCommentId(2);
+        mockComment.setContent("content");
+        Post mockPost = createMockPost();
+        User mockUser = createMockUser();
+        mockComment.setPost(mockPost);
+        mockComment.setUser(mockUser);
+        return mockComment;
     }
 }
