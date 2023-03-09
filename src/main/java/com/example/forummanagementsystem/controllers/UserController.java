@@ -102,11 +102,25 @@ public class UserController {
     }
 
     @PutMapping("/changeIsAdmin/{to}/{username}")
-    public User makeAdmin(@PathVariable String username, @PathVariable boolean to, @RequestHeader HttpHeaders headers){
+    public User changeIsAdmin(@PathVariable String username, @PathVariable boolean to, @RequestHeader HttpHeaders headers){
         try {
             authenticationHelper.tryGetUser(headers);
             User user = userService.get(username);
             userService.changeIsAdmin(user, to);
+            return user;
+        } catch (AuthorizationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PutMapping("/changeIsBlocked/{to}/{username}")
+    public User changeIsBlocked(@PathVariable String username, @PathVariable boolean to, @RequestHeader HttpHeaders headers){
+        try {
+            authenticationHelper.tryGetUser(headers);
+            User user = userService.get(username);
+            userService.changeIsBlocked(user, to);
             return user;
         } catch (AuthorizationException e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());

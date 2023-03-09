@@ -70,4 +70,9 @@ public class UserServiceImpl implements UserService {
     public void changeIsAdmin(User user, boolean to) {
         userRepository.changeIsAdmin(user, to);
     }
+
+    @Override
+    public void changeIsBlocked(User user, boolean to) {
+        userRepository.changeIsBlocked(user, to);
+    }
 }

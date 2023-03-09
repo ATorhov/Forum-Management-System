@@ -1,5 +1,6 @@
 package com.example.forummanagementsystem.repositories;
 
+import com.example.forummanagementsystem.exceptions.AlreadyHasThisBooleanException;
 import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.models.User;
@@ -160,7 +161,44 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void changeIsAdmin(User user, boolean to) {
-        user.setAdmin(to);
+        try (Session session = sessionFactory.openSession()) {
+            if (to == user.isAdmin()){
+                if (to){
+                    throw new AlreadyHasThisBooleanException(String.format("%s is already an admin!",
+                            user.getUsername()));
+                } else {
+                    throw new AlreadyHasThisBooleanException(String.format("%s is already not an admin",
+                            user.getUsername()));
+                }
+            }
+            session.beginTransaction();
+            user.setAdmin(to);
+            session.update(user);
+            session.getTransaction().commit();
+        } catch (EntityNotFoundException e){
+            throw new EntityNotFoundException("User", "username", user.getUsername());
+        }
+    }
+
+    @Override
+    public void changeIsBlocked(User user, boolean to) {
+        try (Session session = sessionFactory.openSession()) {
+            if (to == user.isBlocked()){
+                if (!to){
+                    throw new AlreadyHasThisBooleanException(String.format("%s is already not blocked",
+                            user.getUsername()));
+                } else {
+                    throw new AlreadyHasThisBooleanException(String.format("%s is already blocked",
+                            user.getUsername()));
+                }
+            }
+            session.beginTransaction();
+            user.setBlocked(to);
+            session.update(user);
+            session.getTransaction().commit();
+        } catch (EntityNotFoundException e){
+            throw new EntityNotFoundException("User", "username", user.getUsername());
+        }
     }
 
     private String generateStringFromSort(String v) {
