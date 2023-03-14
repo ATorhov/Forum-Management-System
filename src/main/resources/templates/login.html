@@ -12,7 +12,7 @@
 <div class="container">
   <h1>Login form - Crypto Forum</h1>
   <hr/>
-  <a th:href="@{/home/}">Home</a>
+  <a th:href="@{/}">Home</a>
   <h2>Login</h2>
   <form action="/home" id="login-form" method="post">
     <div>
@@ -26,23 +26,6 @@
     <button type="submit">Login</button>
   </form>
 </div>
-<!--<script>-->
-<!--  const loginForm = document.getElementById("login-form");-->
-<!--  loginForm.addEventListener("submit", function(event) {-->
-<!--    event.preventDefault();-->
-<!--    const formData = new FormData(loginForm);-->
-<!--    fetch("/login", {-->
-<!--      method: "POST",-->
-<!--      body: formData-->
-<!--    }).then(response => {-->
-<!--      if (response.ok) {-->
-<!--        window.location.href = "/home";-->
-<!--      }-->
-<!--    }).catch(error => {-->
-<!--      console.error(error);-->
-<!--      alert("An error occurred while logging in. Please try again later.");-->
-<!--    });-->
-<!--  });-->
-<!--</script>-->
 </body>
 </html>
+
