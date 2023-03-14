@@ -1,11 +1,8 @@
 package com.example.forummanagementsystem.models;
 
-import org.springframework.lang.NonNull;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class PostDto {
 
@@ -20,12 +17,6 @@ public class PostDto {
     private String content;
 
     private LocalDateTime createTime;
-
-    private LocalDateTime updateTime;
-
-    private User user;
-
-    private List<Comment> comments;
 
 
     public String getTitle() {
@@ -58,31 +49,6 @@ public class PostDto {
 
     public void setCreateTime() {
         this.createTime = LocalDateTime.now();
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    @NonNull
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(@NonNull User user) {
-        this.user = user;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
     }
 
 }

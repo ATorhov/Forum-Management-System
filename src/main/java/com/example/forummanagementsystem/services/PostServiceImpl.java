@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
 
+    private static final String BLOCKED_USER_ERROR = "Blocked users are not allowed modifying posts, for more information please contact admin.";
     private final PostRepository repository;
     private final CommentRepository commentRepository;
 
@@ -52,7 +52,7 @@ public class PostServiceImpl implements PostService {
             duplicateExists = false;
         }
         if (post.getUser().isBlocked()){
-            throw new BlockedUserException("Blocked users are not allowed creating posts, please contact admin for more information.");
+            throw new BlockedUserException(BLOCKED_USER_ERROR);
         }
 
         if (duplicateExists) {
@@ -73,6 +73,9 @@ public class PostServiceImpl implements PostService {
         } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
+        if (post.getUser().isBlocked()){
+            throw new BlockedUserException(BLOCKED_USER_ERROR);
+        }
 
         if (duplicateExists) {
             throw new EntityDuplicateException("Post", "post", post.getTitle());
@@ -82,6 +85,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void update(Post post, User user) {
+        if (post.getUser().isBlocked()){
+            throw new BlockedUserException(BLOCKED_USER_ERROR);
+        }
         repository.update(post);
     }
 
@@ -125,6 +131,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void delete(Long id) {
+        if (getById(id).getUser().isBlocked()){
+            throw new BlockedUserException(BLOCKED_USER_ERROR);
+        }
         repository.delete(id);
     }
 }

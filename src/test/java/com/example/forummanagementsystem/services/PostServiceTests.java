@@ -2,6 +2,7 @@ package com.example.forummanagementsystem.services;
 
 import com.example.forummanagementsystem.exceptions.BlockedUserException;
 import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
+import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.repositories.PostRepository;
@@ -59,6 +60,8 @@ public class PostServiceTests {
     public void create_Should_Throw_When_PostWithSameTitleExists() {
         // Arrange
         var mockPost = createMockPost();
+        var mockUser = createMockUser();
+        mockPost.setUser(mockUser);
 
         Mockito.when(mockRepository.getByTitle(mockPost.getTitle())).thenReturn(mockPost);
         // Act, Assert
