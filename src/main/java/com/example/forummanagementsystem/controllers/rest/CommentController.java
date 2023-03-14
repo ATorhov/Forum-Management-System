@@ -1,4 +1,4 @@
-package com.example.forummanagementsystem.controllers;
+package com.example.forummanagementsystem.controllers.rest;
 
 import com.example.forummanagementsystem.exceptions.AuthorizationException;
 import com.example.forummanagementsystem.helpers.AuthenticationHelper;
