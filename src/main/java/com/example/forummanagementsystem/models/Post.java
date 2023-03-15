@@ -40,7 +40,7 @@ public class Post {
     private LocalDateTime updateTime;
 
     @ManyToOne
-    @JsonIgnore
+   // @JsonIgnore
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
