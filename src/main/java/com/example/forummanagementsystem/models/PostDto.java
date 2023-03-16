@@ -18,6 +18,8 @@ public class PostDto {
 
     private LocalDateTime createTime;
 
+    private User user;
+
 
     public String getTitle() {
         return title;
@@ -51,4 +53,11 @@ public class PostDto {
         this.createTime = LocalDateTime.now();
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

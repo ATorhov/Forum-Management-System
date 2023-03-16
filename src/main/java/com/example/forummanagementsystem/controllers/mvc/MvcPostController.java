@@ -1,16 +1,15 @@
 package com.example.forummanagementsystem.controllers.mvc;
 
 import com.example.forummanagementsystem.models.Post;
+import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.services.PostService;
 import com.example.forummanagementsystem.services.UserService;
+import com.example.forummanagementsystem.services.mappers.PostMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -36,6 +35,26 @@ public class MvcPostController {
         } else {
             return "error";
         }
+    }
+
+    @GetMapping("new")
+    public String createNewPost(Model model) {
+                                                                   //TODO Authentication to be implemented
+        User randomUser = userService.get(3L);
+            Post post = new Post();
+            post.setUser(randomUser);
+            model.addAttribute("post", post);
+            return "post_new";
+        }
+
+    @PostMapping("new")
+    public String createNewPost(@ModelAttribute Post post) {
+        // Get the user object based on the user id string        //TODO Authentication to be implemented
+        User user = userService.get((post.getUser()).getId());
+        post.setUser(user);
+
+        postService.create(post);
+        return "redirect:/posts/" + post.getPostId();
     }
 
     @PostMapping("{id}/edit")
