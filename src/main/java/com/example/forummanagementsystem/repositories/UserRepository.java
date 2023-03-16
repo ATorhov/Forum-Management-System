@@ -18,6 +18,8 @@ public interface UserRepository {
 
     User get(String username);
 
+    User getByEmail(String email);
+
     void update(User user);
 
     void createUser(User user);
