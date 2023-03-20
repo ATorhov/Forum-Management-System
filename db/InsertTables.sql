@@ -105,3 +105,7 @@ VALUES (4, 'Hello how are you',1),
        (4, 'I am coding',1);
 
 
+INSERT INTO opinions (opinion_id, type)
+
+VALUES (1, 'LIKE'),
+       (2, 'DISLIKE');
