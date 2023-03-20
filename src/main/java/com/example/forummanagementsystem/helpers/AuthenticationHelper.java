@@ -4,6 +4,7 @@ import com.example.forummanagementsystem.exceptions.AuthorizationException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.services.UserService;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -77,6 +78,18 @@ public class AuthenticationHelper {
             return (User) session.getTransaction(); // Retrieve the user from the session
         } else {
             throw new AuthorizationException("You are not logged in"); // No session, no logged in user
+        }
+    }
+
+    public User verifyAuthentication(String username, String password) {
+        try {
+            User user = userService.get(username);
+            if (!BCrypt.checkpw(password, user.getPassword())) {
+                throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
+            }
+            return user;
+        } catch (EntityNotFoundException e) {
+            throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
         }
     }
 }

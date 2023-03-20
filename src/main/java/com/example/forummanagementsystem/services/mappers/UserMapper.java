@@ -1,5 +1,6 @@
 package com.example.forummanagementsystem.services.mappers;
 
+import com.example.forummanagementsystem.models.RegisterDto;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.models.UserDto;
 import com.example.forummanagementsystem.repositories.UserRepository;
@@ -26,6 +27,16 @@ public class UserMapper {
     public User fromDto(UserDto userDto, Long id) {
         User user = userRepository.get(id);
         dtoToObject(userDto, user);
+        return user;
+    }
+
+    public User fromDto(RegisterDto registerDto) {
+        User user = new User();
+        user.setUsername(registerDto.getUsername());
+        user.setPassword(registerDto.getPassword());
+        user.setFirstName(registerDto.getFirstName());
+        user.setLastName(registerDto.getLastName());
+        user.setEmail(registerDto.getEmail());
         return user;
     }
 

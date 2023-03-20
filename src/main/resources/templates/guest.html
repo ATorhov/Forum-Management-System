@@ -17,8 +17,9 @@
   </div>
 
   <ul>
-    <li><a th:href="@{/register}">Register</a> </li>
-    <li><a th:href="@{/login}">Login</a> </li>
+    <li th:unless="${isAuthenticated}"><h3><a th:href="@{/auth/login}" href="#">Login</a></h3></li>
+    <li th:unless="${isAuthenticated}"><h3><a th:href="@{/auth/register}" href="#">Register</a></h3></li>
+    <li th:if="${isAuthenticated}"><h3><a th:href="@{/auth/logout}" href="#">Logout</a></h3></li>
   </ul>
   <div class="post-container">
     <div class="post" th:each="post : ${posts}">
