@@ -54,8 +54,6 @@ public class CommentRepositoryImpl implements CommentRepository {
             return query.list();
         }
     }
-
-
     @Override
     public void create(Comment comment) {
         try (Session session = sessionFactory.openSession()) {

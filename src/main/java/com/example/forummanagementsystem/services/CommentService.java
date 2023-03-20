@@ -24,4 +24,6 @@ public interface CommentService {
                          Optional<Integer> userId, Optional<String> sort);
 
     List<Comment> getAll(Optional<String> search);
+
+    List<Comment> getAll();
 }

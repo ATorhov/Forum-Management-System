@@ -1,5 +1,6 @@
 package com.example.forummanagementsystem.controllers.mvc;
 
+import com.example.forummanagementsystem.models.Comment;
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.services.PostService;
@@ -11,12 +12,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/posts/")
 public class MvcPostController {
-
     @Autowired
     private PostService postService;
 
@@ -25,6 +26,10 @@ public class MvcPostController {
 
     @GetMapping("{id}")
     public String getPost(@PathVariable Long id, Model model) {
+        List<Comment> listComments = postService.getCommentsByPostId(id);
+        if (!listComments.isEmpty()) {
+            model.addAttribute("comments", listComments);
+        }
         Optional<Post> optionalPost = Optional.ofNullable(this.postService.getById(id));
         if (optionalPost.isPresent()) {
 
@@ -36,7 +41,6 @@ public class MvcPostController {
             return "error";
         }
     }
-
     @GetMapping("new")
     public String createNewPost(Model model) {
                                                                    //TODO Authentication to be implemented

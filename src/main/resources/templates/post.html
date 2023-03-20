@@ -1,55 +1,79 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Crypto forum :: Post</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-  <script src="https://rawgit.com/uagrace/like-dislike/master/js/like-dislike.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Crypto forum :: Post</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="https://rawgit.com/uagrace/like-dislike/master/js/like-dislike.min.js"></script>
 </head>
 <hr>
 <body>
 <div class="container">
-  <a th:href="@{/home}">Home</a>
-  <div class="post">
-    <h2 class="text-center" th:text="${post.title}">Title</h2>
-    <h5 th:text="'Written by ' + ${post.user.firstName} +' '+ ${post.user.lastName}">Full Name</h5>
-    <h5 th:text="'Created on '+${post.createTime}">Created Date</h5>
-    <h5 th:text="'Updated at ' + ${post.updateTime}">Updated at</h5>
-    <p th:text="${post.content}">body text</p>
+    <a th:href="@{/home}">Home</a>
+    <div class="post">
+        <h2 class="text-center" th:text="${post.title}">Title</h2>
+        <h5 th:text="'Written by ' + ${post.user.firstName} +' '+ ${post.user.lastName}">Full Name</h5>
+        <h5 th:text="'Created on '+${post.createTime}">Created Date</h5>
+        <h5 th:text="'Updated at ' + ${post.updateTime}">Updated at</h5>
+        <p th:text="${post.content}">body text</p>
 
-    <div id="rating">
-      <button class="like">Like</button>
-      <span class="likes">0</span>
-      <button class="dislike">Dislike</button>
-      <span class="dislikes">0</span>
+        <div id="rating">
+            <button class="like">Like</button>
+            <span class="likes">0</span>
+            <button class="dislike">Dislike</button>
+            <span class="dislikes">0</span>
+        </div>
+
+        <script type="text/javascript">
+            $('#rating').likeDislike({
+                initialValue: 0,
+                click: function (value, l, d, event) {
+                    const likes = $(this.element).find('.likes');
+                    const dislikes = $(this.element).find('.dislikes');
+                    const buttons = $(this.element).find('button');
+
+                    // Disable all buttons to prevent further clicks
+                    //buttons.prop('disabled', true);
+
+                    likes.text(parseInt(likes.text()) + l);
+                    dislikes.text(parseInt(dislikes.text()) + d);
+                },
+                reverseMode: false
+            });
+        </script>
     </div>
-
-    <script type="text/javascript">
-      $('#rating').likeDislike({
-        initialValue: 0,
-        click: function (value, l, d, event) {
-          const likes = $(this.element).find('.likes');
-          const dislikes = $(this.element).find('.dislikes');
-          const buttons = $(this.element).find('button');
-
-          // Disable all buttons to prevent further clicks
-          //buttons.prop('disabled', true);
-
-          likes.text(parseInt(likes.text()) + l);
-          dislikes.text(parseInt(dislikes.text()) + d);
-        },
-        reverseMode: false
-      });
-    </script>
-  </div>
-  <ul>
-    <li><a th:href="@{'/posts/'+ ${post.postId} +'/edit'}">Edit</a></li>
-    <li><a th:href="@{'/posts/'+ ${post.postId} +'/delete'}">Delete</a></li>
-  </ul>
+    <ul>
+        <li><a th:href="@{'/posts/'+ ${post.postId} +'/edit'}">Edit</a></li>
+        <li><a th:href="@{'/posts/'+ ${post.postId} +'/delete'}">Delete</a></li>
+        <li><a th:href="@{'/posts/'+ ${post.postId} +'/comments/new'}">New comment</a></li>
+    </ul>
+</div>
+<div class="row" th:each="comment : ${comments}">
+    <div class="cell">
+        <div class="comment">
+            <ul>
+                <ul>
+                    <h6 class="cell" th:text="${comment.content}">content</h6>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    <ul>
+        <li>
+            <ul>
+                <ul>
+                    <a th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/edit'}">Edit</a> <a
+                        th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/delete'}">Delete</a></li>
+                </ul>
+            </ul>
+    </ul>
 </div>
 </body>
 </html>

@@ -3,11 +3,13 @@ package com.example.forummanagementsystem.models;
 import org.springframework.lang.NonNull;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 public class CommentDto {
 
     @NotNull(message = "Content cannot be empty")
+    @Size(min = 2, max = 2000, message = "Comment content should be between 2 and 2000 symbols inclusively")
     private String content;
 
 

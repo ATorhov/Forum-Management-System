@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 
@@ -17,7 +19,9 @@ public class Comment {
     private Integer commentId;
 
 
+    @NotNull(message = "Content cannot be empty")
     @Column(name = "content")
+    @Size(min = 2, max = 2000, message = "Comment content should be between 2 and 2000 symbols inclusively")
     private String content;
 
     @NonNull
@@ -47,6 +51,7 @@ public class Comment {
         this.commentId = commentId;
     }
 
+    @NonNull
     public String getContent() {
         return content;
     }
