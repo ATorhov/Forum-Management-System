@@ -56,7 +56,7 @@ public class AuthenticationMvcController {
         try {
             authenticationHelper.verifyAuthentication(login.getUsername(), login.getPassword());
             session.setAttribute("currentUser", login.getUsername());
-            return "redirect:/";
+            return "redirect:/home";
         } catch (AuthorizationException e) {
             bindingResult.rejectValue("username", "auth_error", e.getMessage());
             return "LoginView";
