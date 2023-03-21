@@ -52,8 +52,8 @@ Anonymous users able to see a list of the top 10 most commented posts and a list
 - [x] Create 'Create new post' [HTML page]
 - [x] Create 'Edit post' [HTML page]
 - [ ] Implement LIKES / DISLIKES on 'Post view' page [CRUD + Thymeleaf] **<ins> Very Important**
-- [ ] Integrate list of comments to 'Post view' page [Thymeleaf]
-- [ ] Implement add/delete comment in 'Post view' page [Thymeleaf]
+- [x] Integrate list of comments to 'Post view' page [Thymeleaf]
+- [x] Implement add/delete comment in 'Post view' page [Thymeleaf]
 - [ ] Implement MVC authentication for User.
 - [ ] Implement MVC authentication for Post.
 - [ ] Implement MVC authentication for Comment.
