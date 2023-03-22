@@ -12,68 +12,59 @@
             crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="https://rawgit.com/uagrace/like-dislike/master/js/like-dislike.min.js"></script>
+  <style>
+    body {
+      background-color: bisque; !important
+    }
+  </style>
 </head>
 <hr>
 <body>
 <div class="container">
-    <a th:href="@{/home}">Home</a>
-    <div class="post">
-        <h2 class="text-center" th:text="${post.title}">Title</h2>
-        <h5 th:text="'Written by ' + ${post.user.firstName} +' '+ ${post.user.lastName}">Full Name</h5>
-        <h5 th:text="'Created on '+${post.createTime}">Created Date</h5>
-        <h5 th:text="'Updated at ' + ${post.updateTime}">Updated at</h5>
-        <p th:text="${post.content}">body text</p>
-
-        <div id="rating">
-            <button class="like">Like</button>
-            <span class="likes">0</span>
-            <button class="dislike">Dislike</button>
-            <span class="dislikes">0</span>
-        </div>
-
-        <script type="text/javascript">
-            $('#rating').likeDislike({
-                initialValue: 0,
-                click: function (value, l, d, event) {
-                    const likes = $(this.element).find('.likes');
-                    const dislikes = $(this.element).find('.dislikes');
-                    const buttons = $(this.element).find('button');
-
-                    // Disable all buttons to prevent further clicks
-                    //buttons.prop('disabled', true);
-
-                    likes.text(parseInt(likes.text()) + l);
-                    dislikes.text(parseInt(dislikes.text()) + d);
-                },
-                reverseMode: false
-            });
-        </script>
+  <a th:href="@{/home}">Home</a>
+  <a th:href="@{'/posts/'+ ${post.postId} +'/edit'}">Edit</a>
+  <a th:href="@{'/posts/'+ ${post.postId} +'/delete'}">Delete</a>
+  <div class="post">
+    <h2 class="text-center" th:text="${post.title}">Title</h2>
+    <h5 th:text="'Written by ' + ${post.user.firstName} +' '+ ${post.user.lastName}">Full Name</h5>
+    <h5 th:text="'Created on '+${post.createTime}">Created Date</h5>
+    <h5 th:text="'Updated at ' + ${post.updateTime}">Updated at</h5>
+    <p th:text="${post.content}">body text</p>
+  </div>
+  <div class="row justify-content-end">
+    <div class="col-auto">
+      <div class="d-grid col-1"> <a class="btn btn-primary" href="#!" th:href="@{__${#httpServletRequest.requestURI}__/opinion(opinion=1)}">Like</a></div>
+      <span class="likes">0</span>
     </div>
-    <ul>
-        <li><a th:href="@{'/posts/'+ ${post.postId} +'/edit'}">Edit</a></li>
-        <li><a th:href="@{'/posts/'+ ${post.postId} +'/delete'}">Delete</a></li>
-        <li><a th:href="@{'/posts/'+ ${post.postId} +'/comments/new'}">New comment</a></li>
-    </ul>
+    <div class="col-auto">
+      <div class="d-grid col-1"><a  class="btn btn-secondary" href="#!"  th:href="@{__${#httpServletRequest.requestURI}__/opinion(opinion=2)}">Dislike</a></div>
+      <span class="dislikes">0</span>
+    </div>
+  </div>
+</div>
+  <ul>
+    <li><a th:href="@{'/posts/'+ ${post.postId} +'/comments/new'}">New comment</a></li>
+  </ul>
 </div>
 <div class="row" th:each="comment : ${comments}">
-    <div class="cell">
-        <div class="comment">
-            <ul>
-                <ul>
-                    <h6 class="cell" th:text="${comment.content}">content</h6>
-                </ul>
-            </ul>
-        </div>
+  <div class="cell">
+    <div class="comment">
+      <ul>
+        <ul>
+          <h6 class="cell" th:text="${comment.content}">content</h6>
+        </ul>
+      </ul>
     </div>
-    <ul>
-        <li>
-            <ul>
-                <ul>
-                    <a th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/edit'}">Edit</a> <a
-                        th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/delete'}">Delete</a></li>
-                </ul>
-            </ul>
-    </ul>
+  </div>
+  <ul>
+    <li>
+      <ul>
+        <ul>
+          <a th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/edit'}">Edit</a> <a
+                th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/delete'}">Delete</a></li>
+        </ul>
+      </ul>
+  </ul>
 </div>
 </body>
 </html>

@@ -12,20 +12,18 @@
 <body>
 <div class="container">
   <a th:href="@{/home}">Home</a>
-  <a th:href="@{/posts/new}">New Post</a>
   <form action="#"
         th:action="@{'/posts/new'}"
-        th:object="${post}" method="post">
-    <input type="hidden" th:name="user.id" th:value="${post.user.id}" />
+        th:object="${postDto}" method="post">
     <input type="hidden" th:field="*{createTime}" />
     <h2>Write new Post</h2>
     <div>
       <label for="new-post-title">Title</label>
-      <input id="new-post-title" type="text" th:field="*{title}" placeholder="Title"/>
+      <input id="new-post-title" type="text" th:field="*{title}" placeholder="Title" required minlength="16" maxlength="32"/>
     </div>
     <div>
       <label for="new-post-body">Content</label>
-      <textarea id="new-post-body" th:field="*{content}"></textarea>
+      <textarea id="new-post-body" th:field="*{content}"> required minlength="32" maxlength="8192"</textarea>
     </div>
     <button type="submit">Publish Post</button>
   </form>
