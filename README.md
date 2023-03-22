@@ -55,7 +55,7 @@ Anonymous users able to see a list of the top 10 most commented posts and a list
 - [x] Integrate list of comments to 'Post view' page [Thymeleaf]
 - [x] Implement add/delete comment in 'Post view' page [Thymeleaf]
 - [ ] Implement MVC authentication for User.
-- [ ] Implement MVC authentication for Post.
+- [x] Implement MVC authentication for Post.
 - [ ] Implement MVC authentication for Comment.
 - [ ] Create and provide a link to the Swagger documentation. **<ins> Very Important**
 - [ ] Instructions on how to set up and run the project locally **<ins> Very Important**
