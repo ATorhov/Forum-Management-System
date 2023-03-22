@@ -1,6 +1,5 @@
 package com.example.forummanagementsystem.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -10,6 +9,7 @@ import org.springframework.lang.NonNull;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Entity
@@ -40,7 +40,7 @@ public class Post {
     private LocalDateTime updateTime;
 
     @ManyToOne
-   // @JsonIgnore
+    // @JsonIgnore
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
@@ -48,14 +48,14 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> comments;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "post_opinions",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "opinion_id"))
+    @MapKeyJoinColumn(name = "user_id")
+    private Map<User, Opinion> opinions;
 
     public Post() {
-    }
-
-    public Post(Long postId, String title, String content) {
-        this.postId = postId;
-        this.title = title;
-        this.content = content;
     }
 
     public Long getPostId() {
@@ -78,8 +78,13 @@ public class Post {
         return rating;
     }
 
+    // TODO delete setRating once likes/dislikes behaviour is implemented.
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public void setRealRating() {
+        this.rating = getLikes() - getDislikes();
     }
 
     public String getContent() {
@@ -111,6 +116,28 @@ public class Post {
         return user;
     }
 
+    public Map<User, Opinion> getOpinions() {
+        return opinions;
+    }
+
+    public void setOpinions(Map<User, Opinion> opinions) {
+        this.opinions = opinions;
+    }
+
+    public int getLikes(){
+        int likes = 0;
+        likes = (int) opinions.values().stream()
+                .filter(opinion -> opinion.getType().equals("like")).count();
+        return likes;
+    }
+
+    public int getDislikes(){
+        int dislikes = 0;
+        dislikes = (int) opinions.values().stream()
+                .filter(opinion -> opinion.getType().equals("dislike")).count();
+        return dislikes;
+    }
+
     public void setUser(@NonNull User user) {
         this.user = user;
     }
@@ -137,6 +164,9 @@ public class Post {
                 ", content='" + content + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ", user=" + user +
+                ", comments=" + comments +
+                ", opinions=" + opinions +
                 '}';
     }
 }

@@ -3,6 +3,7 @@ package com.example.forummanagementsystem.models;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 public class PostDto {
 
@@ -17,9 +18,26 @@ public class PostDto {
     private String content;
 
     private LocalDateTime createTime;
-
     private User user;
 
+    private Map<User, Opinion> opinions;
+
+    public PostDto(){
+
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+
+    public Map<User, Opinion> getOpinions() {
+        return opinions;
+    }
+
+    public void setOpinions(Map<User, Opinion> opinions) {
+        this.opinions = opinions;
+    }
 
     public String getTitle() {
         return title;

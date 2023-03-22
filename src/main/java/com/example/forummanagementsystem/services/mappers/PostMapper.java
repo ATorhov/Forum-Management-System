@@ -50,6 +50,13 @@ public class PostMapper {
         return post;
     }
 
+    public Post createDtoToObject(PostDto postDto, User user, Long id) {
+        Post post = createDtoToObject(postDto, user);
+        post.setPostId(id);
+        return post;
+    }
+
+
     public PostDto createObjectToDto(Post post){
         PostDto postDto = new PostDto();
         postDto.setTitle(post.getTitle());

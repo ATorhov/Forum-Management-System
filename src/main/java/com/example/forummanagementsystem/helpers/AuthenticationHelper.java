@@ -12,6 +12,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import javax.servlet.http.HttpSession;
+
 @Component
 public class AuthenticationHelper {
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
@@ -71,6 +73,13 @@ public class AuthenticationHelper {
         }
     }
 
+    public void checkAccessPermissions(Long targetUserId, User executingUser) {
+        if (!executingUser.isAdmin() && executingUser.getId() != targetUserId) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ERROR_MESSAGE);
+        }
+    }
+
+
 
     public User getLoggedInUser(HttpHeaders headers) {
         Session session = sessionFactory.openSession(); // Get the session, but don't create one if it doesn't exist
@@ -92,4 +101,13 @@ public class AuthenticationHelper {
             throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
         }
     }
+
+    public User tryGetUser(HttpSession session) {
+        String currentUsername = (String) session.getAttribute("currentUser");
+        if (currentUsername == null) {
+            throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
+        }
+        return userService.get(currentUsername);
+    }
+
 }
