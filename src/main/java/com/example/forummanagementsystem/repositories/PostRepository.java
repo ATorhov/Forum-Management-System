@@ -1,6 +1,7 @@
 package com.example.forummanagementsystem.repositories;
 
 import com.example.forummanagementsystem.models.Comment;
+import com.example.forummanagementsystem.models.Opinion;
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
 

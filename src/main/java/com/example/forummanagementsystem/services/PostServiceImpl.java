@@ -4,9 +4,11 @@ import com.example.forummanagementsystem.exceptions.BlockedUserException;
 import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.models.Comment;
+import com.example.forummanagementsystem.models.Opinion;
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.repositories.CommentRepository;
+import com.example.forummanagementsystem.repositories.OpinionRepository;
 import com.example.forummanagementsystem.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,10 +24,13 @@ public class PostServiceImpl implements PostService {
     private final PostRepository repository;
     private final CommentRepository commentRepository;
 
+    private final OpinionRepository opinionRepository;
+
     @Autowired
-    public PostServiceImpl(PostRepository repository, CommentRepository commentRepository) {
+    public PostServiceImpl(PostRepository repository, CommentRepository commentRepository, OpinionRepository opinionRepository) {
         this.repository = repository;
         this.commentRepository = commentRepository;
+        this.opinionRepository = opinionRepository;
     }
 
     @Override
@@ -126,6 +131,14 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Comment> getCommentsByPostId(Long id) {
         return repository.getCommentsByPostId(id);
+    }
+
+    @Override
+    public void addOpinion(User user, Post post, Long id) {
+        Opinion opinion = opinionRepository.getById(id);
+        post.getOpinions().put(user, opinion);
+        repository.update(post);
+
     }
 
 

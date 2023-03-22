@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
@@ -186,27 +187,14 @@ public class MvcPostController {
     }
 
 
-    /*
-    do NOT remove the commented code below.
-     */
-
-//    @GetMapping("{id}/opinion")
-//    public @ResponseBody Map<String, Long> addOpinion(HttpSession session, @PathVariable Long id, @RequestParam Long opinion) {
-//        Post post = postService.getById(id);
-//        User user = post.getUser();
-//        postService.addOpinion(user, post, opinion);
-//        Map<String, Long> result = new HashMap<>();
-//        result.put("likes", (long) post.getLikes());
-//        result.put("dislikes", (long) post.getDislikes());
-//        return result;
-//    }
-
-
-    // WITH AUTHENTICATION
     @GetMapping("{id}/opinion")
-    public @ResponseBody Map<String, Long> addOpinion(HttpSession session, Principal principal, @PathVariable Long id, @RequestParam Long opinion) {
-        String username = principal.getName();
-        User user = userService.get(username);
+    public @ResponseBody Map<String, Long> addOpinion(HttpSession session, @PathVariable Long id, @RequestParam Long opinion) {
+        User user;
+        try {
+            user = authenticationHelper.tryGetUser(session);
+        } catch (AuthorizationException e){
+            throw new AuthorizationException("User is not authenticated");
+        }
         Post post = postService.getById(id);
         postService.addOpinion(user, post, opinion);
         Map<String, Long> result = new HashMap<>();
@@ -214,6 +202,4 @@ public class MvcPostController {
         result.put("dislikes", (long) post.getDislikes());
         return result;
     }
-
-
 }

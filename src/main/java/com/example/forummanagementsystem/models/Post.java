@@ -48,7 +48,7 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> comments;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "post_opinions",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "opinion_id"))
@@ -127,14 +127,14 @@ public class Post {
     public int getLikes(){
         int likes = 0;
         likes = (int) opinions.values().stream()
-                .filter(opinion -> opinion.getType().equals("like")).count();
+                .filter(opinion -> opinion.getType().equals("LIKE")).count();
         return likes;
     }
 
     public int getDislikes(){
         int dislikes = 0;
         dislikes = (int) opinions.values().stream()
-                .filter(opinion -> opinion.getType().equals("dislike")).count();
+                .filter(opinion -> opinion.getType().equals("DISLIKE")).count();
         return dislikes;
     }
 

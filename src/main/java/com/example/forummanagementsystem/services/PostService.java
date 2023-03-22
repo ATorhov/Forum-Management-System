@@ -28,4 +28,7 @@ public interface PostService {
     List<Post> getAllSearch(Optional<String> all);
 
     List<Comment> getCommentsByPostId(Long id);
+
+    void addOpinion(User user, Post post, Long id);
+
 }
