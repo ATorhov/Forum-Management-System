@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
+
 @Component
 public class CommentMapper {
 
@@ -60,5 +61,25 @@ public class CommentMapper {
         comment.setPost(post);
 
         return comment;
+    }
+
+    public Comment createDtoToObject(CommentDto commentDto, User user, int id) {
+
+        Comment comment = commentRepository.getById(id);
+        comment.setContent(commentDto.getContent());
+        return comment;
+    }
+
+    public Comment createDtoToObject(CommentDto commentDto, User user) {
+        Comment comment = new Comment();
+        comment.setContent(commentDto.getContent());
+        comment.setUser(user);
+        return comment;
+    }
+
+    public CommentDto createObjectToDto(Comment comment) {
+        CommentDto commentDto = new CommentDto();
+        commentDto.setContent(comment.getContent());
+        return commentDto;
     }
 }

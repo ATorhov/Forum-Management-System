@@ -12,88 +12,93 @@
             crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="https://rawgit.com/uagrace/like-dislike/master/js/like-dislike.min.js"></script>
-  <style>
-    body {
-      background-color: bisque; !important
-    }
-  </style>
+    <style>
+        body {
+            background-color: bisque;
+        !important
+        }
+    </style>
 </head>
 <hr>
 <body>
 <div class="container">
-  <a th:href="@{/home}">Home</a>
-  <a th:href="@{'/posts/'+ ${post.postId} +'/edit'}">Edit</a>
-  <a th:href="@{'/posts/'+ ${post.postId} +'/delete'}">Delete</a>
-  <div class="post">
-    <h2 class="text-center" th:text="${post.title}">Title</h2>
-    <h5 th:text="'Written by ' + ${post.user.firstName} +' '+ ${post.user.lastName}">Full Name</h5>
-    <h5 th:text="'Created on '+${post.createTime}">Created Date</h5>
-    <h5 th:text="'Updated at ' + ${post.updateTime}">Updated at</h5>
-    <p th:text="${post.content}">body text</p>
-  </div>
-  <div class="row justify-content-end">
-    <div class="col-auto">
-      <div class="d-grid col-1"> <a class="btn btn-primary" href="#!" th:href="@{__${#httpServletRequest.requestURI}__/opinion(opinion=1)}">Like</a></div>
-      <span class="likes" th:number="${post.getLikes()}">0</span>
+    <a th:href="@{/home}">Home</a>
+    <a th:href="@{'/posts/'+ ${post.postId} +'/edit'}">Edit</a>
+    <a th:href="@{'/posts/'+ ${post.postId} +'/delete'}">Delete</a>
+    <div class="post">
+        <h2 class="text-center" th:text="${post.title}">Title</h2>
+        <h5 th:text="'Written by ' + ${post.user.firstName} +' '+ ${post.user.lastName}">Full Name</h5>
+        <h5 th:text="'Created on '+${post.createTime}">Created Date</h5>
+        <h5 th:text="'Updated at ' + ${post.updateTime}">Updated at</h5>
+        <p th:text="${post.content}">body text</p>
     </div>
-    <div class="col-auto">
-      <div class="d-grid col-1"><a class="btn btn-secondary" href="#!" th:href="@{__${#httpServletRequest.requestURI}__/opinion(opinion=2)}">Dislike</a></div>
-      <span class="dislikes" th:number="${post.getDislikes()}">0</span>
+    <div class="row justify-content-end">
+        <div class="col-auto">
+            <div class="d-grid col-1"><a class="btn btn-primary" href="#!"
+                                         th:href="@{__${#httpServletRequest.requestURI}__/opinion(opinion=1)}">Like</a>
+            </div>
+            <span class="likes" th:number="${post.getLikes()}">0</span>
+        </div>
+        <div class="col-auto">
+            <div class="d-grid col-1"><a class="btn btn-secondary" href="#!"
+                                         th:href="@{__${#httpServletRequest.requestURI}__/opinion(opinion=2)}">Dislike</a>
+            </div>
+            <span class="dislikes" th:number="${post.getDislikes()}">0</span>
+        </div>
     </div>
-  </div>
 </div>
-  <ul>
+<ul>
     <li><a th:href="@{'/posts/'+ ${post.postId} +'/comments/new'}">New comment</a></li>
-  </ul>
+</ul>
 </div>
 <div class="row" th:each="comment : ${comments}">
-  <div class="cell">
-    <div class="comment">
-      <ul>
-        <ul>
-          <h6 class="cell" th:text="${comment.content}">content</h6>
-        </ul>
-      </ul>
+    <div class="cell">
+        <div class="comment">
+            <ul>
+
+            </ul>
+        </div>
     </div>
-  </div>
-  <ul>
-    <li>
-      <ul>
-        <ul>
-          <a th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/edit'}">Edit</a> <a
-                th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/delete'}">Delete</a></li>
-        </ul>
-      </ul>
-  </ul>
+    <ul>
+        <li>
+            <ul>
+                <ul>
+                    <h6 class="cell" th:text="${comment.getUser().getUsername()}">username</h6>
+                    <h6 class="cell" th:text="${comment.content}">content</h6>
+                    <a th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/edit'}">Edit</a> <a
+                        th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/delete'}">Delete</a></li>
+                </ul>
+            </ul>
+    </ul>
 </div>
 <script>
-  // Add event listener to Like button
-  document.querySelector('.btn-primary').addEventListener('click', function(event) {
-    event.preventDefault(); // Prevent default link behavior
-    fetch(event.target.href) // Send AJAX request to server
+    // Add event listener to Like button
+    document.querySelector('.btn-primary').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent default link behavior
+        fetch(event.target.href) // Send AJAX request to server
             .then(response => response.json())
             .then(data => {
-              // Update Like count in HTML
-              document.querySelector('.likes').textContent = data.likes;
-              // Update Dislike count in HTML
-              document.querySelector('.dislikes').textContent = data.dislikes;
+                // Update Like count in HTML
+                document.querySelector('.likes').textContent = data.likes;
+                // Update Dislike count in HTML
+                document.querySelector('.dislikes').textContent = data.dislikes;
             })
             .catch(error => console.error(error));
-  });
+    });
 
-  // Add event listener to Dislike button
-  document.querySelector('.btn-secondary').addEventListener('click', function(event) {
-    event.preventDefault(); // Prevent default link behavior
-    fetch(event.target.href) // Send AJAX request to server
+    // Add event listener to Dislike button
+    document.querySelector('.btn-secondary').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent default link behavior
+        fetch(event.target.href) // Send AJAX request to server
             .then(response => response.json())
             .then(data => {
-              // Update Like count in HTML
-              document.querySelector('.likes').numberOfItems = data.likes;
-              // Update Dislike count in HTML
-              document.querySelector('.dislikes').numberOfItems = data.dislikes;
+                // Update Like count in HTML
+                document.querySelector('.likes').numberOfItems = data.likes;
+                // Update Dislike count in HTML
+                document.querySelector('.dislikes').numberOfItems = data.dislikes;
             })
             .catch(error => console.error(error));
-  });
+    });
 </script>
 </body>
 </html>

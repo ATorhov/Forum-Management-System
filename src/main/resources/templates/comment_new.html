@@ -17,8 +17,8 @@
     <a th:href="@{/home}">Home</a>
 
     <form action="#"
-          th:action="@{'/posts/'+ ${comment.post.getPostId()} +'/comments/new'}"
-          th:object="${comment}" method="post">
+          th:action="@{'/posts/'+ ${postId} +'/comments/new'}"
+          th:object="${commentDto}" method="post">
 
 
         <h2>Write new comment</h2>

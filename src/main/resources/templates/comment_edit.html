@@ -15,20 +15,15 @@
 <body>
 <div class="container">
     <a th:href="@{/home}">Home</a>
-    <form action="#"
-          th:action="@{'/posts/'+ ${comment.getPost().getPostId()} +'/comments/'+${comment.getCommentId()}+'/edit'}"
-          th:object="${comment}" method="post">
-
-
-
-
+    <form th:action="@{/posts/__${postId}__/comments/__${commentId}__/edit}"
+          th:object="${commentDto}" method="post">
         <h2>Update comment</h2>
 
         <div>
-            <label for="new-post-body">Content</label>
-            <textarea id="new-post-body" th:field="*{content}"></textarea>
+            <input th:field="*{content}"></input>
+            <label class="error" th:errors="*{content}"> error placeholder</label>
         </div>
-        <button type="submit">Publish comment</button>
+        <button type="submit">Publish edited comment</button>
     </form>
 </div>
 </body>
