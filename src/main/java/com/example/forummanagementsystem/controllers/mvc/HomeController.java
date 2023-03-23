@@ -1,5 +1,7 @@
 package com.example.forummanagementsystem.controllers.mvc;
 
+import com.example.forummanagementsystem.exceptions.AuthorizationException;
+import com.example.forummanagementsystem.helpers.AuthenticationHelper;
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.services.PostService;
 import com.example.forummanagementsystem.services.UserService;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -21,8 +24,11 @@ public class HomeController {
 
     private final UserService userService;
 
-    public HomeController(UserService userService) {
+    private final AuthenticationHelper authenticationHelper;
+
+    public HomeController(UserService userService, AuthenticationHelper authenticationHelper) {
         this.userService = userService;
+        this.authenticationHelper = authenticationHelper;
     }
 
     @ModelAttribute("isAuthenticated")
@@ -45,7 +51,12 @@ public class HomeController {
         return session.getAttribute("currentUser") != null;
     }
     @GetMapping("/home")
-    public String getHomePage(Model model) {
+    public String getHomePage(Model model, HttpSession session) {
+        try {
+            authenticationHelper.tryGetUser(session);
+        } catch (AuthorizationException e){
+            return "redirect:/auth/login";
+        }
         List<Post> posts = postService.getAll();
         model.addAttribute("posts", posts);
         return "home";
