@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head"></head>
+<body>
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<header class="masthead"  style="background-image: url('../static/assets/img/cryptocurrency-business-1.jpg')" th:style="'background-image: url(' + @{/assets/img/cryptocurrency-business-1.jpg} + ')'"></header>
+
+<div class="user" th:object="${user}">
+    <a th:text="${user.getFirstName() + ' '
+        +user.getLastName() + '; email: ' + user.getEmail() + '; Admin: ' + user.isAdmin()}">User</a>
+    
+    <br/>
+</div>
+</body>
+<footer th:replace="fragments/footer :: footer"></footer>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
+
+<head th:replace="fragments/header :: head">
+</head>
+
+<body>
+
+<!-- for header part -->
+
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<header class="masthead"  style="background-image: url('../static/assets/img/cryptocurrency-business-1.jpg')" th:style="'background-image: url(' + @{/assets/img/cryptocurrency-business-1.jpg} + ')'"></header>
+
+<div class="main-container">
+  <div class="navcontainer">
+    <nav class="nav">
+      <div class="nav-upper-options">
+        <div class="nav-option option1">
+          <img src=
+                       "https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
+               class="nav-img"
+               alt="dashboard">
+          <a style="color: #ededed" th:href="@{'/users/admin/dashboard'}"> Dashboard </a>
+
+        </div>
+
+        <div class="option2 nav-option">
+          <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
+               class="nav-img"
+               alt="articles">
+          <a th:href="@{'/users/all'}"> Users </a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+<script>
+
+  let menuicn = document.querySelector(".menuicn");
+  let nav = document.querySelector(".navcontainer");
+
+  menuicn.addEventListener("click",()=>
+  {
+    nav.classList.toggle("enclose");
+  })
+
+
+</script>
+</body>
+<footer th:replace="fragments/footer :: footer"></footer>
+
+</html>

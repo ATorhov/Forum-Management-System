@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
+
+<head th:replace="fragments/header :: head"></head>
+
+<body>
+
+<!-- for header part -->
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<header class="masthead"  style="background-image: url('../static/assets/img/cryptocurrency-business-1.jpg')" th:style="'background-image: url(' + @{/assets/img/cryptocurrency-business-1.jpg} + ')'"></header>
+
+<div class="main-container">
+    <div class="navcontainer">
+        <nav class="nav">
+            <div class="nav-upper-options">
+                <div class="nav-option option1">
+                    <img src=
+                                 "https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
+                         class="nav-img"
+                         alt="dashboard">
+                    <a style="color: #ededed" th:href="@{'/users/admin/dashboard'}"> Dashboard </a>
+
+                </div>
+
+                <div class="option2 nav-option">
+                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
+                         class="nav-img"
+                         alt="articles">
+                    <a th:href="@{'/users/all'}"> Users </a>
+                </div>
+
+                <div class="nav-option option3">
+                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/5.png"
+                         class="nav-img"
+                         alt="report">
+                    <h3> Posts</h3>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="main">
+
+
+
+        <div class="report-container">
+            <div class="report-header">
+                <h1 class="recent-Articles">Users</h1>
+            </div>
+
+            <div class="report-body">
+                <div class="report-topic-heading">
+                    <h3 class="t-op">Full name</h3>
+                    <h3 class="t-op">Email</h3>
+                    <h3 class="t-op">Blocked</h3>
+                    <h3 class="t-op">Admin Status</h3>
+                </div>
+
+                <div class="items" th:each="user : ${users}">
+                    <div class="item1">
+                        <a th:href="@{'/users/user-details/' + ${user.getUsername()}}" th:text="${user.getFirstName()
+                        + ' ' + user.getLastName()}" class="t-op-nextlvl">User's name></a>
+                        <h3 th:text="${user.getEmail()}" class="t-op-nextlvl">Email</h3>
+                        <h3 th:text="${user.isBlocked()}" class="t-op-nextlvl label-tag"
+                            th:style="${user.isBlocked()} == true ? 'background-color: orange' : 'background: red'"
+                        >Blocked</h3>
+                        <h3 th:text="${user.isAdmin()}"
+                            th:style="${user.isAdmin()} == true ? 'background-color: rgb(0, 177, 0)' : 'background: red'"
+                            class="t-op-nextlvl label-tag">Admin Status</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:href="@{/js/index.js}"></script>
+</body>
+<footer th:replace="fragments/footer :: footer"></footer>
+</html>
