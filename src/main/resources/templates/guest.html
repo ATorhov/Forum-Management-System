@@ -15,7 +15,6 @@
     <h1>Welcome to Crypto Forum</h1>
     <hr/>
   </div>
-
   <ul>
     <li th:unless="${isAuthenticated}"><h3><a th:href="@{/auth/login}" href="#">Login</a></h3></li>
     <li th:unless="${isAuthenticated}"><h3><a th:href="@{/auth/register}" href="#">Register</a></h3></li>

@@ -28,6 +28,6 @@ public class GuestController {
         posts.sort((p1, p2) -> Integer.compare(p2.getRating(), p1.getRating()));
         List<Post> topFivePosts = posts.subList(0, Math.min(posts.size(), 5));
         model.addAttribute("posts", topFivePosts);
-        return "guest";
+        return "index";
     }
 }

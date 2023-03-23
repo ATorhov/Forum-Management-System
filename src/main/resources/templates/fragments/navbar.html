@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav class="navbar navbar-expand-lg navbar-light" id="mainNav" th:fragment="navbar">
+  <div class="container px-4 px-lg-5">
+    <a class="navbar-brand" href="index.html">Crypto maniacs</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ms-auto py-4 py-lg-0">
+        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about.html" >About</a></li>
+        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact.html">Contact</a></li>
+        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="LoginView.html" th:unless="${isAuthenticated}" th:href="@{/auth/login}">Login</a></li>
+        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="RegisterView.html" th:unless="${isAuthenticated}" th:href="@{/auth/register}">Register</a></li>
+        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="home.html" th:if="${isAuthenticated}" th:href="@{/home}">Profile</a></li>
+        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" th:if="${isAuthenticated}" th:href="@{/auth/logout}">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+</body>
+</html>
