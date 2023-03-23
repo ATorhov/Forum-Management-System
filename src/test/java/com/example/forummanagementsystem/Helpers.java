@@ -46,16 +46,16 @@ public class Helpers {
         return mockUser;
     }
 
-    public static PostDto createPostDto() {
-        PostDto dto = new PostDto();
-        dto.setTitle("DtoTitle");
-        dto.setContent("DtoContent for Unittests");
-        dto.setRating(5);
-        dto.setCreateTime();
-        dto.setUpdateTime(LocalDateTime.now());
-        dto.setUser(createMockUser());
-        return dto;
-    }
+//    public static PostDto createPostDto() {
+//        PostDto dto = new PostDto();
+//        dto.setTitle("DtoTitle");
+//        dto.setContent("DtoContent for Unittests");
+//        dto.setRating(5);
+//        dto.setCreateTime();
+//        dto.setUpdateTime(LocalDateTime.now());
+//        dto.setUser(createMockUser());
+//        return dto;
+//    }
 
 
     public static String toJson(final Object obj) {

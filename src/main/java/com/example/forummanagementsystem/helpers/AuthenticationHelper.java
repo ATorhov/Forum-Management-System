@@ -2,6 +2,7 @@ package com.example.forummanagementsystem.helpers;
 
 import com.example.forummanagementsystem.exceptions.AuthorizationException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
+import com.example.forummanagementsystem.exceptions.UnauthorizerOperationException;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.services.UserService;
 import org.mindrot.jbcrypt.BCrypt;
@@ -113,4 +114,10 @@ public class AuthenticationHelper {
         return userService.get(currentUsername);
     }
 
+    public void verifyIsAdmin(User user) {
+        if (!user.isAdmin()){
+            throw new UnauthorizerOperationException
+                    ("You are not admin and shouldn't be even trying to open this page!!");
+        }
+    }
 }
