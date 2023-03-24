@@ -3,10 +3,7 @@ package com.example.forummanagementsystem.services;
 import com.example.forummanagementsystem.exceptions.BlockedUserException;
 import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
-import com.example.forummanagementsystem.models.Comment;
-import com.example.forummanagementsystem.models.Opinion;
-import com.example.forummanagementsystem.models.Post;
-import com.example.forummanagementsystem.models.User;
+import com.example.forummanagementsystem.models.*;
 import com.example.forummanagementsystem.repositories.CommentRepository;
 import com.example.forummanagementsystem.repositories.OpinionRepository;
 import com.example.forummanagementsystem.repositories.PostRepository;
@@ -36,6 +33,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getAll() {
         return repository.getAll();
+    }
+
+    @Override
+    public List<Post> get(PostFilterOptions postFilterOptions) {
+        return repository.get(postFilterOptions);
     }
 
     @Override

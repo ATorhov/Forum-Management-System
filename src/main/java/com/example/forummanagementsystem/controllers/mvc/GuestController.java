@@ -25,7 +25,7 @@ public class GuestController {
     @GetMapping("/")
     public String home(Model model) {
         List<Post> posts = service.getAll();
-        posts.sort((p1, p2) -> Integer.compare(p2.getRating(), p1.getRating()));
+        posts.sort((p1, p2) -> Long.compare(p2.getRating(), p1.getRating()));
         List<Post> topFivePosts = posts.subList(0, Math.min(posts.size(), 5));
         model.addAttribute("posts", topFivePosts);
         return "index";

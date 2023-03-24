@@ -24,7 +24,7 @@ public class Post {
     private String title;
 
     @Column(name = "rating")
-    private int rating;
+    private long rating;
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -45,7 +45,7 @@ public class Post {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> comments;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -74,12 +74,12 @@ public class Post {
         this.title = title;
     }
 
-    public int getRating() {
+    public long getRating() {
         return rating;
     }
 
     // TODO delete setRating once likes/dislikes behaviour is implemented.
-    public void setRating(int rating) {
+    public void setRating(long rating) {
         this.rating = rating;
     }
 
@@ -124,16 +124,16 @@ public class Post {
         this.opinions = opinions;
     }
 
-    public int getLikes(){
-        int likes = 0;
-        likes = (int) opinions.values().stream()
+    public long getLikes(){
+        long likes = 0;
+        likes = opinions.values().stream()
                 .filter(opinion -> opinion.getType().equals("LIKE")).count();
         return likes;
     }
 
-    public int getDislikes(){
-        int dislikes = 0;
-        dislikes = (int) opinions.values().stream()
+    public long getDislikes(){
+        long dislikes = 0;
+        dislikes = opinions.values().stream()
                 .filter(opinion -> opinion.getType().equals("DISLIKE")).count();
         return dislikes;
     }
@@ -159,9 +159,9 @@ public class Post {
     public String toString() {
         return "Post{" +
                 "postId=" + postId +
-                ", title='" + title + '\'' +
+                ", title='" + title  +
                 ", rating=" + rating +
-                ", content='" + content + '\'' +
+                ", content='" + content +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", user=" + user +

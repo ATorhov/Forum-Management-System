@@ -11,7 +11,7 @@ public class PostDto {
     @Size(min = 16, max = 32, message = "Post title should be between 16 and 64 symbols")
     private String title;
 
-    private int rating;
+    private long rating;
 
     @NotNull(message = "Post content can't be empty")
     @Size(min = 32, max = 8192, message = "Post content should be between 16 and 8192 symbols")
@@ -47,11 +47,11 @@ public class PostDto {
         this.title = title;
     }
 
-    public int getRating() {
+    public long getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(long rating) {
         this.rating = rating;
     }
 

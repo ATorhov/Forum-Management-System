@@ -90,7 +90,7 @@ Anonymous users able to see a list of the top 10 most commented posts and a list
 
 ### Database image
 
-## [Image link](https://ibb.co/Ptz2GPh) 
+## [Image link](https://ibb.co/QmXpJqP) 
 
 ---
 
