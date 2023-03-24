@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head th:replace="fragments/header :: head">
 </head>
 <body style="background-color: #bfe2e9;">
 <nav th:replace="fragments/navbar :: navbar">
 </nav>
-<header class="masthead"  style="background-image: url('../static/assets/img/cryptocurrency-business-1.jpg')" th:style="'background-image: url(' + @{/assets/img/cryptocurrency-business-1.jpg} + ')'">
+<header class="masthead"  style="background-image: url('../static/assets/img/posts.crypto.jpg')" th:style="'background-image: url(' + @{/assets/img/posts.crypto.jpg} + ')'">
   <div class="container position-relative px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
       <div class="col-md-10 col-lg-8 col-xl-7">
@@ -17,28 +17,53 @@
     </div>
   </div>
 </header>
-
   <hr/>
-  <div>
-    <ul>
-      <li><a th:href="@{/posts/new}">New Post</a> </li>
-    </ul>
-    <form th:action="@{/auth/logout}" method="get">
-      <button type="submit">Logout</button>
-    </form>
-  </div>
+<div style="text-align: right; margin-right: 40px;">
+  <ul>
+    <li><a th:href="@{/posts/new}" style="font-size: 1.2em; border: 1px solid black; padding: 5px;">Add New Post</a></li>
+  </ul>
+</div>
+<form action="#" th:action="@{/home}" method="get" th:object="${filterOptions}">
+  <label th:text="#{post.filter.label}" style="font-weight: bold;"> Filter options </label>
+
+  <label for="title" th:text="#{post.filter.title}"> Title </label>
+  <input id="title" type="text" placeholder="title" th:field="*{title}"/>
+
+  <label for="content" th:text="#{post.filter.content}"> Content </label>
+  <input id="content" type="text" placeholder="content" th:field="*{content}"/>
+
+<!--  <label for="rating" th:text="#{post.filter.rating}"> Rating </label>-->
+<!--  <input id="rating" type="number" placeholder="rating" th:field="*{rating}"/>-->
+
+<!--  <label for="createDateTime" th:text="#{post.filter.createDateTime}"> Create Date </label>-->
+<!--  <input id="createDateTime" type="date" placeholder="create date" th:field="*{createDateTime}"/>-->
+
+<!--  <label for="updateDateTime" th:text="#{post.filter.updateDateTime}"> Update Date </label>-->
+<!--  <input id="updateDateTime" type="date" placeholder="update date" th:field="*{updateDateTime}"/>-->
+
+  <input type="submit" value="Filter">
+</form>
   </br>
-  <div class="post-container">
-    <div class="post" th:each="post : ${posts}">
-      <h3><a th:href="@{'/posts/' + ${post.postId}}" th:text="${post.title}">Title</a></h3>
-      <h5 th:text="'Written by ' + ${post.user.firstName} +' '+ ${post.user.lastName}">Full Name</h5>
-      <h5 th:text="'Written by ' + ${post.user.firstName} +' '+ ${post.user.lastName}">Full Name</h5>
-      <h5 th:text="'Published at ' + ${post.createTime}">Created at</h5>
-      <h5 th:text="'Updated at ' + ${post.updateTime}">Updated at</h5>
-      <p th:text="${post.content}">body text</p>
-      <br/>
+<div class="post-container">
+  <div class="post" th:each="post : ${posts}">
+    <div class="post-preview">
+      <a href="post.html" th:href="@{'/posts/' + ${post.postId}}">
+        <h2 class="post-title" th:text="${post.title}">Title</h2>
+        <h3 class="post-subtitle" th:text="${post.content}">Content</h3>
+      </a>
+      <p class="post-meta">
+        Posted by <span th:text="${post.user.firstName} +' '+ ${post.user.lastName}"></span>
+        <span th:if="${post.createTime != post.updateTime}">
+          on <span th:text="${post.createTime}"></span> and updated on <span th:text="${post.updateTime}"></span>
+        </span>
+        <span th:unless="${post.createTime != post.updateTime}">
+          on <span th:text="${post.createTime}"></span>
+        </span>
+      </p>
+      <hr style="border-top: 1px solid black;"/>
     </div>
   </div>
+</div>
 <footer class="border-top" th:replace="fragments/footer :: footer">
 </footer>
 <!-- Bootstrap core JS-->

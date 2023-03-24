@@ -3,6 +3,8 @@ package com.example.forummanagementsystem.controllers.mvc;
 import com.example.forummanagementsystem.exceptions.AuthorizationException;
 import com.example.forummanagementsystem.helpers.AuthenticationHelper;
 import com.example.forummanagementsystem.models.Post;
+import com.example.forummanagementsystem.models.PostFilterDto;
+import com.example.forummanagementsystem.models.PostFilterOptions;
 import com.example.forummanagementsystem.services.PostService;
 import com.example.forummanagementsystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,17 +52,18 @@ public class HomeController {
     public boolean populateIsAuthenticated(HttpSession session) {
         return session.getAttribute("currentUser") != null;
     }
-    @GetMapping("/home")
-    public String getHomePage(Model model, HttpSession session) {
-        try {
-            authenticationHelper.tryGetUser(session);
-        } catch (AuthorizationException e){
-            return "redirect:/auth/login";
-        }
-        List<Post> posts = postService.getAll();
-        model.addAttribute("posts", posts);
-        return "home";
-    }
+//    @GetMapping("/home")
+//    public String getHomePage(Model model, HttpSession session) {
+//        try {
+//            authenticationHelper.tryGetUser(session);
+//        } catch (AuthorizationException e){
+//            return "redirect:/auth/login";
+//        }
+//        List<Post> posts = postService.getAll();
+//        model.addAttribute("posts", posts);
+//
+//        return "home";
+//    }
 
     @PostMapping("/home")
     public String home(Model model) {
@@ -68,4 +71,26 @@ public class HomeController {
         model.addAttribute("posts", posts);
         return "home";
     }
+
+    @GetMapping("/home")
+    public String showAllBeers(@ModelAttribute("filterOptions") PostFilterDto filterDto, Model model, HttpSession session) {
+        try {
+            authenticationHelper.tryGetUser(session);
+        } catch (AuthorizationException e){
+            return "redirect:/auth/login";
+        }
+        PostFilterOptions filterOptions = new PostFilterOptions(
+                filterDto.getTitle(),
+                filterDto.getContent(),
+                filterDto.getRating(),
+                filterDto.getCreateDateTime(),
+                filterDto.getUpdateDateTime(),
+                filterDto.getSortBy(),
+                filterDto.getSortOrder()
+        );
+        model.addAttribute("posts", postService.get(filterOptions));
+        model.addAttribute("filterOptions", filterDto);
+        return "home";
+    }
+
 }

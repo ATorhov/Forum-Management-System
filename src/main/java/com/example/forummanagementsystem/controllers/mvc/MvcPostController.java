@@ -3,10 +3,7 @@ package com.example.forummanagementsystem.controllers.mvc;
 import com.example.forummanagementsystem.exceptions.AuthorizationException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.helpers.AuthenticationHelper;
-import com.example.forummanagementsystem.models.Comment;
-import com.example.forummanagementsystem.models.Post;
-import com.example.forummanagementsystem.models.PostDto;
-import com.example.forummanagementsystem.models.User;
+import com.example.forummanagementsystem.models.*;
 import com.example.forummanagementsystem.services.PostService;
 import com.example.forummanagementsystem.services.UserService;
 import com.example.forummanagementsystem.services.mappers.PostMapper;
@@ -66,6 +63,8 @@ public class MvcPostController {
         try {
             Post post = postService.getById(id);
             model.addAttribute("post", post);
+//            System.out.println(post.getLikes());
+//            System.out.println(post.getDislikes());
             List<Comment> comments = postService.getCommentsByPostId(id);
             model.addAttribute("comments", comments);
             return "post";
@@ -185,10 +184,8 @@ public class MvcPostController {
             return "error";
         }
     }
-
-
     @GetMapping("{id}/opinion")
-    public @ResponseBody Map<String, Long> addOpinion(HttpSession session, @PathVariable Long id, @RequestParam Long opinion) {
+    public String addOpinion(HttpSession session, @PathVariable Long id, @RequestParam Long opinion) {
         User user;
         try {
             user = authenticationHelper.tryGetUser(session);
@@ -198,8 +195,8 @@ public class MvcPostController {
         Post post = postService.getById(id);
         postService.addOpinion(user, post, opinion);
         Map<String, Long> result = new HashMap<>();
-        result.put("likes", (long) post.getLikes());
-        result.put("dislikes", (long) post.getDislikes());
-        return result;
+        result.put("likes", post.getLikes());
+        result.put("dislikes", post.getDislikes());
+        return "redirect:/posts/"+id;
     }
 }
