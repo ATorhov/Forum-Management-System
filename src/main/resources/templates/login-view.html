@@ -11,13 +11,13 @@
 <form action="#" th:action="@{/auth/login}" th:object="${login}" method="post">
     <label th:text="#{user.label.username}">Username</label>
     <br/>
-    <input type="text" th:field="*{username}"/>
+    <input type="text" required minlength="4" maxlength="32" th:field="*{username}"/>
     <label class="error" th:errors="*{username}">Username error placeholder</label>
     <br/><br/>
 
     <label th:text="#{user.label.password}">Password</label>
     <br/>
-    <input type="password" th:field="*{password}"/>
+    <input type="password" required minlength="4" maxlength="32" th:field="*{password}"/>
     <label class="error" th:errors="*{password}">Password error placeholder</label>
     <br/><br/>
 

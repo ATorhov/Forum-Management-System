@@ -7,7 +7,8 @@
 
 <div class="user" th:object="${user}">
     <a th:text="${user.getFirstName() + ' '
-        +user.getLastName() + '; email: ' + user.getEmail() + '; Admin: ' + user.isAdmin()}">User</a>
+        +user.getLastName() + '; email: ' + user.getEmail() + '; Admin: ' + user.isAdmin() + '; Registered on ' +
+        user.getRegisteredTime()}">User</a>
     
     <br/>
 </div>
