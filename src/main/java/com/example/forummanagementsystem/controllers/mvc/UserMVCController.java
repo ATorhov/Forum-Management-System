@@ -50,6 +50,8 @@ public class UserMVCController {
     public String getAdminDashboard(Model model, HttpSession session){
         User user = authenticationHelper.tryGetUser(session);
         authenticationHelper.verifyIsAdmin(user);
+        model.addAttribute("usersCount", userService.getUsersCount());
+
         return "admin-dashboard";
     }
 

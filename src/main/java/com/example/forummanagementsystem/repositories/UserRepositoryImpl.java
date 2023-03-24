@@ -7,6 +7,7 @@ import com.example.forummanagementsystem.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import org.hibernate.query.Query;
@@ -16,9 +17,11 @@ import java.util.*;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
+    private final JdbcTemplate jdbcTemplate;
     private final SessionFactory sessionFactory;
 
-    public UserRepositoryImpl(SessionFactory sessionFactory) {
+    public UserRepositoryImpl(JdbcTemplate jdbcTemplate, SessionFactory sessionFactory) {
+        this.jdbcTemplate = jdbcTemplate;
         this.sessionFactory = sessionFactory;
     }
 
@@ -249,5 +252,14 @@ public class UserRepositoryImpl implements UserRepository {
 
 
         return queryString.toString();
+    }
+
+    public int getUsersCount() {
+        try {
+            String sql = "SELECT COUNT(*) FROM users";
+            return jdbcTemplate.queryForObject(sql, Integer.class);
+        } catch (NullPointerException e){
+            throw new NullPointerException(e.getMessage());
+        }
     }
 }

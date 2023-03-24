@@ -3,10 +3,14 @@ package com.example.forummanagementsystem.services;
 import com.example.forummanagementsystem.exceptions.AuthorizationException;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.repositories.UserRepository;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -20,7 +24,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAll(User user) {
-        if (!user.isAdmin()){
+        if (!user.isAdmin()) {
             throw new AuthorizationException("Only admin can see all the users!");
         }
         return userRepository.get();
@@ -79,5 +83,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changeIsBlocked(User user, boolean to) {
         userRepository.changeIsBlocked(user, to);
+    }
+
+    public int getUsersCount() {
+        return userRepository.getUsersCount();
     }
 }

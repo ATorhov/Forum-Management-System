@@ -37,4 +37,6 @@ public interface UserRepository {
     void changeIsAdmin(User user, boolean to);
 
     void changeIsBlocked(User user, boolean to);
+
+    int getUsersCount();
 }
