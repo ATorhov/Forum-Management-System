@@ -2,6 +2,7 @@ package com.example.forummanagementsystem.services;
 
 import com.example.forummanagementsystem.models.Comment;
 import com.example.forummanagementsystem.models.Post;
+import com.example.forummanagementsystem.models.PostFilterOptions;
 import com.example.forummanagementsystem.models.User;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,8 @@ import java.util.Optional;
 public interface PostService {
 
     List<Post> getAll();
+
+    List<Post> get(PostFilterOptions postFilterOptions);
     Post getById(Long id);
 
     Post getByTitle(String name);

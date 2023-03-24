@@ -1,9 +1,6 @@
 package com.example.forummanagementsystem.repositories;
 
-import com.example.forummanagementsystem.models.Comment;
-import com.example.forummanagementsystem.models.Opinion;
-import com.example.forummanagementsystem.models.Post;
-import com.example.forummanagementsystem.models.User;
+import com.example.forummanagementsystem.models.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +9,8 @@ import java.util.Optional;
 public interface PostRepository {
 
     List<Post> getAll();
+
+    List<Post> get(PostFilterOptions filterOptions);
     Post getById(Long id);
 
     Post getByTitle(String name);

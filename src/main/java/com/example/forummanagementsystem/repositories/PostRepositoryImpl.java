@@ -1,10 +1,7 @@
 package com.example.forummanagementsystem.repositories;
 
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
-import com.example.forummanagementsystem.models.Comment;
-import com.example.forummanagementsystem.models.Opinion;
-import com.example.forummanagementsystem.models.Post;
-import com.example.forummanagementsystem.models.User;
+import com.example.forummanagementsystem.models.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -30,6 +27,52 @@ public class PostRepositoryImpl implements PostRepository {
         try (Session session = sessionFactory.openSession()) {
             TypedQuery<Post> query = session.createQuery("from Post", Post.class);
             return query.getResultList();
+        }
+    }
+
+    // for MVC filtering only;
+    @Override
+    public List<Post> get(PostFilterOptions filterOptions) {
+        try (Session session = sessionFactory.openSession()) {
+            List<String> filters = new ArrayList<>();
+            Map<String, Object> params = new HashMap<>();
+
+            filterOptions.getTitle().ifPresent(value -> {
+                filters.add("title like :title");
+                params.put("title", String.format("%%%s%%", value));
+            });
+
+            filterOptions.getContent().ifPresent(value -> {
+                filters.add("content like :content");
+                params.put("content", String.format("%%%s%%", value));
+            });
+
+            filterOptions.getContent().ifPresent(value -> {
+                filters.add("rating >= :minRating");
+                params.put("rating", value);
+            });
+
+            filterOptions.getContent().ifPresent(value -> {
+                filters.add("createDate >= :startDate");
+                params.put("createDate", value);
+            });
+
+            filterOptions.getContent().ifPresent(value -> {
+                filters.add("updateDate >= :updateDate");
+                params.put("updateDate", value);
+            });
+
+            StringBuilder queryString = new StringBuilder("from Post");
+            if (!filters.isEmpty()) {
+                queryString
+                        .append(" where ")
+                        .append(String.join(" and ", filters));
+            }
+            queryString.append(generateOrderBy(filterOptions));
+
+            Query<Post> query = session.createQuery(queryString.toString(), Post.class);
+            query.setProperties(params);
+            return query.list();
         }
     }
 
@@ -210,5 +253,37 @@ public class PostRepositoryImpl implements PostRepository {
             queryString.append(" desc ");
         }
         return queryString.toString();
+    }
+
+    private String generateOrderBy(PostFilterOptions filterOptions) {
+        if (filterOptions.getSortBy().isEmpty()) {
+            return "";
+        }
+
+        String orderBy = "";
+        switch (filterOptions.getSortBy().get()) {
+            case "title":
+                orderBy = "title";
+                break;
+            case "content":
+                orderBy = "content";
+                break;
+            case "rating":
+                orderBy = "rating";
+                break;
+            case "createDate":
+                orderBy = "createDate";
+                break;
+            case "updateDate":
+                orderBy = "updateDate";
+                break;
+        }
+
+        orderBy = String.format(" order by %s", orderBy);
+
+        if (filterOptions.getSortOrder().isPresent() && filterOptions.getSortOrder().get().equalsIgnoreCase("desc")) {
+            orderBy = String.format("%s desc", orderBy);
+        }
+        return orderBy;
     }
 }
