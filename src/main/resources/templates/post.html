@@ -1,44 +1,64 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Crypto forum :: Post</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-            crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-    <script src="https://rawgit.com/uagrace/like-dislike/master/js/like-dislike.min.js"></script>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments/header :: head">
 </head>
-<hr>
-<body>
+<body style="background-color: #bfe2e9;">
+<nav th:replace="fragments/navbar :: navbar">
+</nav>
+<header class="masthead"  style="background-image: url('../static/assets/img/posts.crypto.jpg')" th:style="'background-image: url(' + @{/assets/img/posts.crypto.jpg} + ')'">
+  <div class="container position-relative px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <div class="site-heading">
+          <h1>Cryptocurrency Forum</h1>
+          <span class="subheading">"The reason we are all here is that the current financial system is outdated."<em> Charlie Shrem – founder & CEO Bitinstant</em></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<hr/>
+<div style="text-align: right; margin-right: 40px;">
+  <span id="post-rating"></span>
+</div>
 <div class="container">
-  <a th:href="@{/home}">Home</a>
-  <a th:href="@{'/posts/'+ ${post.postId} +'/edit'}">Edit</a>
-  <a th:href="@{'/posts/'+ ${post.postId} +'/delete'}">Delete</a>
+  <a th:href="${isAuthenticated} ? @{/home} : @{/}">Home</a>
+  <a th:if="${isAuthenticated}" th:href="@{'/posts/'+ ${post.postId} +'/edit'}">Edit</a>
+  <a th:if="${isAuthenticated}" th:href="@{'/posts/'+ ${post.postId} +'/delete'}">Delete</a>
   <div class="post">
     <h2 class="text-center" th:text="${post.title}">Title</h2>
-    <h5 th:text="'Written by ' + ${post.user.firstName} +' '+ ${post.user.lastName}">Full Name</h5>
-    <h5 th:text="'Created on '+${post.createTime}">Created Date</h5>
-    <h5 th:text="'Updated at ' + ${post.updateTime}">Updated at</h5>
-    <p th:text="${post.content}">body text</p>
+    <span style="font-style: italic; color: grey;">Posted by <span th:text="${post.user.firstName} +' '+ ${post.user.lastName}"></span>
+    <span th:if="${post.createTime != post.updateTime}">
+  <span>on <span th:text="${post.getFormattedCreateTime()}"></span> and updated on <span th:text="${post.getFormattedUpdateTime()}"></span></span>
+</span>
+    <span th:unless="${post.createTime != post.updateTime}">
+  <span>on <span th:text="${post.getFormattedCreateTime()}"></span></span>
+</span>
+</span>
+<!--    </br>-->
+    <h5 th:text="${post.content}">Content</h5>
   </div>
   <div class="row justify-content-end">
     <div class="col-auto">
-      <div class="d-grid col-1"> <a class="btn btn-primary" href="#!" th:href="@{__${#httpServletRequest.requestURI}__/opinion(opinion=1)}">Like</a></div>
+      <div class="d-grid col-1">
+        <a class="btn btn-primary" href="#!" th:if="${isAuthenticated}" th:href="@{__${#httpServletRequest.requestURI}__/opinion(opinion=1)}">Like</a>
+        <span th:unless="${isAuthenticated}" th:text="'Likes'"></span>
+      </div>
       <span class="likes" th:text="${post.getLikes()}">0</span>
     </div>
     <div class="col-auto">
-      <div class="d-grid col-1"><a class="btn btn-secondary" href="#!" th:href="@{__${#httpServletRequest.requestURI}__/opinion(opinion=2)}">Dislike</a></div>
+      <div class="d-grid col-1">
+        <a class="btn btn-secondary" href="#!" th:if="${isAuthenticated}" th:href="@{__${#httpServletRequest.requestURI}__/opinion(opinion=2)}">Dislike</a>
+        <span th:unless="${isAuthenticated}" th:text="'Dislikes'"></span>
+      </div>
       <span class="dislikes" th:text="${post.getDislikes()}">0</span>
     </div>
   </div>
-</div>
+
+
+
   <ul>
-    <li><a th:href="@{'/posts/'+ ${post.postId} +'/comments/new'}">New comment</a></li>
+    <li><a th:if="${isAuthenticated}" th:href="@{'/posts/'+ ${post.postId} +'/comments/new'}">New comment</a></li>
   </ul>
 </div>
 <div class="row" th:each="comment : ${comments}">
@@ -55,18 +75,19 @@
     <li>
       <ul>
         <ul>
-          <a th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/edit'}">Edit</a> <a
-                th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/delete'}">Delete</a></li>
+          <a th:if="${isAuthenticated}" th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/edit'}">Edit</a> <a
+                th:if="${isAuthenticated}" th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/delete'}">Delete</a></li>
         </ul>
       </ul>
   </ul>
 </div>
+<footer class="border-top" th:replace="fragments/footer :: footer">
+</footer>
 <script>
-  const urlParams = new URLSearchParams(window.location.search);
-  const refresh = urlParams.get('refresh');
-  if (refresh) {
-    location.reload();
-  }
+  const likes = parseInt(document.querySelector('.likes').innerText);
+  const dislikes = parseInt(document.querySelector('.dislikes').innerText);
+  const rating = likes - dislikes;
+  document.getElementById('post-rating').innerText = `Rating: ${rating}`;
 </script>
 </body>
 </html>
