@@ -8,6 +8,7 @@ import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -78,10 +79,6 @@ public class Post {
         return rating;
     }
 
-    // TODO delete setRating once likes/dislikes behaviour is implemented.
-    public void setRating(long rating) {
-        this.rating = rating;
-    }
 
     public void setRealRating() {
         this.rating = getLikes() - getDislikes();
@@ -124,22 +121,40 @@ public class Post {
         this.opinions = opinions;
     }
 
-    public long getLikes(){
+    public long getLikes() {
         long likes = 0;
-        likes = opinions.values().stream()
-                .filter(opinion -> opinion.getType().equals("LIKE")).count();
-        return likes;
+        try {
+            likes = opinions.values().stream()
+                    .filter(opinion -> opinion.getType().equals("LIKE")).count();
+            return likes;
+        } catch (NullPointerException e) {
+            return 0;
+        }
     }
 
     public long getDislikes(){
         long dislikes = 0;
-        dislikes = opinions.values().stream()
-                .filter(opinion -> opinion.getType().equals("DISLIKE")).count();
-        return dislikes;
+        try {
+            dislikes = opinions.values().stream()
+                    .filter(opinion -> opinion.getType().equals("DISLIKE")).count();
+            return dislikes;
+        } catch (NullPointerException e){
+            return 0;
+        }
     }
 
     public void setUser(@NonNull User user) {
         this.user = user;
+    }
+
+    public String getFormattedCreateTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd 'at' HH:mm");
+        return createTime.format(formatter);
+    }
+
+    public String getFormattedUpdateTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd 'at' HH:mm");
+        return updateTime.format(formatter);
     }
 
     @Override

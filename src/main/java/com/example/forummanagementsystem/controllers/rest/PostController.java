@@ -110,7 +110,7 @@ public class PostController {
             postToUpdate.setTitle(postDto.getTitle());
             postToUpdate.setContent(postDto.getContent());
             if (user.isAdmin()) {
-                postToUpdate.setRating(postDto.getRating());
+                postToUpdate.setRealRating();
             }
 
             postService.update(postToUpdate);

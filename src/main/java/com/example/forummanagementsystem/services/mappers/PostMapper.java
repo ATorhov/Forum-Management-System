@@ -35,8 +35,9 @@ public class PostMapper {
     private void dtoToObject(PostDto postDto, Post post) {
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
-        post.setRating(postDto.getRating());
+        post.setRealRating();
         post.setUpdateTime(LocalDateTime.now());
+        post.setOpinions(postDto.getOpinions());
     }
 
     public Post createDtoToObject(PostDto postDto, User user) {
@@ -46,7 +47,8 @@ public class PostMapper {
         post.setCreateTime(LocalDateTime.now());
         post.setUpdateTime(post.getCreateTime());
         post.setUser(user);
-        post.setRating(postDto.getRating());
+        post.setOpinions(postDto.getOpinions());
+        post.setRealRating();
         return post;
     }
 
@@ -63,6 +65,7 @@ public class PostMapper {
         postDto.setContent(post.getContent());
         postDto.setCreateTime();
         postDto.setRating(post.getRating());
+        postDto.setOpinions(post.getOpinions());
         return postDto;
     }
 

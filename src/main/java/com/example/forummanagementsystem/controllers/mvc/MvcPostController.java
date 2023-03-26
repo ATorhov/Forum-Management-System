@@ -56,15 +56,8 @@ public class MvcPostController {
     @GetMapping("{id}")
     public String getPost(@PathVariable Long id, Model model, HttpSession httpSession) {
         try {
-            authenticationHelper.tryGetUser(httpSession);
-        }catch (AuthorizationException e){
-            return "redirect:/auth/login";
-        }
-        try {
             Post post = postService.getById(id);
             model.addAttribute("post", post);
-//            System.out.println(post.getLikes());
-//            System.out.println(post.getDislikes());
             List<Comment> comments = postService.getCommentsByPostId(id);
             model.addAttribute("comments", comments);
             return "post";
@@ -197,6 +190,8 @@ public class MvcPostController {
         Map<String, Long> result = new HashMap<>();
         result.put("likes", post.getLikes());
         result.put("dislikes", post.getDislikes());
+        post.setRealRating();
+        postService.update(post);
         return "redirect:/posts/"+id;
     }
 }
