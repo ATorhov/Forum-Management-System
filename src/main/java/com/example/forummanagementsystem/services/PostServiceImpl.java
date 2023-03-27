@@ -143,6 +143,11 @@ public class PostServiceImpl implements PostService {
 
     }
 
+    @Override
+    public int getPostsCount() {
+        return repository.getPostsCount();
+    }
+
 
     @Override
     public void delete(Long id) {

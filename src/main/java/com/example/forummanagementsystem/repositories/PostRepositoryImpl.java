@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
@@ -16,10 +17,11 @@ import java.util.*;
 public class PostRepositoryImpl implements PostRepository {
 
     private final SessionFactory sessionFactory;
-
+    private final JdbcTemplate jdbcTemplate;
     @Autowired
-    public PostRepositoryImpl(SessionFactory sessionFactory) {
+    public PostRepositoryImpl(SessionFactory sessionFactory, JdbcTemplate jdbcTemplate) {
         this.sessionFactory = sessionFactory;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
@@ -100,6 +102,16 @@ public class PostRepositoryImpl implements PostRepository {
             );
             query.setParameter("postId", id);
             return query.getResultList();
+        }
+    }
+
+    @Override
+    public int getPostsCount() {
+        try {
+            String sql = "SELECT COUNT(*) FROM posts";
+            return jdbcTemplate.queryForObject(sql, Integer.class);
+        } catch (NullPointerException e){
+            throw new NullPointerException(e.getMessage());
         }
     }
 

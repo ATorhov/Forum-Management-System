@@ -34,4 +34,5 @@ public interface PostService {
 
     void addOpinion(User user, Post post, Long id);
 
+    int getPostsCount();
 }

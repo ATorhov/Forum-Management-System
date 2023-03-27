@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface PostRepository {
 
+
     List<Post> getAll();
 
     List<Post> get(PostFilterOptions filterOptions);
@@ -28,4 +29,7 @@ public interface PostRepository {
     List<Post> search(Optional<String> all);
 
     List<Comment> getCommentsByPostId(Long id);
+
+    int getPostsCount();
+
 }

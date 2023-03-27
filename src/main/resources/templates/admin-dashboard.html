@@ -11,7 +11,7 @@
 <!-- for header part -->
 
 <nav th:replace="fragments/navbar :: navbar"></nav>
-<header class="masthead"  style="background-image: url('../static/assets/img/cryptocurrency-business-1.jpg')" th:style="'background-image: url(' + @{/assets/img/cryptocurrency-business-1.jpg} + ')'"></header>
+<header class="masthead"  style="background-image: url('../static/assets/img/cryptocurrency-business-1.jpg')" th:style="'background-image: url(' + @{/assets/img/cryptocurrency-business-1.jpg} + ');' + 'padding-top: 1.5rem'"></header>
 
 <div class="main-container">
   <div class="navcontainer">
@@ -65,8 +65,8 @@
 
       <div class="box box2">
         <div class="text">
-          <h2 class="topic-heading">150</h2>
-          <h2 class="topic">Likes</h2>
+          <h2 class="topic-heading" th:text="${postsCount}">150</h2>
+          <h2 class="topic">Posts</h2>
         </div>
 
         <img src=
