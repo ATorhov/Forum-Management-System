@@ -4,6 +4,7 @@ package com.example.forummanagementsystem.repositories;
 
 
 
+import com.example.forummanagementsystem.models.RegisterDto;
 import com.example.forummanagementsystem.models.User;
 
 import java.time.LocalDateTime;
@@ -39,4 +40,6 @@ public interface UserRepository {
     void changeIsBlocked(User user, boolean to);
 
     int getUsersCount();
+
+    boolean userExists(RegisterDto register);
 }

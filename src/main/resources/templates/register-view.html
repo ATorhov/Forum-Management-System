@@ -1,51 +1,65 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Register</title>
-    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
-</head>
+<head th:replace="fragments/header :: head"></head>
 <body>
-<h2>Register</h2>
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<header class="masthead"  style="background-image: url('../static/assets/img/cryptocurrency-business-1.jpg')" th:style="'background-image: url(' + @{/assets/img/cryptocurrency-business-1.jpg} + ');' + 'padding-top: 1.5rem'"></header>
 
-<form action="#" th:action="@{/auth/register}" th:object="${register}" method="post">
+<h2 style="margin-left: 600px">Register</h2>
+
+<form action="#" th:action="@{/auth/register}"  method="post" style="margin-left: 600px"
+>
     <label th:text="#{user.label.username}">Username</label>
     <br/>
-    <input type="text" th:field="*{username}"/>
-    <label class="error" th:errors="*{username}">Username error placeholder</label>
+    <input type="text"  required minlength="4" maxlength="32" th:field="*{register.username}"/>
+    <small th:if="${userExistsError}"  id="usernameUniqueError"
+           class="text-light form-text bg-danger rounded">Username is already occupied</small>
+    <label th:errors="*{register.username}">Username error placeholder</label>
     <br/><br/>
 
     <label th:text="#{user.label.password}">Password</label>
     <br/>
-    <input type="password" th:field="*{password}"/>
-    <label class="error" th:errors="*{password}">Password error placeholder</label>
+    <input type="password" required minlength="4" maxlength="32" th:field="*{register.password}"/>
+    <label class="error" th:errors="*{register.password}">Password error placeholder</label>
     <br/><br/>
 
     <label th:text="#{user.label.password-confirm}">Confirm Password</label>
     <br/>
-    <input type="password" th:field="*{passwordConfirm}"/>
-    <label class="error" th:errors="*{passwordConfirm}">Password confirm error placeholder</label>
+    <input type="password" required minlength="4" maxlength="32" th:field="*{register.passwordConfirm}"/>
+    <small th:if="${notConfirmed}"  id="notConfirmedError"
+           class="text-light form-text bg-danger rounded">Passwords are not identical</small>
+    <label class="error" th:errors="*{register.passwordConfirm}">Password confirm error placeholder</label>
     <br/><br/>
 
     <label th:text="#{user.label.first-name}">First Name</label>
     <br/>
-    <input type="text" th:field="*{firstName}"/>
-    <label class="error" th:errors="*{firstName}">First name error placeholder</label>
+    <input type="text" required minlength="4" maxlength="32" th:field="*{register.firstName}"/>
+    <label class="error" th:errors="*{register.firstName}">First name error placeholder</label>
     <br/><br/>
 
     <label th:text="#{user.label.last-name}">Last Name</label>
     <br/>
-    <input type="text" th:field="*{lastName}"/>
-    <label class="error" th:errors="*{lastName}">Last name error placeholder</label>
+    <input type="text" required minlength="4" maxlength="32" th:field="*{register.lastName}"/>
+    <label class="error" th:errors="*{register.lastName}">Last name error placeholder</label>
     <br/><br/>
 
-    <label th:text="#{user.label.email}">Email</label>
+    <label th:text="#{user.label.email}">Last Name</label>
     <br/>
-    <input type="text" th:field="*{email}"/>
-    <label class="error" th:errors="*{email}">Email error placeholder</label>
-    <br/><br/>
+    <input type="text" required minlength="4" maxlength="32" th:field="*{register.email}"/>
+    <label class="error" th:errors="*{register.email}">Email error placeholder</label>
+    <br/>
+    <br/>
+
+    <label th:text="#{user-additional.label.phone-number}">Last Name</label>
+    <br/>
+    <input type="text" th:field="*{phoneNumber.phoneNumber}"/>
+    <label class="error" th:errors="*{phoneNumber.phoneNumber}">Email error placeholder</label>
+    <br/>
+    <br/>
+
 
     <input type="submit" value="Register"/>
 </form>
+<footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>

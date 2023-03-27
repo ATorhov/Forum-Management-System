@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,8 +27,6 @@ public class User {
     private String username;
     @Column
     private String password;
-    @Column(name = "phone_number")
-    private String phoneNumber;
     @Column(name = "registration_date")
     private LocalDateTime registeredTime;
     @Column(name = "is_admin")
@@ -35,11 +34,14 @@ public class User {
     @Column(name = "is_blocked")
     private boolean isBlocked;
 
+
+    @OneToOne(mappedBy = "user")
+    private UserAdditionalInfo phoneNumber;
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany( mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
 
     public User() {
@@ -60,14 +62,6 @@ public class User {
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public Long getId() {

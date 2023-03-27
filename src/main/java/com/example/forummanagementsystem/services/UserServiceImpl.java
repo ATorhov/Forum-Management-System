@@ -1,6 +1,7 @@
 package com.example.forummanagementsystem.services;
 
 import com.example.forummanagementsystem.exceptions.AuthorizationException;
+import com.example.forummanagementsystem.models.RegisterDto;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.repositories.UserRepository;
 import org.hibernate.Session;
@@ -87,5 +88,10 @@ public class UserServiceImpl implements UserService {
 
     public int getUsersCount() {
         return userRepository.getUsersCount();
+    }
+
+    @Override
+    public boolean userExists(RegisterDto register) {
+        return userRepository.userExists(register);
     }
 }

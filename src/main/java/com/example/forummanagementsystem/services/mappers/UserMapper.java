@@ -1,8 +1,6 @@
 package com.example.forummanagementsystem.services.mappers;
 
-import com.example.forummanagementsystem.models.RegisterDto;
-import com.example.forummanagementsystem.models.User;
-import com.example.forummanagementsystem.models.UserDto;
+import com.example.forummanagementsystem.models.*;
 import com.example.forummanagementsystem.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -46,7 +44,13 @@ public class UserMapper {
         user.setPassword(userDto.getPassword());
         user.setEmail(userDto.getEmail());
         user.setUsername(userDto.getUsername());
-        user.setPhoneNumber(userDto.getPhoneNumber());
+    }
+
+    public UserAdditionalInfo userAdditionalInfoDtoToObject(UserAdditionalInfoDto userAdditionalInfoDto,
+                                               UserAdditionalInfo userAdditionalInfo){
+        userAdditionalInfo.setPhoneNumber(userAdditionalInfoDto.getPhoneNumber());
+        userAdditionalInfo.setUser(userAdditionalInfoDto.getUser());
+        return userAdditionalInfo;
     }
 
 }

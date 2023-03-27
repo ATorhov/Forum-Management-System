@@ -2,6 +2,7 @@ package com.example.forummanagementsystem.services;
 
 
 
+import com.example.forummanagementsystem.models.RegisterDto;
 import com.example.forummanagementsystem.models.User;
 
 import java.util.List;
@@ -35,4 +36,6 @@ public interface UserService {
     void changeIsBlocked(User user, boolean to);
 
     int getUsersCount();
+
+    boolean userExists(RegisterDto register);
 }

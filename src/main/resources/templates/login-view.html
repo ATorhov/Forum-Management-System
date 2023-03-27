@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
-</head>
+<head th:replace="fragments/header :: head"></head>
 <body>
-<h2>Login</h2>
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<header class="masthead"  style="background-image: url('../static/assets/img/cryptocurrency-business-1.jpg')" th:style="'background-image: url(' + @{/assets/img/cryptocurrency-business-1.jpg} + ');' + 'padding-top: 1.5rem'"></header>
 
-<form action="#" th:action="@{/auth/login}" th:object="${login}" method="post">
+<h2 style="margin-left: 600px">Login</h2>
+
+<form action="#" th:action="@{/auth/login}" th:object="${login}" style="margin-left: 600px" method="post">
     <label th:text="#{user.label.username}">Username</label>
     <br/>
     <input type="text" required minlength="4" maxlength="32" th:field="*{username}"/>
@@ -23,5 +22,6 @@
 
     <input type="submit" value="Login"/>
 </form>
+<footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>
