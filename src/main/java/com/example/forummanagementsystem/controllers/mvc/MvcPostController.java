@@ -36,6 +36,11 @@ public class MvcPostController {
     @Autowired
     private PostMapper postMapper;
 
+    @ModelAttribute("user")
+    public User getUser(HttpSession httpSession) {
+        return authenticationHelper.tryGetUser(httpSession);
+    }
+
     @ModelAttribute("isAuthenticated")
     public boolean isAuthenticated(HttpSession httpSession) {
         return httpSession.getAttribute("currentUser") != null;

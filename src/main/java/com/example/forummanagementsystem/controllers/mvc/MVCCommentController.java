@@ -45,6 +45,10 @@ public class MVCCommentController {
     @Autowired
     private UserService userService;
 
+    @ModelAttribute("user")
+    public User getUser(HttpSession httpSession) {
+        return authenticationHelper.tryGetUser(httpSession);
+    }
 
     @ModelAttribute("isAuthenticated")
     public boolean isAuthenticated(HttpSession httpSession) {
