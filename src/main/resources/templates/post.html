@@ -22,9 +22,8 @@
   <span id="post-rating"></span>
 </div>
 <div class="container">
-  <a th:href="${isAuthenticated} ? @{/home} : @{/}">Home</a>
-  <a th:if="${isAuthenticated}" th:href="@{'/posts/'+ ${post.postId} +'/edit'}">Edit</a>
-  <a th:if="${isAuthenticated}" th:href="@{'/posts/'+ ${post.postId} +'/delete'}">Delete</a>
+  <a th:if="${isAuthenticated}" th:href="@{'/posts/'+ ${post.postId} +'/edit'}" style="border: 1px solid black; padding: 5px;">Edit</a>
+  <a th:if="${isAuthenticated}" th:href="@{'/posts/'+ ${post.postId} +'/delete'}" style="border: 1px solid black; padding: 5px;">Delete</a>
   <div class="post">
     <h2 class="text-center" th:text="${post.title}">Title</h2>
     <span style="font-style: italic; color: grey;">Posted by <span th:text="${post.user.firstName} +' '+ ${post.user.lastName}"></span>
@@ -66,7 +65,8 @@
     <div class="comment">
       <ul>
         <ul>
-          <h6 class="cell" th:text="${comment.content}">content</h6>
+          <h6 class="cell" th:text="${comment.getUser().getUsername()}">username</h6>
+          <h7 class="cell" th:text="${comment.content}">content</h7>
         </ul>
       </ul>
     </div>

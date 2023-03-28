@@ -122,22 +122,18 @@ public class Post {
     }
 
     public long getLikes() {
-        long likes = 0;
         try {
-            likes = opinions.values().stream()
+            return opinions.values().stream()
                     .filter(opinion -> opinion.getType().equals("LIKE")).count();
-            return likes;
         } catch (NullPointerException e) {
             return 0;
         }
     }
 
     public long getDislikes(){
-        long dislikes = 0;
         try {
-            dislikes = opinions.values().stream()
+            return opinions.values().stream()
                     .filter(opinion -> opinion.getType().equals("DISLIKE")).count();
-            return dislikes;
         } catch (NullPointerException e){
             return 0;
         }
@@ -168,20 +164,5 @@ public class Post {
     @Override
     public int hashCode() {
         return Objects.hashCode(postId);
-    }
-
-    @Override
-    public String toString() {
-        return "Post{" +
-                "postId=" + postId +
-                ", title='" + title  +
-                ", rating=" + rating +
-                ", content='" + content +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", user=" + user +
-                ", comments=" + comments +
-                ", opinions=" + opinions +
-                '}';
     }
 }

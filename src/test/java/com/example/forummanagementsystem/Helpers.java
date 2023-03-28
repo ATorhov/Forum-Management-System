@@ -15,7 +15,7 @@ public class Helpers {
         mockPost.setPostId(2L);
         mockPost.setTitle("Mock Title");
         mockPost.setContent("Mock content of the post №1");
-        mockPost.setRating(5);
+        mockPost.setRealRating();
         mockPost.setCreateTime(LocalDateTime.now());
         mockPost.setUpdateTime(LocalDateTime.now());
         return mockPost;
@@ -26,7 +26,7 @@ public class Helpers {
         mockPost.setPostId(4L);
         mockPost.setTitle("Unique Mock Title");
         mockPost.setContent("Unique Mock content of the post №1");
-        mockPost.setRating(6);
+        mockPost.setRealRating();
         mockPost.setCreateTime(LocalDateTime.now());
         mockPost.setUpdateTime(LocalDateTime.now());
         return mockPost;
@@ -46,16 +46,15 @@ public class Helpers {
         return mockUser;
     }
 
-//    public static PostDto createPostDto() {
-//        PostDto dto = new PostDto();
-//        dto.setTitle("DtoTitle");
-//        dto.setContent("DtoContent for Unittests");
-//        dto.setRating(5);
-//        dto.setCreateTime();
-//        dto.setUpdateTime(LocalDateTime.now());
-//        dto.setUser(createMockUser());
-//        return dto;
-//    }
+    public static PostDto createPostDto() {
+        PostDto dto = new PostDto();
+        dto.setTitle("DtoTitle");
+        dto.setContent("DtoContent for Unittests");
+        dto.setRating(5);
+        dto.setCreateTime();
+        dto.setUser(createMockUser());
+        return dto;
+    }
 
 
     public static String toJson(final Object obj) {
