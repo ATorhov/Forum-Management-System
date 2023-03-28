@@ -27,7 +27,7 @@
             <div class="post-container">
                 <div class="post" th:each="post : ${posts}">
                     <div class="post-preview">
-                        <a href="post.html" th:href="@{'/posts/' + ${post.postId}}">
+                        <a href="post.html" th:href="@{'/auth/login'}">
                             <h6 style="text-align: right; margin-right: 40px;" class="post-rating" th:text="'Rating: ' + ${post.getRating()}">Rating</h6>
                             <h2 class="post-title" th:text="${post.title}">Title</h2>
                             <h4 class="post-subtitle" th:text="${#strings.length(post.content) > 200 ? #strings.substring(post.content, 0, 200) + '...' : post.content}">Content</h4>
