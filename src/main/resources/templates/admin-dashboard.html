@@ -14,26 +14,7 @@
 <header class="masthead"  style="background-image: url('../static/assets/img/cryptocurrency-business-1.jpg')" th:style="'background-image: url(' + @{/assets/img/cryptocurrency-business-1.jpg} + ');' + 'padding-top: 1.5rem'"></header>
 
 <div class="main-container">
-  <div class="navcontainer">
-    <nav class="nav">
-      <div class="nav-upper-options">
-        <div class="nav-option option1">
-          <img src=
-                       "https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
-               class="nav-img"
-               alt="dashboard">
-          <a style="color: #ededed" th:href="@{'/users/admin/dashboard'}"> Dashboard </a>
-
-        </div>
-
-        <div class="option2 nav-option">
-          <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
-               class="nav-img"
-               alt="articles">
-          <a th:href="@{'/users/all'}"> Users </a>
-        </div>
-      </div>
-    </nav>
+  <div th:replace="fragments/dashboard-main-content :: nav-container-dashboard">
   </div>
   <div class="main">
 

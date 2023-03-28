@@ -12,11 +12,11 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ms-auto py-4 py-lg-0">
         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" th:if="${isAdmin}" th:href="@{'/users/admin/dashboard'}">Admin Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about" >About</a></li>
-        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact">Contact</a></li>
+        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about" th:href="@{/about}">About</a></li>
+        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact" th:href="@{/contact}">Contact</a></li>
         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="login-view.html" th:unless="${isAuthenticated}" th:href="@{/auth/login}">Login</a></li>
         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="register-view.html" th:unless="${isAuthenticated}" th:href="@{/auth/register}">Register</a></li>
-        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="home.html" th:if="${isAuthenticated}" th:href="@{/home}">Profile</a></li>
+        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="home.html" th:if="${isAuthenticated}" th:object="${user}" th:href="@{'/users/user-details/' + ${user.getUsername()}}">Profile</a></li>
         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" th:if="${isAuthenticated}" th:href="@{/auth/logout}">Logout</a></li>
       </ul>
     </div>

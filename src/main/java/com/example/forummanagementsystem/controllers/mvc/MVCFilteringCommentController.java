@@ -41,6 +41,10 @@ public class MVCFilteringCommentController {
         this.authenticationHelper = authenticationHelper;
     }
 
+    @ModelAttribute("user")
+    public User getUser(HttpSession httpSession) {
+        return authenticationHelper.tryGetUser(httpSession);
+    }
 
     @ModelAttribute("isAuthenticated")
     public boolean isAuthenticated(HttpSession httpSession) {
@@ -66,15 +70,15 @@ public class MVCFilteringCommentController {
     public String showAllCommentsOfAPost(Model model) {
         List<Comment> comments = commentService.getAll();
         model.addAttribute("comments", comments);
-        return "FilterComments";
+        return "filter-comments";
     }
 
 
-
-    @GetMapping("FilterComments")
+    @GetMapping("/comments/all")
     public String showAllCommentsOfAPost(@ModelAttribute("filterCommentOptions") CommentFilterDto filterCommentDto, Model model, HttpSession session) {
         try {
-            authenticationHelper.tryGetUser(session);
+            User user = authenticationHelper.tryGetUser(session);
+            model.addAttribute("comments", commentService.getAll(user));
         } catch (AuthorizationException e) {
             return "redirect:/auth/login";
         }
@@ -93,7 +97,7 @@ public class MVCFilteringCommentController {
         model.addAttribute("comments", commentService.filter(filterCommentOptions));
         model.addAttribute("filterCommentOptions", filterCommentDto);
 
-        return "FilterComments";
+        return "filter-comments";
     }
 }
 

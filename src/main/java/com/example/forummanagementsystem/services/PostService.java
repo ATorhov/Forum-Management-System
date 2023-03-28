@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface PostService {
 
     List<Post> getAll();
+    List<Post> getAll(User user);
 
     List<Post> get(PostFilterOptions postFilterOptions);
     Post getById(Long id);

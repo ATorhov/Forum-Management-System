@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <div class="navcontainer" th:fragment="nav-container-dashboard">
+    <nav class="nav">
+      <div class="nav-upper-options">
+        <div class="nav-option option1">
+          <img src=
+                       "https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
+               class="nav-img"
+               alt="dashboard">
+          <a style="color: #ededed" th:href="@{'/users/admin/dashboard'}"> Dashboard </a>
+
+        </div>
+
+        <div class="option2 nav-option">
+          <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
+               class="nav-img"
+               alt="articles">
+          <a th:href="@{'/users/all'}"> Users </a>
+        </div>
+
+        <div class="nav-option option3">
+          <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/5.png"
+               class="nav-img"
+               alt="report">
+          <a th:href="@{'/posts/all'}"> Posts </a>
+        </div>
+        <div class="nav-option option3">
+          <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/5.png"
+               class="nav-img"
+               alt="report">
+          <a th:href="@{'/comments/all'}"> Comments </a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</html>

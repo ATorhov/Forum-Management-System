@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
+
+<head th:replace="fragments/header :: head"></head>
+
+<body>
+
+<!-- for header part -->
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<header class="masthead"  style="background-image: url('../static/assets/img/cryptocurrency-business-1.jpg')"
+        th:style="'background-image: url(' + @{/assets/img/cryptocurrency-business-1.jpg} + ');' + 'padding-top: 1.5rem'"></header>
+
+<div class="main-container">
+  <div th:replace="fragments/dashboard-main-content :: nav-container-dashboard">
+  </div>
+  <div class="main">
+
+
+
+    <div class="report-container">
+      <div class="report-header">
+        <h1 class="recent-Articles">Users</h1>
+      </div>
+
+      <div class="report-body">
+        <div class="report-topic-heading">
+          <h3 class="t-op">Post's title</h3>
+          <h3 class="t-op">Post's creator</h3>
+          <h3 class="t-op">Created</h3>
+          <h3 class="t-op">Rating</h3>
+        </div>
+
+        <div class="items" th:each="post : ${posts}">
+          <div class="item1">
+            <a  th:text="${post.getTitle()}"  th:href="@{'/posts/' + ${post.getPostId()}}" class="t-op-nextlvl">Post's title</a>
+            <a th:text="${post.getUser().getUsername()}" th:href="@{'/users/user-details/' + ${post.getUser().getUsername()}}" class="t-op-nextlvl">Post's creator</a>
+            <h3 th:text="${post.getCreateTime()}" class="t-op-nextlvl"
+            >Created</h3>
+            <h3 th:text="${post.getRating()}" th:style="'background-color: rgb(0, 177, 0)'"
+                class="t-op-nextlvl label-tag" >Rating</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script th:href="@{/js/index.js}"></script>
+</body>
+<footer th:replace="fragments/footer :: footer"></footer>
+</html>

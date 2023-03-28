@@ -28,6 +28,11 @@ public class UserMVCController {
         this.postService = postService;
     }
 
+    @ModelAttribute("user")
+    public User getUser(HttpSession httpSession) {
+        return authenticationHelper.tryGetUser(httpSession);
+    }
+
     @ModelAttribute("isAdmin")
     public boolean isAdmin(HttpSession httpSession) {
         if (populateIsAuthenticated(httpSession)) {

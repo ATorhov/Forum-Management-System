@@ -36,6 +36,11 @@ public class MvcPostController {
     @Autowired
     private PostMapper postMapper;
 
+    @ModelAttribute("user")
+    public User getUser(HttpSession httpSession) {
+        return authenticationHelper.tryGetUser(httpSession);
+    }
+
     @ModelAttribute("isAuthenticated")
     public boolean isAuthenticated(HttpSession httpSession) {
         return httpSession.getAttribute("currentUser") != null;
@@ -48,6 +53,13 @@ public class MvcPostController {
         } else {
             return false;
         }
+    }
+
+    @GetMapping("/all")
+    public String getUsers(Model model, HttpSession session){
+        User user = authenticationHelper.tryGetUser(session);
+        model.addAttribute("posts", postService.getAll(user));
+        return "all-posts-page";
     }
 
     @GetMapping("{id}")

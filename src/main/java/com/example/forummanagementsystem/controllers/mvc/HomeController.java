@@ -5,6 +5,7 @@ import com.example.forummanagementsystem.helpers.AuthenticationHelper;
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.PostFilterDto;
 import com.example.forummanagementsystem.models.PostFilterOptions;
+import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.services.PostService;
 import com.example.forummanagementsystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,11 @@ public class HomeController {
     public HomeController(UserService userService, AuthenticationHelper authenticationHelper) {
         this.userService = userService;
         this.authenticationHelper = authenticationHelper;
+    }
+
+    @ModelAttribute("user")
+    public User getUser(HttpSession httpSession) {
+        return authenticationHelper.tryGetUser(httpSession);
     }
 
     @ModelAttribute("isAuthenticated")

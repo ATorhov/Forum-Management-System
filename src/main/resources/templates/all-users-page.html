@@ -13,33 +13,7 @@
         th:style="'background-image: url(' + @{/assets/img/cryptocurrency-business-1.jpg} + ');' + 'padding-top: 1.5rem'"></header>
 
 <div class="main-container">
-    <div class="navcontainer">
-        <nav class="nav">
-            <div class="nav-upper-options">
-                <div class="nav-option option1">
-                    <img src=
-                                 "https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
-                         class="nav-img"
-                         alt="dashboard">
-                    <a style="color: #ededed" th:href="@{'/users/admin/dashboard'}"> Dashboard </a>
-
-                </div>
-
-                <div class="option2 nav-option">
-                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
-                         class="nav-img"
-                         alt="articles">
-                    <a th:href="@{'/users/all'}"> Users </a>
-                </div>
-
-                <div class="nav-option option3">
-                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/5.png"
-                         class="nav-img"
-                         alt="report">
-                    <h3> Posts</h3>
-                </div>
-            </div>
-        </nav>
+    <div th:replace="fragments/dashboard-main-content :: nav-container-dashboard">
     </div>
     <div class="main">
 
@@ -64,7 +38,7 @@
                         + ' ' + user.getLastName()}" class="t-op-nextlvl">User's name></a>
                         <h3 th:text="${user.getEmail()}" class="t-op-nextlvl">Email</h3>
                         <h3 th:text="${user.isBlocked()}" class="t-op-nextlvl label-tag"
-                            th:style="${user.isBlocked()} == true ? 'background-color: orange' : 'background: red'"
+                            th:style="${user.isBlocked()} == false ? 'background-color: orange' : 'background: red'"
                         >Blocked</h3>
                         <h3 th:text="${user.isAdmin()}"
                             th:style="${user.isAdmin()} == true ? 'background-color: rgb(0, 177, 0)' : 'background: red'"

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -14,6 +15,10 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping
 public class ContactMVCController {
+    @ModelAttribute("isAuthenticated")
+    public boolean isAuthenticated(HttpSession httpSession) {
+        return httpSession.getAttribute("currentUser") != null;
+    }
 
     @PostMapping("/contact")
     public String contact(Model model) {
