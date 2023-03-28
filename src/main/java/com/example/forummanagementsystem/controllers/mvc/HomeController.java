@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -52,18 +51,6 @@ public class HomeController {
     public boolean populateIsAuthenticated(HttpSession session) {
         return session.getAttribute("currentUser") != null;
     }
-//    @GetMapping("/home")
-//    public String getHomePage(Model model, HttpSession session) {
-//        try {
-//            authenticationHelper.tryGetUser(session);
-//        } catch (AuthorizationException e){
-//            return "redirect:/auth/login";
-//        }
-//        List<Post> posts = postService.getAll();
-//        model.addAttribute("posts", posts);
-//
-//        return "home";
-//    }
 
     @PostMapping("/home")
     public String home(Model model) {
@@ -73,7 +60,7 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String showAllBeers(@ModelAttribute("filterOptions") PostFilterDto filterDto, Model model, HttpSession session) {
+    public String get(@ModelAttribute("filterOptions") PostFilterDto filterDto, Model model, HttpSession session) {
         try {
             authenticationHelper.tryGetUser(session);
         } catch (AuthorizationException e){

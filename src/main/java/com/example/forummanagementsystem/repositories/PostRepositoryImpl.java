@@ -41,28 +41,14 @@ public class PostRepositoryImpl implements PostRepository {
 
             filterOptions.getTitle().ifPresent(value -> {
                 filters.add("title like :title");
-                params.put("title", String.format("%%%s%%", value));
+                params.put("title", "%" + value + "%");
             });
 
             filterOptions.getContent().ifPresent(value -> {
                 filters.add("content like :content");
-                params.put("content", String.format("%%%s%%", value));
+                params.put("content", "%" + value + "%");
             });
 
-            filterOptions.getContent().ifPresent(value -> {
-                filters.add("rating >= :minRating");
-                params.put("rating", value);
-            });
-
-            filterOptions.getContent().ifPresent(value -> {
-                filters.add("createDate >= :startDate");
-                params.put("createDate", value);
-            });
-
-            filterOptions.getContent().ifPresent(value -> {
-                filters.add("updateDate >= :updateDate");
-                params.put("updateDate", value);
-            });
 
             StringBuilder queryString = new StringBuilder("from Post");
             if (!filters.isEmpty()) {
@@ -74,7 +60,7 @@ public class PostRepositoryImpl implements PostRepository {
 
             Query<Post> query = session.createQuery(queryString.toString(), Post.class);
             query.setProperties(params);
-            return query.list();
+            return query.getResultList();
         }
     }
 
@@ -186,6 +172,7 @@ public class PostRepositoryImpl implements PostRepository {
         }
     }
 
+    //for REST API
     @Override
     public List<Post> filter(Optional<String> title,
                              Optional<String> content,
@@ -252,9 +239,6 @@ public class PostRepositoryImpl implements PostRepository {
             case "content":
                 queryString.append(" content ");
                 break;
-            case "rating":
-                queryString.append(" rating ");
-                break;
             default:
                 throw new UnsupportedOperationException("Sort should have max two params divided by _ symbol.");
         }
@@ -279,15 +263,6 @@ public class PostRepositoryImpl implements PostRepository {
                 break;
             case "content":
                 orderBy = "content";
-                break;
-            case "rating":
-                orderBy = "rating";
-                break;
-            case "createDate":
-                orderBy = "createDate";
-                break;
-            case "updateDate":
-                orderBy = "updateDate";
                 break;
         }
 
