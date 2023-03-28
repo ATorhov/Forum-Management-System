@@ -5,89 +5,100 @@
 <body style="background-color: #bfe2e9;">
 <nav th:replace="fragments/navbar :: navbar">
 </nav>
-<header class="masthead"  style="background-image: url('../static/assets/img/posts.crypto.jpg')" th:style="'background-image: url(' + @{/assets/img/posts.crypto.jpg} + ')'">
-  <div class="container position-relative px-4 px-lg-5">
-    <div class="row gx-4 gx-lg-5 justify-content-center">
-      <div class="col-md-10 col-lg-8 col-xl-7">
-        <div class="site-heading">
-          <h1>Cryptocurrency Forum</h1>
-          <span class="subheading">"The reason we are all here is that the current financial system is outdated."<em> Charlie Shrem – founder & CEO Bitinstant</em></span>
+<header class="masthead" style="background-image: url('../static/assets/img/posts.crypto.jpg')"
+        th:style="'background-image: url(' + @{/assets/img/posts.crypto.jpg} + ')'">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Cryptocurrency Forum</h1>
+                    <span class="subheading">"The reason we are all here is that the current financial system is outdated."<em> Charlie Shrem – founder & CEO Bitinstant</em></span>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </header>
 <hr/>
 <div style="text-align: right; margin-right: 40px;">
-  <span id="post-rating"></span>
+    <span id="post-rating"></span>
 </div>
 <div class="container">
-  <a th:if="${isAuthenticated}" th:href="@{'/posts/'+ ${post.postId} +'/edit'}" style="border: 1px solid black; padding: 5px;">Edit</a>
-  <a th:if="${isAuthenticated}" th:href="@{'/posts/'+ ${post.postId} +'/delete'}" style="border: 1px solid black; padding: 5px;">Delete</a>
-  <div class="post">
-    <h2 class="text-center" th:text="${post.title}">Title</h2>
-    <span style="font-style: italic; color: grey;">Posted by <span th:text="${post.user.firstName} +' '+ ${post.user.lastName}"></span>
+    <a th:if="${isAuthenticated}" th:href="@{'/posts/'+ ${post.postId} +'/edit'}"
+       style="border: 1px solid black; padding: 5px;">Edit</a>
+    <a th:if="${isAuthenticated}" th:href="@{'/posts/'+ ${post.postId} +'/delete'}"
+       style="border: 1px solid black; padding: 5px;">Delete</a>
+    <div class="post">
+        <h2 class="text-center" th:text="${post.title}">Title</h2>
+        <span style="font-style: italic; color: grey;">Posted by <span
+                th:text="${post.user.firstName} +' '+ ${post.user.lastName}"></span>
     <span th:if="${post.createTime != post.updateTime}">
-  <span>on <span th:text="${post.getFormattedCreateTime()}"></span> and updated on <span th:text="${post.getFormattedUpdateTime()}"></span></span>
+  <span>on <span th:text="${post.getFormattedCreateTime()}"></span> and updated on <span
+          th:text="${post.getFormattedUpdateTime()}"></span></span>
 </span>
     <span th:unless="${post.createTime != post.updateTime}">
   <span>on <span th:text="${post.getFormattedCreateTime()}"></span></span>
 </span>
 </span>
-<!--    </br>-->
-    <h5 th:text="${post.content}">Content</h5>
-  </div>
-  <div class="row justify-content-end">
-    <div class="col-auto">
-      <div class="d-grid col-1">
-        <a class="btn btn-primary" href="#!" th:if="${isAuthenticated}" th:href="@{__${#httpServletRequest.requestURI}__/opinion(opinion=1)}">Like</a>
-        <span th:unless="${isAuthenticated}" th:text="'Likes'"></span>
-      </div>
-      <span class="likes" th:text="${post.getLikes()}">0</span>
+        <!--    </br>-->
+        <h5 th:text="${post.content}">Content</h5>
     </div>
-    <div class="col-auto">
-      <div class="d-grid col-1">
-        <a class="btn btn-secondary" href="#!" th:if="${isAuthenticated}" th:href="@{__${#httpServletRequest.requestURI}__/opinion(opinion=2)}">Dislike</a>
-        <span th:unless="${isAuthenticated}" th:text="'Dislikes'"></span>
-      </div>
-      <span class="dislikes" th:text="${post.getDislikes()}">0</span>
+    <div class="row justify-content-end">
+        <div class="col-auto">
+            <div class="d-grid col-1">
+                <a class="btn btn-primary" href="#!" th:if="${isAuthenticated}"
+                   th:href="@{__${#httpServletRequest.requestURI}__/opinion(opinion=1)}">Like</a>
+                <span th:unless="${isAuthenticated}" th:text="'Likes'"></span>
+            </div>
+            <span class="likes" th:text="${post.getLikes()}">0</span>
+        </div>
+        <div class="col-auto">
+            <div class="d-grid col-1">
+                <a class="btn btn-secondary" href="#!" th:if="${isAuthenticated}"
+                   th:href="@{__${#httpServletRequest.requestURI}__/opinion(opinion=2)}">Dislike</a>
+                <span th:unless="${isAuthenticated}" th:text="'Dislikes'"></span>
+            </div>
+            <span class="dislikes" th:text="${post.getDislikes()}">0</span>
+        </div>
     </div>
-  </div>
 
 
+    <ul>
+        <li><a th:if="${isAuthenticated}" th:href="@{'/posts/'+ ${post.postId} +'/comments/new'}">New comment</a></li>
 
-  <ul>
-    <li><a th:if="${isAuthenticated}" th:href="@{'/posts/'+ ${post.postId} +'/comments/new'}">New comment</a></li>
-  </ul>
+    </ul>
+    <br>
 </div>
 <div class="row" th:each="comment : ${comments}">
-  <div class="cell">
-    <div class="comment">
-      <ul>
-        <ul>
-          <h6 class="cell" th:text="${comment.getUser().getUsername()}">username</h6>
-          <h7 class="cell" th:text="${comment.content}">content</h7>
-        </ul>
-      </ul>
+    <div class="cell">
+        <div class="comment">
+            <ul>
+                <ul>
+                    <h6 class="cell" th:text="${comment.getUser().getUsername()}">username</h6>
+                    <h7 class="cell" th:text="${comment.content}">content</h7>
+                </ul>
+            </ul>
+        </div>
     </div>
-  </div>
-  <ul>
-    <li>
-      <ul>
-        <ul>
-          <a th:if="${isAuthenticated}" th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/edit'}">Edit</a> <a
-                th:if="${isAuthenticated}" th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/delete'}">Delete</a></li>
-        </ul>
-      </ul>
-  </ul>
+    <ul>
+        <li>
+            <ul>
+                <ul>
+                    <a th:if="${isAuthenticated}"
+                       th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/edit'}">Edit</a> <a
+                        th:if="${isAuthenticated}"
+                        th:href="@{'/posts/'+ ${post.postId} +'/comments/'+${comment.commentId}+'/delete'}">Delete</a></li>
+                </ul>
+                <br>
+            </ul>
+    </ul>
 </div>
 <footer class="border-top" th:replace="fragments/footer :: footer">
 </footer>
 <script>
-  const likes = parseInt(document.querySelector('.likes').innerText);
-  const dislikes = parseInt(document.querySelector('.dislikes').innerText);
-  const rating = likes - dislikes;
-  document.getElementById('post-rating').innerText = `Rating: ${rating}`;
+    const likes = parseInt(document.querySelector('.likes').innerText);
+    const dislikes = parseInt(document.querySelector('.dislikes').innerText);
+    const rating = likes - dislikes;
+    document.getElementById('post-rating').innerText = `Rating: ${rating}`;
 </script>
 </body>
 </html>

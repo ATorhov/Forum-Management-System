@@ -1,8 +1,6 @@
 package com.example.forummanagementsystem.services;
 
-import com.example.forummanagementsystem.models.Comment;
-import com.example.forummanagementsystem.models.Post;
-import com.example.forummanagementsystem.models.User;
+import com.example.forummanagementsystem.models.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,4 +24,6 @@ public interface CommentService {
     List<Comment> getAll(Optional<String> search);
 
     List<Comment> getAll();
+
+    List<Comment> filter(CommentFilterOptions commentFilterOptions);
 }

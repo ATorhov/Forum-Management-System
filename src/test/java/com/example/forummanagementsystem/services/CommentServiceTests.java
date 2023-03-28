@@ -14,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static com.example.forummanagementsystem.Helpers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -53,13 +55,14 @@ public class CommentServiceTests {
 
     @Test
     public void get_Should_CallRepository() {
+        Optional<String> search = Optional.of("name");
         //Arrange
-        Mockito.when(mockRepository.getAll()).thenReturn(null);
+        Mockito.when(mockRepository.getAll(search)).thenReturn(null);
         //Act
-        //Optional<String> search = null;
-        mockService.getAll(null);
+
+        mockService.getAll(search);
         //Assert
-        Mockito.verify(mockRepository, Mockito.times(1)).getAll();
+        Mockito.verify(mockRepository, Mockito.times(1)).getAll(search);
     }
 
     @Test
@@ -85,12 +88,13 @@ public class CommentServiceTests {
     public void create_Should_Throw_When_UserIsBlocked() {
         // Arrange
         Comment mockComment = createMockComment();
+
         mockComment.setUser(createMockUser());
-        createMockUser().setBlocked(true);
         mockComment.setPost(createMockPost());
+        createMockUser().setBlocked(true);
         // Act, Assert
         assertThrows(BlockedUserException.class,
-                () -> mockService.create(mockComment, mockComment.getUser(), mockComment.getPost(), 4L));
+                () -> mockService.create(mockComment, createMockUser(),createMockPost(), 4L));
     }
 
     @Test

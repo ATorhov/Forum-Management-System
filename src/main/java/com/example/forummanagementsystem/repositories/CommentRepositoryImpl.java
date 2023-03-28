@@ -1,7 +1,7 @@
 package com.example.forummanagementsystem.repositories;
 
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
-
+import com.example.forummanagementsystem.models.CommentFilterOptions;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -54,6 +54,7 @@ public class CommentRepositoryImpl implements CommentRepository {
             return query.list();
         }
     }
+
     @Override
     public void create(Comment comment) {
         try (Session session = sessionFactory.openSession()) {
@@ -81,47 +82,71 @@ public class CommentRepositoryImpl implements CommentRepository {
         }
     }
 
+
     @Override
-    public List<Comment> filter(Optional<String> content,
-                                Optional<Integer> commentId,
-                                Optional<Integer> postId,
-                                Optional<Integer> userId,
-                                Optional<String> sort) {
-        try (
-                Session session = sessionFactory.openSession()) {
-            StringBuilder queryString = new StringBuilder(" from Comment ");
+    public List<Comment> get(CommentFilterOptions commentFilterOptions) {
 
-            Map<String, Object> queryParams = new HashMap<>();
-            ArrayList<String> filter = new ArrayList<>();
 
-            content.ifPresent(value -> {
-                filter.add(" content like:content");
-                queryParams.put("content", "%" + value + "%");
+        return null;
+    }
+
+    @Override
+    public List<Comment> filter(Optional<String> content, Optional<Integer> commentId, Optional<Integer> postId, Optional<Integer> userId, Optional<String> sort) {
+        return null;
+    }
+
+    @Override
+    public List<Comment> getCommentsFilterCommentOptions(CommentFilterOptions filterCommentOptions) {
+        try (Session session = sessionFactory.openSession()) {
+            List<String> filters = new ArrayList<>();
+            Map<String, Object> params = new HashMap<>();
+
+            filterCommentOptions.getContent().ifPresent(value -> {
+                filters.add("content like :content");
+                params.put("content", String.format("%%%s%%", value));
             });
-            commentId.ifPresent(value -> {
-                filter.add(" commentId = :commentId");
-                queryParams.put("commentId", value);
-            });
-            postId.ifPresent(value -> {
-                filter.add(" postId = :postId");
-                queryParams.put("postId", value);
-            });
-            userId.ifPresent(value -> {
-                filter.add(" userId = :userId");
-                queryParams.put("userId", value);
-            });
-            if (!filter.isEmpty()) {
-                queryString.append(" where ").append(String.join(" and ", filter));
+
+
+
+            StringBuilder queryString = new StringBuilder("from Comment");
+            if (!filters.isEmpty()) {
+                queryString
+                        .append(" where ")
+                        .append(String.join(" and ", filters)
+                        );
             }
-            sort.ifPresent(value -> queryString.append(generateStringFromSort(value)));
+            queryString.append(generateOrderBy(filterCommentOptions));
 
-            Query<Comment> queryList = session.createQuery(queryString.toString(), Comment.class);
-            queryList.setProperties(queryParams);
-
-            System.out.println(queryString);
-
-            return queryList.list();
+            Query<Comment> query = session.createQuery(queryString.toString(), Comment.class);
+            query.setProperties(params);
+            return query.list();
         }
+    }
+
+    private String generateOrderBy(CommentFilterOptions filterCommentOptions) {
+        if (filterCommentOptions.getSortBy().isEmpty()) {
+            return "";
+        }
+
+        String orderBy = "";
+        switch (filterCommentOptions.getSortBy().get()) {
+            case "content":
+                orderBy = "content";
+                break;
+            case "commentId":
+                orderBy = "commentId";
+                break;
+            default:
+                return "";
+        }
+
+        orderBy = String.format(" order by %s", orderBy);
+
+        if (filterCommentOptions.getSortOrder().isPresent() && filterCommentOptions.getSortOrder().get().equalsIgnoreCase("desc")) {
+            orderBy = String.format("%s desc", orderBy);
+        }
+
+        return orderBy;
     }
 
     @Override

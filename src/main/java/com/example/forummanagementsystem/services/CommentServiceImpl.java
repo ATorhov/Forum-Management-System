@@ -7,6 +7,7 @@ import com.example.forummanagementsystem.models.Comment;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.forummanagementsystem.models.CommentFilterOptions;
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,11 @@ public class CommentServiceImpl implements CommentService {
 
     public List<Comment> getAll() {
         return repository.getAll();
+    }
+
+    @Override
+    public List<Comment> filter(CommentFilterOptions filterCommentOptions) {
+        return repository.getCommentsFilterCommentOptions(filterCommentOptions);
     }
 
     private void checkModifyPermissions(int commentId, User user) {
