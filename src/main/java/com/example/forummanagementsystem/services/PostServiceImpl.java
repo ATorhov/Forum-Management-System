@@ -1,5 +1,6 @@
 package com.example.forummanagementsystem.services;
 
+import com.example.forummanagementsystem.exceptions.AuthorizationException;
 import com.example.forummanagementsystem.exceptions.BlockedUserException;
 import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
@@ -32,6 +33,14 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getAll() {
+        return repository.getAll();
+    }
+
+    @Override
+    public List<Post> getAll(User user) {
+        if (!user.isAdmin()) {
+            throw new AuthorizationException("Only admin can see all the users!");
+        }
         return repository.getAll();
     }
 

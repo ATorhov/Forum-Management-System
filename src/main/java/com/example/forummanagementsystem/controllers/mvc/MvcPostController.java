@@ -50,6 +50,13 @@ public class MvcPostController {
         }
     }
 
+    @GetMapping("/all")
+    public String getUsers(Model model, HttpSession session){
+        User user = authenticationHelper.tryGetUser(session);
+        model.addAttribute("posts", postService.getAll(user));
+        return "all-posts-page";
+    }
+
     @GetMapping("{id}")
     public String getPost(@PathVariable Long id, Model model, HttpSession httpSession) {
         try {
