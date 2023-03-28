@@ -26,7 +26,7 @@ VALUES
 
 
 INSERT INTO posts (title, rating, content, user_id, create_time, update_time)
-VALUES ('How to open account on Binance?', 5, 'This is the body of the post 1', 1, NOW(), NOW()),
+VALUES ('How to open account on Binance?', 3, 'This is the body of the post 1', 1, NOW(), NOW()),
        ('NEW NFT Airdrops, hurry up!!!', 5, 'This is the body of the post 2', 2, NOW(), NOW()),
        ('Saitama is a shitcoin or future of the crypto?', 1, 'This is the body of the post 3', 1, NOW(), NOW()),
        ('Do not buy this NFT - SCAM alert!!!', 1, 'This is the body of the post 4', 1, NOW(), NOW()),
@@ -93,7 +93,7 @@ VALUES ('How to open account on Binance?', 5, 'This is the body of the post 1', 
        ('The impact of government regulations on the cryptocurrency market', 3, 'This is the body of the post 58', 3,
         NOW(), NOW()),
        ('How to use cryptocurrency for peer-to-peer lending', 4, 'This is the body of the post 59', 4, NOW(), NOW()),
-       ('Forum Guidelines', 6, 'This is the body of the post 7', 2, NOW(), NOW());
+       ('Forum Guidelines', 6, 'This is the body of the post 7', 3, NOW(), NOW());
 
 
 INSERT INTO comments (post_post_id, content,user_id)

@@ -19,15 +19,18 @@
 </header>
   <hr/>
 <div style="text-align: right; margin-right: 40px;">
-  <ul>
-    <li><a th:href="@{/posts/new}" style="font-size: 1.2em; border: 1px solid black; padding: 5px;">Add New Post</a></li>
-  </ul>
+  <div style="display: inline-block;"><a th:href="@{/posts/new}" style="font-size: 1.2em; border: 1px solid black; padding: 5px;">Add New Post</a></div>
+  <div style="display: inline-block;"><a th:href="@{/}" style="font-size: 1.2em; border: 1px solid black; padding: 5px;">Top 5 posts</a></div>
 </div>
 <form action="#" th:action="@{/home}" method="get" th:object="${filterOptions}">
   <label th:text="#{post.filter.label}" style="font-weight: bold;"> Filter options </label>
 
   <label for="title" th:text="#{post.filter.title}"> Title </label>
   <input id="title" type="text" placeholder="title" th:field="*{title}"/>
+
+  <label for="content" th:text="#{post.filter.content}">Content</label>
+  <input id="content" type="text" placeholder="content" th:field="*{content}"/>
+
   <input type="submit" value="Filter">
 </form>
   </br>
@@ -35,14 +38,12 @@
   <div class="post" th:each="post : ${posts}">
     <div class="post-preview">
       <a href="post.html" th:href="@{'/posts/' + ${post.postId}}">
-        <div style="text-align: right; margin-right: 40px;">
-          <span id="post-rating"></span>
-        </div>
+        <h6 style="text-align: right; margin-right: 40px;" class="post-rating" th:text="'Rating: ' + ${post.getRating()}">Rating</h6>
         <h2 class="post-title" th:text="${post.title}">Title</h2>
-        <h4 class="post-subtitle" th:text="${post.content}">Content</h4>
+        <h4 class="post-subtitle" th:text="${#strings.length(post.content) > 200 ? #strings.substring(post.content, 0, 200) + '...' : post.content}">Content</h4>
       </a>
       <p class="post-meta">
-        Posted by <span th:text="${post.user.firstName} +' '+ ${post.user.lastName}"></span>
+        Posted by <span th:text="${post.user.username}"></span>
         <span th:if="${post.createTime != post.updateTime}">
           on <span th:text="${post.getFormattedCreateTime()}"></span> and updated on <span th:text="${post.getFormattedUpdateTime()}"></span>
         </span>

@@ -28,11 +28,12 @@
                 <div class="post" th:each="post : ${posts}">
                     <div class="post-preview">
                         <a href="post.html" th:href="@{'/posts/' + ${post.postId}}">
+                            <h6 style="text-align: right; margin-right: 40px;" class="post-rating" th:text="'Rating: ' + ${post.getRating()}">Rating</h6>
                             <h2 class="post-title" th:text="${post.title}">Title</h2>
-                            <h4 class="post-subtitle" th:text="${post.content}">Content</h4>
+                            <h4 class="post-subtitle" th:text="${#strings.length(post.content) > 200 ? #strings.substring(post.content, 0, 200) + '...' : post.content}">Content</h4>
                         </a>
                         <p class="post-meta">
-                            Posted by <span th:text="${post.user.firstName} +' '+ ${post.user.lastName}"></span>
+                            Posted by <span th:text="${post.user.username}"></span>
                             <span th:if="${post.createTime != post.updateTime}">
           on <span th:text="${post.getFormattedCreateTime()}"></span> and updated on <span
                                     th:text="${post.getFormattedUpdateTime()}"></span>
@@ -40,13 +41,14 @@
                             <span th:unless="${post.createTime != post.updateTime}">
           on <span th:text="${post.getFormattedCreateTime()}"></span>
         </span>
+                        <hr style="border-top: 1px solid black;"/>
                         </p>
                     </div>
                 </div>
             </div>
             <hr class="my-4"/>
             <!-- Pager-->
-            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Other Posts
+            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="login-view.html" th:unless="${isAuthenticated}" th:href="@{/auth/login}">Other Posts
                 →</a></div>
         </div>
     </div>
