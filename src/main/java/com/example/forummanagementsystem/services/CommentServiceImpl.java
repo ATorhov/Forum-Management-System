@@ -85,6 +85,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public List<Comment> getAll(User user) {
+        if (!user.isAdmin()) {
+            throw new AuthorizationException("Only admin can see all the users!");
+        }
+        return repository.getAll();
+    }
+
+    @Override
     public List<Comment> filter(CommentFilterOptions filterCommentOptions) {
         return repository.getCommentsFilterCommentOptions(filterCommentOptions);
     }

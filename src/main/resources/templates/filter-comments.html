@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments/header :: head">
+</head>
+<body style="background-color: #bfe2e9;">
+<nav th:replace="fragments/navbar :: navbar">
+</nav>
+<header class="masthead"  style="background-image: url('../static/assets/img/cryptocurrency-business-1.jpg')" th:style="'background-image: url(' + @{/assets/img/cryptocurrency-business-1.jpg} + ');' + 'padding-top: 1.5rem'"></header>
+
+<div class="main-container">
+    <div th:replace="fragments/dashboard-main-content :: nav-container-dashboard">
+    </div>
+    <div class="main">
+
+        <div style="text-align: center; margin-right: 40px; margin-top: 40px;  margin-bottom: 40px;">
+            <form action="#" th:action="@{/comments/all}" method="get" th:object="${filterCommentOptions}">
+                <label th:text="#{comment.filter.label}" style="font-weight: bold;"> Filter options </label>
+
+                <label for="content"> </label>
+                <input id="content" type="text" placeholder="content" th:field="*{content}"/>
+
+                <input type="submit" value="Filter">
+            </form>
+        </div>
+        <br>
+
+        <div class="row" th:each="comment : ${comments}">
+            <div class="cell">
+                <div class="comment">
+                    <ul>
+                        <ul>
+                            <ul>
+                                <h6 class="cell" th:text="${comment.getUser().getUsername()}">username</h6>
+                                <h6 class="cell" th:text="${comment.content}">content</h6>
+                            </ul>
+                            <ul>
+                                <a th:if="${isAuthenticated}"
+                                   th:href="@{'/posts/'+ ${comment.getPost().getPostId()} +'/comments/'+${comment.getCommentId()}+'/edit'}">Edit</a>
+                                <a
+                                        th:if="${isAuthenticated}"
+                                        th:href="@{'/posts/'+ ${comment.getPost().getPostId()} +'/comments/'+${comment.getCommentId()}+'/delete'}">Delete</a>
+                                </li>
+                            </ul>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+            <ul>
+                <li>
+                    <ul>
+
+                    </ul>
+            </ul>
+        </div>
+
+    </div>
+</div>
+<footer class="border-top" th:replace="fragments/footer :: footer">
+</footer>
+</body>
+</html>

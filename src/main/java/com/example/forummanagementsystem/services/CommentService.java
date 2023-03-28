@@ -24,6 +24,7 @@ public interface CommentService {
     List<Comment> getAll(Optional<String> search);
 
     List<Comment> getAll();
+    List<Comment> getAll(User user);
 
     List<Comment> filter(CommentFilterOptions commentFilterOptions);
 }
