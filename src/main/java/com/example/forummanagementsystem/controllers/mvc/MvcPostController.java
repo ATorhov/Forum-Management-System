@@ -125,7 +125,7 @@ public class MvcPostController {
         }
         try {
             Post post = postService.getById(id);
-            PostDto postDto = postMapper.createObjectToDto(post);
+            PostDtoEdit postDto = postMapper.updateObjectToDto(post);
             model.addAttribute("postId", id);
             model.addAttribute("post", postDto);
             return "post_edit";
@@ -153,8 +153,8 @@ public class MvcPostController {
             return "post_edit";
         }
         try {
-            Post post = postMapper.createDtoToObject(postDto, user, id);
-            post.setUpdateTime(LocalDateTime.now());
+            Post post = postService.getById(id);
+            post = postMapper.fromDto(postDto, id);
             postService.update(post);
             return "redirect:/posts/"+post.getPostId();
         } catch (EntityNotFoundException e) {
@@ -197,8 +197,8 @@ public class MvcPostController {
         Post post = postService.getById(id);
         postService.addOpinion(user, post, opinion);
         Map<String, Long> result = new HashMap<>();
-        result.put("likes", post.getLikes());
-        result.put("dislikes", post.getDislikes());
+        result.put("likes", postService.getLikes(post));
+        result.put("dislikes", postService.getDislikes(post));
         post.setRealRating();
         postService.update(post);
         return "redirect:/posts/"+id;

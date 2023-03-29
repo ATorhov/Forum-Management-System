@@ -1,12 +1,12 @@
 package com.example.forummanagementsystem;
 
-import com.example.forummanagementsystem.models.Comment;
-import com.example.forummanagementsystem.models.Post;
-import com.example.forummanagementsystem.models.PostDto;
-import com.example.forummanagementsystem.models.User;
+import com.example.forummanagementsystem.models.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class Helpers {
 
@@ -30,6 +30,32 @@ public class Helpers {
         mockPost.setCreateTime(LocalDateTime.now());
         mockPost.setUpdateTime(LocalDateTime.now());
         return mockPost;
+    }
+
+    public static List<Post> createMockPosts(int count) {
+        List<Post> posts = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            var post = new Post();
+            post.setPostId((long) i + 1);
+            post.setTitle("Mock Title " + (i + 1));
+            post.setContent("Mock content of the post №" + (i + 1));
+            post.setRealRating();
+            post.setCreateTime(LocalDateTime.now());
+            post.setUpdateTime(LocalDateTime.now());
+            posts.add(post);
+        }
+        return posts;
+    }
+
+    public static List<Comment> createMockComments(int count) {
+        List<Comment> comments = new ArrayList<>();
+        Post post = createMockPost();
+        for (int i = 0; i < count; i++) {
+            var comment = createMockComment();
+            comment.setCommentId(i + 1);
+            comment.setContent("mock "+i+1);
+        }
+        return comments;
     }
 
     public static User createMockUser() {

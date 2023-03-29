@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -108,6 +110,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public void delete(Long id) {
+        if (getById(id).getUser().isBlocked()){
+            throw new BlockedUserException(BLOCKED_USER_ERROR);
+        }
+        repository.delete(id);
+    }
+
+    @Override
     public List<Post> getPostsByUserId(Long id) {
         return repository.getPostsByUserId(id);
     }
@@ -157,12 +167,48 @@ public class PostServiceImpl implements PostService {
         return repository.getPostsCount();
     }
 
+    @Override
+    public List<Post> findTenMostRecentCreatedPosts() {
+        return repository.getAll().stream()
+                .sorted(Comparator.comparing(Post::getCreateTime).reversed())
+                .limit(10)
+                .collect(Collectors.toList());
+    }
 
     @Override
-    public void delete(Long id) {
-        if (getById(id).getUser().isBlocked()){
-            throw new BlockedUserException(BLOCKED_USER_ERROR);
-        }
-        repository.delete(id);
+    public List<Post> findTenMostRatedPosts() {
+        return repository.getAll().stream()
+                .sorted((p1, p2) -> Long.compare(p2.getRating(), p1.getRating()))
+                .limit(10)
+                .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Post> findTenMostCommentedPosts() {
+        return repository.getAll().stream()
+                .sorted((p1, p2) -> Long.compare(p2.getComments().size(), p1.getComments().size()))
+                .limit(10)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public long getLikes(Post post) {
+        try {
+            return post.getOpinions().values().stream()
+                    .filter(opinion -> opinion.getType().equals("LIKE")).count();
+        } catch (NullPointerException e) {
+            return 0;
+        }
+    }
+
+    @Override
+    public long getDislikes(Post post) {
+        try {
+            return post.getOpinions().values().stream()
+                    .filter(opinion -> opinion.getType().equals("DISLIKE")).count();
+        } catch (NullPointerException e) {
+            return 0;
+        }
+    }
+
 }

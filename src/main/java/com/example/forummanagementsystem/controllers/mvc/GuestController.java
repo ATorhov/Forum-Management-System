@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class GuestController {
@@ -24,10 +25,15 @@ public class GuestController {
 
     @GetMapping("/")
     public String home(Model model) {
-        List<Post> posts = service.getAll();
-        posts.sort((p1, p2) -> Long.compare(p2.getRating(), p1.getRating()));
-        List<Post> topFivePosts = posts.subList(0, Math.min(posts.size(), 5));
-        model.addAttribute("posts", topFivePosts);
+
+        List<Post> mostCommentedPosts = service.findTenMostCommentedPosts();
+        List<Post> recentlyCreatedPosts = service.findTenMostRecentCreatedPosts();
+        List<Post> topRatedPosts = service.findTenMostRatedPosts();
+
+        model.addAttribute("posts", topRatedPosts);
+        model.addAttribute("mostCommentedPosts", mostCommentedPosts);
+        model.addAttribute("recentlyCreatedPosts", recentlyCreatedPosts);
+
         return "index";
     }
 }

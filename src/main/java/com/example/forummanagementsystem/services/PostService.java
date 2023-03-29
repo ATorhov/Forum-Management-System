@@ -36,4 +36,13 @@ public interface PostService {
     void addOpinion(User user, Post post, Long id);
 
     int getPostsCount();
+
+    List<Post> findTenMostCommentedPosts();
+
+    public List<Post> findTenMostRecentCreatedPosts();
+
+    List<Post> findTenMostRatedPosts();
+
+    long getLikes(Post post);
+    long getDislikes(Post post);
 }
