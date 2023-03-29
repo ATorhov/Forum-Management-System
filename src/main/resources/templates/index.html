@@ -22,30 +22,100 @@
 </header>
 <!-- Main Content-->
 <div class="container px-4 px-lg-5">
-    <div class="row gx-4 gx-lg-5 justify-content-center">
-        <div class="col-md-10 col-lg-8 col-xl-7">
+    <div class="row gx-4 gx-lg-5 justify-content-between">
+        <div class="col-md-3">
             <div class="post-container">
-                <div class="post" th:each="post : ${posts}">
-                    <div class="post-preview">
-                        <a href="post.html" th:href="@{'/auth/login'}">
-                            <h6 style="text-align: right; margin-right: 40px;" class="post-rating" th:text="'Rating: ' + ${post.getRating()}">Rating</h6>
-                            <h2 class="post-title" th:text="${post.title}">Title</h2>
-                            <h4 class="post-subtitle" th:text="${#strings.length(post.content) > 200 ? #strings.substring(post.content, 0, 200) + '...' : post.content}">Content</h4>
-                        </a>
-                        <p class="post-meta">
-                            Posted by <span th:text="${post.user.username}"></span>
-                            <span th:if="${post.createTime != post.updateTime}">
-          on <span th:text="${post.getFormattedCreateTime()}"></span> and updated on <span
-                                    th:text="${post.getFormattedUpdateTime()}"></span>
-        </span>
-                            <span th:unless="${post.createTime != post.updateTime}">
-          on <span th:text="${post.getFormattedCreateTime()}"></span>
-        </span>
-                        <hr style="border-top: 1px solid black;"/>
-                        </p>
+                <h3>Top 10 most rated posts:</h3>
+                <hr style="border-top: 1px solid black;"/>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="post" th:each="post : ${posts}">
+                            <div class="post-preview">
+                                <a href="post.html" th:href="@{'/posts/' + ${post.postId}}">
+                                    <a href="login-view.html" th:unless="${isAuthenticated}" th:href="@{/auth/login}"> </a>
+                                    <h6 class="post-rating" th:text="'Rating: ' + ${post.getRating()}">Rating</h6>
+                                    <h2 class="post-title" th:text="${post.title}">Title</h2>
+                                    <h4 class="post-subtitle" th:text="${#strings.length(post.content) > 200 ? #strings.substring(post.content, 0, 200) + '...' : post.content}">Content</h4>
+                                </a>
+                                <p class="post-meta">
+                                    Posted by <span th:text="${post.user.username}"></span>
+                                    <span th:if="${post.createTime != post.updateTime}">
+                    on <span th:text="${post.getFormattedCreateTime()}"></span> and updated on <span th:text="${post.getFormattedUpdateTime()}"></span>
+                  </span>
+                                    <span th:unless="${post.createTime != post.updateTime}">
+                    on <span th:text="${post.getFormattedCreateTime()}"></span>
+                  </span>
+                                </p>
+                                <hr style="border-top: 1px solid black;"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="col-md-3">
+            <div class="post-container">
+                <h3>Top 10 most commented posts:</h3>
+                <hr style="border-top: 1px solid black;"/>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="post" th:each="post : ${mostCommentedPosts}">
+                            <div class="post-preview">
+                                <a href="post.html" th:href="@{'/posts/' + ${post.postId}}">
+                                    <a href="login-view.html" th:unless="${isAuthenticated}" th:href="@{/auth/login}"> </a>
+                                    <h6 class="post-rating" th:text="'Rating: ' + ${post.getRating()}">Rating</h6>
+                                    <h2 class="post-title" th:text="${post.title}">Title</h2>
+                                    <h4 class="post-subtitle" th:text="${#strings.length(post.content) > 200 ? #strings.substring(post.content, 0, 200) + '...' : post.content}">Content</h4>
+                                </a>
+                                <p class="post-meta">
+                                    Posted by <span th:text="${post.user.username}"></span>
+                                    <span th:if="${post.createTime != post.updateTime}">
+                    on <span th:text="${post.getFormattedCreateTime()}"></span> and updated on <span th:text="${post.getFormattedUpdateTime()}"></span>
+                  </span>
+                                    <span th:unless="${post.createTime != post.updateTime}">
+                    on <span th:text="${post.getFormattedCreateTime()}"></span>
+                  </span>
+                                </p>
+                                <hr style="border-top: 1px solid black;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="post-container">
+                <h3>Top 10 most recent posts:</h3>
+                <hr style="border-top: 1px solid black;"/>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="post" th:each="post : ${recentlyCreatedPosts}">
+                            <div class="post-preview">
+                                <a href="post.html" th:href="@{'/posts/' + ${post.postId}}">
+                                    <a href="login-view.html" th:unless="${isAuthenticated}" th:href="@{/auth/login}"> </a>
+                                    <h6 class="post-rating" th:text="'Rating: ' + ${post.getRating()}">Rating</h6>
+                                    <h2 class="post-title" th:text="${post.title}">Title</h2>
+                                    <h4 class="post-subtitle" th:text="${#strings.length(post.content) > 200 ? #strings.substring(post.content, 0, 200) + '...' : post.content}">Content</h4>
+                                </a>
+                                <p class="post-meta">
+                                    Posted by <span th:text="${post.user.username}"></span>
+                                    <span th:if="${post.createTime != post.updateTime}">
+                    on <span th:text="${post.getFormattedCreateTime()}"></span> and updated on <span th:text="${post.getFormattedUpdateTime()}"></span>
+                  </span>
+                                    <span th:unless="${post.createTime != post.updateTime}">
+                    on <span th:text="${post.getFormattedCreateTime()}"></span>
+                  </span>
+                                </p>
+                                <hr style="border-top: 1px solid black;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
             <hr class="my-4"/>
             <!-- Pager-->
             <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="login-view.html" th:unless="${isAuthenticated}" th:href="@{/auth/login}">Other Posts
