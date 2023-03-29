@@ -2,6 +2,7 @@ package com.example.forummanagementsystem.services.mappers;
 
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.PostDto;
+import com.example.forummanagementsystem.models.PostDtoEdit;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.repositories.PostRepository;
 import com.example.forummanagementsystem.repositories.UserRepository;
@@ -70,4 +71,13 @@ public class PostMapper {
         return postDto;
     }
 
+    public PostDtoEdit updateObjectToDto(Post post){
+        PostDtoEdit postDtoEdit = new PostDtoEdit();
+        postDtoEdit.setContent(post.getContent());
+        postDtoEdit.setTitle(post.getTitle());
+        postDtoEdit.setId(post.getPostId());
+
+        return postDtoEdit;
+
+    }
 }
