@@ -86,4 +86,21 @@ public class HomeController {
         return "home";
     }
 
+    @GetMapping("/home/index")
+    public String getIndex(@ModelAttribute("filterOptions") PostFilterDto filterDto, Model model, HttpSession session) {
+        try {
+            authenticationHelper.tryGetUser(session);
+            List<Post> mostCommentedPosts = postService.findTenMostCommentedPosts();
+            List<Post> recentlyCreatedPosts = postService.findTenMostRecentCreatedPosts();
+            List<Post> topRatedPosts = postService.findTenMostRatedPosts();
+
+            model.addAttribute("posts", topRatedPosts);
+            model.addAttribute("mostCommentedPosts", mostCommentedPosts);
+            model.addAttribute("recentlyCreatedPosts", recentlyCreatedPosts);
+        } catch (AuthorizationException e){
+            return "redirect:/auth/login";
+        }
+        return "index";
+    }
+
 }

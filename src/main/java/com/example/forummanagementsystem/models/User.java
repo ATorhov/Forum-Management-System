@@ -33,6 +33,8 @@ public class User {
     private boolean isAdmin;
     @Column(name = "is_blocked")
     private boolean isBlocked;
+    @Column(name = "is_creator")
+    private boolean isCreator;
 
 
     @OneToOne(mappedBy = "user")

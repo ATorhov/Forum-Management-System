@@ -6,11 +6,11 @@
 <header class="masthead"  style="background-image: url('../static/assets/img/cryptocurrency-business-1.jpg')" th:style="'background-image: url(' + @{/assets/img/cryptocurrency-business-1.jpg} + ');' + 'padding-top: 1.5rem'"></header>
 
 <section class="section about-section gray-bg" id="about">
-    <div class="container">
+    <div class="container" th:object="${user}">
         <div class="row align-items-center flex-row-reverse">
             <div class="col-lg-6">
                 <div class="about-text go-to">
-                    <h3 class="dark-color">About Me</h3>
+                    <h3 class="dark-color" th:text="'Username: /' + ${user.getUsername()}">About Me</h3>
                     <h6 class="theme-color lead">A Lead UX &amp; UI designer based in Canada</h6>
                     <p>I <mark>design and develop</mark> services for customers of all sizes, specializing in creating stylish, modern websites, web services and online stores. My passion is to design digital user experiences through the bold interface and meaningful interactions.</p>
                     <div class="row about-list">
