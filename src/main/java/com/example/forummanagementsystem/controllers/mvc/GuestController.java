@@ -1,6 +1,8 @@
 package com.example.forummanagementsystem.controllers.mvc;
 
+import com.example.forummanagementsystem.helpers.AuthenticationHelper;
 import com.example.forummanagementsystem.models.Post;
+import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

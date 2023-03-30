@@ -89,103 +89,92 @@ public class MvcPostController {
         }
 
     @PostMapping("new")
-    public String createNewPost(@Valid @ModelAttribute("postDto") PostDto postDto, BindingResult bindingResult, Model model, HttpSession httpSession) {
-       User user;
-       try {
-           user = authenticationHelper.tryGetUser(httpSession);
-       } catch (AuthorizationException e){
-           return "redirect:/auth/login";
-       }
-       if (bindingResult.hasErrors()) {
-           return "post_new";
-       }
-       try {
-           Post post = postMapper.createDtoToObject(postDto, user);
-           postService.create(post);
-           return "redirect:/posts/" + post.getPostId();
-       } catch (EntityNotFoundException e){
-           model.addAttribute("error", e.getMessage());
-           return "error";
-       }
+    public String createNewPost(@Valid @ModelAttribute("postDto") PostDto postDto, BindingResult bindingResult,
+                                Model model,
+                                HttpSession session) {
+        try {
+            User user = authenticationHelper.tryGetUser(session);
+            if (bindingResult.hasErrors()) {
+                return "post_new";
+            }
+            Post post = postMapper.createDtoToObject(postDto, user);
+            postService.create(post);
+            return "redirect:/posts/" + post.getPostId();
+        } catch (AuthorizationException e) {
+            return "redirect:/auth/login";
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
     }
 
     @GetMapping("{id}/edit")
-    public String updatePost(@PathVariable("id") Long id, Model model, HttpSession httpSession) {
+    public String updatePost(@PathVariable("id") Long id, Model model, HttpSession session) {
         try {
-            authenticationHelper.tryGetUser(httpSession);
-        } catch (AuthorizationException e) {
-            return "redirect:/auth/login";
-        }
-        User currentUser = authenticationHelper.tryGetUser(httpSession);
-        try {
+            User currentUser = authenticationHelper.tryGetUser(session);
             authenticationHelper.checkAccessPermissions(postService.getById(id).getUser().getId(), currentUser);
-        } catch (ResponseStatusException e) {
-            model.addAttribute("error", e.getMessage());
-            return "access_denied";
-        }
-        try {
+
             Post post = postService.getById(id);
             PostDtoEdit postDto = postMapper.updateObjectToDto(post);
             model.addAttribute("postId", id);
             model.addAttribute("post", postDto);
             return "post_edit";
+        } catch (AuthorizationException e) {
+            return "redirect:/auth/login";
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
             return "error";
-        }
-    }
-
-    @PostMapping("{id}/edit")
-    public String getPostForEdit(@PathVariable("id") Long id, @Valid @ModelAttribute("postDto") PostDto postDto, BindingResult bindingResult, Model model, HttpSession httpSession) {
-        User user;
-        try {
-            user = authenticationHelper.tryGetUser(httpSession);
-        } catch (AuthorizationException e) {
-            return "redirect:/auth/login";
-        }
-        try {
-            authenticationHelper.checkAccessPermissions(postService.getById(id).getUser().getId(), user);
         } catch (ResponseStatusException e) {
             model.addAttribute("error", e.getMessage());
             return "access_denied";
         }
-        if (bindingResult.hasErrors()){
-            return "post_edit";
-        }
+    }
+
+    @PostMapping("{id}/edit")
+    public String updatePost(@PathVariable("id") Long id, @Valid @ModelAttribute("postDto") PostDtoEdit postDtoEdit,
+                             BindingResult bindingResult,
+                             Model model,
+                             HttpSession session) {
         try {
+            User user = authenticationHelper.tryGetUser(session);
+            authenticationHelper.checkAccessPermissions(postService.getById(id).getUser().getId(), user);
+            if (bindingResult.hasErrors()) {
+                return "post_edit";
+            }
             Post post = postService.getById(id);
-            post = postMapper.fromDto(postDto, id);
+            post = postMapper.fromDtoEdit(postDtoEdit, id);
             postService.update(post);
-            return "redirect:/posts/"+post.getPostId();
+            return "redirect:/posts/" + post.getPostId();
+        } catch (AuthorizationException e) {
+            return "redirect:/auth/login";
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
             return "error";
+        } catch (ResponseStatusException e) {
+            model.addAttribute("error", e.getMessage());
+            return "access_denied";
         }
     }
 
 
     @GetMapping("{id}/delete")
-    public String deletePost(@PathVariable Long id, Model model, HttpSession httpSession) {
+    public String deletePost(@PathVariable("id") Long id, Model model, HttpSession session) {
         try {
-            authenticationHelper.tryGetUser(httpSession);
+            User user = authenticationHelper.tryGetUser(session);
+            authenticationHelper.checkAccessPermissions(postService.getById(id).getUser().getId(), user);
+            postService.delete(id);
+            return "redirect:/home";
         } catch (AuthorizationException e) {
             return "redirect:/auth/login";
-        }
-        User user = authenticationHelper.tryGetUser(httpSession);
-        try {
-            authenticationHelper.checkAccessPermissions(postService.getById(id).getUser().getId(), user);
-        } catch (ResponseStatusException e){
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        } catch (ResponseStatusException e) {
             model.addAttribute("error", e.getMessage());
             return "access_denied";
         }
-        try {
-            postService.delete(id);
-            return "redirect:/home";
-        } catch (EntityNotFoundException e){
-            model.addAttribute("error", e.getMessage());
-            return "error";
-        }
     }
+
     @GetMapping("{id}/opinion")
     public String addOpinion(HttpSession session, @PathVariable Long id, @RequestParam Long opinion) {
         User user;
