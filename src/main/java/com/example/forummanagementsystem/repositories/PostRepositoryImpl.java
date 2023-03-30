@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Repository
 public class PostRepositoryImpl implements PostRepository {
@@ -88,6 +90,22 @@ public class PostRepositoryImpl implements PostRepository {
             );
             query.setParameter("postId", id);
             return query.getResultList();
+        }
+    }
+
+    @Override
+    public Map<User, Opinion> getOpinionsByPostId(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            TypedQuery<Object[]> query = session.createQuery(
+                    "SELECT p.user, p.opinions FROM Post p JOIN p.opinions po WHERE p.postId = :postId",
+                    Object[].class
+            );
+            query.setParameter("postId", id);
+            Stream<Object[]> results = query.getResultStream();
+            return results.collect(Collectors.toMap(
+                    result -> (User) result[0],
+                    result -> (Opinion) result[1]
+            ));
         }
     }
 

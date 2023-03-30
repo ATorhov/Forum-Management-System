@@ -4,6 +4,7 @@ import com.example.forummanagementsystem.models.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface PostRepository {
@@ -32,4 +33,5 @@ public interface PostRepository {
 
     int getPostsCount();
 
+    Map<User, Opinion> getOpinionsByPostId(Long id);
 }

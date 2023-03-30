@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @Component
 public class PostMapper {
@@ -27,10 +28,22 @@ public class PostMapper {
         return post;
     }
 
-    public Post fromDto(PostDto postDto, long id) {
+    public Post fromDto(PostDto postDto, Long id) {
         Post post = postRepository.getById(id);
         dtoToObject(postDto, post);
         return post;
+    }
+
+    public Post fromDtoEdit(PostDtoEdit postDtoEdit, Long id){
+        Post post = postRepository.getById(id);
+        dtoEditToObject(postDtoEdit, post);
+        return post;
+    }
+
+    private void dtoEditToObject(PostDtoEdit postDtoEdit, Post post){
+        post.setTitle(postDtoEdit.getTitle());
+        post.setContent(postDtoEdit.getContent());
+        post.setUpdateTime(LocalDateTime.now());
     }
 
     private void dtoToObject(PostDto postDto, Post post) {
@@ -75,9 +88,20 @@ public class PostMapper {
         PostDtoEdit postDtoEdit = new PostDtoEdit();
         postDtoEdit.setContent(post.getContent());
         postDtoEdit.setTitle(post.getTitle());
+        postDtoEdit.setOpinions(post.getOpinions());
         postDtoEdit.setId(post.getPostId());
 
         return postDtoEdit;
+    }
+
+    public Post updateFromDtoToObject(PostDto postDto) {
+        Post post = new Post();
+        post.setTitle(postDto.getTitle());
+        post.setContent(postDto.getContent());
+        post.setOpinions(postDto.getOpinions());
+
+        return post;
 
     }
+
 }

@@ -1,12 +1,10 @@
 package com.example.forummanagementsystem.services;
 
-import com.example.forummanagementsystem.models.Comment;
-import com.example.forummanagementsystem.models.Post;
-import com.example.forummanagementsystem.models.PostFilterOptions;
-import com.example.forummanagementsystem.models.User;
+import com.example.forummanagementsystem.models.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface PostService {
@@ -45,4 +43,6 @@ public interface PostService {
 
     long getLikes(Post post);
     long getDislikes(Post post);
+
+    Map<User, Opinion> getOpinionsByPostId(Long id);
 }

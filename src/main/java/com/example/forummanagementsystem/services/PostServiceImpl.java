@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -155,6 +156,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public Map<User, Opinion> getOpinionsByPostId(Long id) {
+        return repository.getOpinionsByPostId(id);
+    }
+
+    @Override
     public void addOpinion(User user, Post post, Long id) {
         Opinion opinion = opinionRepository.getById(id);
         post.getOpinions().put(user, opinion);
@@ -210,5 +216,4 @@ public class PostServiceImpl implements PostService {
             return 0;
         }
     }
-
 }
