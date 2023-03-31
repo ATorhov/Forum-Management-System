@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head"></head>
+<body>
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<header class="masthead" style="background-image: url('../static/assets/img/cryptocurrency-business-1.jpg')"
+        th:style="'background-image: url(' + @{/assets/img/cryptocurrency-business-1.jpg} + ');' + 'padding-top: 1.5rem'"></header>
+
+<section class="section about-section gray-bg" id="about">
+    <div class="container">
+        <h1>Edit profile</h1>
+        <form th:action="@{'/users/user/update/' + ${user.getUsername()}}"  method="post">
+            <label th:text="#{user.label.first-name}">First Name</label>s
+            <br/>
+            <input type="text" id="name" name="name" th:field="*{userUpdate.firstName}">
+            <br/><br/>
+
+            <label th:text="#{user.label.last-name}">First Name</label>
+            <br/>
+            <input type="text" id="lastName" name="lastName" th:field="*{userUpdate.lastName}">
+            <br/><br/>
+
+            <label th:text="#{user.label.email}">First Name</label>
+            <br/>
+            <input type="email" id="email" name="email" th:field="*{userUpdate.email}">
+            <br><br/>
+
+            <label th:text="#{user-additional.label.profession}">First Name</label>
+            <br/>
+            <input type="text" id="profession" name="profession" th:field="*{userUpdateAdditionInfo.profession}">
+            <br><br/>
+
+            <label th:text="#{user-additional.label.describe-profession}">First Name</label>
+            <br/>
+            <textarea id="message" name="message" rows="4" cols="50" th:field="*{userUpdateAdditionInfo.describeProfession}"></textarea>
+            <br><br/>
+
+            <label th:text="#{user-additional.label.address}"></label>
+            <br/>
+            <input type="text" id="address" name="address" th:field="*{userUpdateAdditionInfo.address}">
+            <br><br/>
+
+            <label th:text="#{user-additional.label.age}"></label>
+            <br/>
+            <input type="text" id="age" name="age" th:field="*{userUpdateAdditionInfo.age}">
+            <br><br/>
+
+            <label th:text="#{user-additional.label.country}"></label>
+            <br/>
+            <input type="text" id="country" name="country" th:field="*{userUpdateAdditionInfo.country}">
+            <br><br/>
+
+            <label th:text="#{user-additional.label.country}"></label>
+            <br/>
+            <input type="text" id="birthday" name="country" th:field="*{userUpdateAdditionInfo.birthday}">
+            <br><br/>
+
+
+            <label th:text="#{user-additional.label.phone-number}"></label>
+            <br/>
+            <input type="text" id="phone-number" name="phone-number" th:field="*{userUpdateAdditionInfo.phoneNumber}">
+            <br><br/>
+
+            <input type="submit" value="Update"/></form>
+    </div>
+</section>
+</body>
+<footer th:replace="fragments/footer :: footer"></footer>
+</html>

@@ -17,4 +17,9 @@ public class UserAdditionalInfoServiceImpl implements UserAdditionalInfoService 
     public void create(UserAdditionalInfo uai) {
         userAdditionalInfoRepository.create(uai);
     }
+
+    @Override
+    public void updateAdditionalUserInfo(UserAdditionalInfo userAdditionalInfo) {
+        userAdditionalInfoRepository.updateAdditionalUserInfo(userAdditionalInfo);
+    }
 }

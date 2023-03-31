@@ -1,5 +1,6 @@
 package com.example.forummanagementsystem.repositories;
 
+import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.models.UserAdditionalInfo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,6 +23,17 @@ public class UserAdditionalInfoRepositoryImpl implements UserAdditionalInfoRepos
             session.save(uai);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateAdditionalUserInfo(UserAdditionalInfo userAdditionalInfo) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.update(userAdditionalInfo);
+            session.getTransaction().commit();
+        } catch (EntityNotFoundException e){
+            throw new EntityNotFoundException("User", "username", userAdditionalInfo.getId().toString());
         }
     }
 }

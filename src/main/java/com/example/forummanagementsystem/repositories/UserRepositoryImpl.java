@@ -101,7 +101,8 @@ public class UserRepositoryImpl implements UserRepository {
 
         if (!alreadyExists) {
             try (Session session = sessionFactory.openSession()) {
-                String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+                String salt = BCrypt.gensalt();
+                String hashedPassword = BCrypt.hashpw(user.getPassword(), salt);
                 user.setPassword(hashedPassword);
                 user.setRegisteredTime(LocalDateTime.now());
                 session.save(user);

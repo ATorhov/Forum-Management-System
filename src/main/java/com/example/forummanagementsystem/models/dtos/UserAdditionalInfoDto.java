@@ -3,6 +3,7 @@ package com.example.forummanagementsystem.models.dtos;
 import com.example.forummanagementsystem.models.User;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -14,6 +15,68 @@ public class UserAdditionalInfoDto {
     private String phoneNumber;
 
     private User user;
+
+
+    private String profession;
+
+    private String describeProfession;
+
+    private String country;
+
+    private int age;
+
+    private String address;
+
+    private String birthday;
+
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
+    }
+
+    public String getDescribeProfession() {
+        return describeProfession;
+    }
+
+    public void setDescribeProfession(String describeProfession) {
+        this.describeProfession = describeProfession;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
