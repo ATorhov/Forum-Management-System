@@ -137,7 +137,7 @@ public class UserMVCController {
     public String changeIsAdmin(@PathVariable String username, @PathVariable boolean to, HttpSession httpSession){
         try {
             User userCheck = authenticationHelper.tryGetUser(httpSession);
-            if (!userCheck.isAdmin() || !userCheck.isCreator()){
+            if (!userCheck.isAdmin()){
                 return "access_denied";
             }
             authenticationHelper.tryGetUser(httpSession);
@@ -155,7 +155,7 @@ public class UserMVCController {
     public String changeStatus(@PathVariable String username, @PathVariable boolean to, HttpSession session){
         try {
             User userCheck = authenticationHelper.tryGetUser(session);
-            if (!userCheck.isAdmin() || !userCheck.isCreator()){
+            if (!userCheck.isAdmin()){
                 return "access_denied";
             }
             authenticationHelper.tryGetUser(session);

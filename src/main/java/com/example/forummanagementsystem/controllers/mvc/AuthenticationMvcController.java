@@ -68,7 +68,7 @@ public class AuthenticationMvcController {
                               BindingResult bindingResult,
                               HttpSession session,
                               RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
+            if (bindingResult.hasErrors()) {
             return "login-view";
         }
 

@@ -94,10 +94,13 @@ public class AuthenticationHelper {
     public User verifyAuthentication(String username, String password) {
         try {
             User user = userService.get(username);
-            if (user.getPassword().equals(password)){
-                return user;
+            String currentHashedPassword = user.getPassword();
+            if (currentHashedPassword.startsWith("$2a$")) {
+                if (BCrypt.checkpw(password, currentHashedPassword)) {
+                    return user;
+                }
             }
-            if (!BCrypt.checkpw(password, user.getPassword())) {
+            if (!user.getPassword().equals(password)) {
                 throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
             }
             return user;

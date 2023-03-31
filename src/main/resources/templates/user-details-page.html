@@ -70,7 +70,7 @@
                 </div>
                 <div class="col-6 col-lg-3">
                     <div class="count-data text-center">
-                        <a  th:if="${isCreator} and ${user.isAdmin()}" th:href="@{'/users/user/' + ${user.getUsername()} + '/changeRole/false'}" th:text="'Unmake Admin'"
+                        <a  th:if="${isCreator} and ${user.isAdmin()} and ${isCreator}" th:href="@{'/users/user/' + ${user.getUsername()} + '/changeRole/false'}" th:text="'Unmake Admin'"
                             th:style="${user.isAdmin()} == false ? 'background-color: rgb(0, 177, 0)' : 'background: red'"></a>
                         <a  th:if="${isAdmin} and ${user.isAdmin() == false}" th:href="@{'/users/user/' + ${user.getUsername()} + '/changeRole/true'}" th:text="'Make Admin'"
                             th:style="${user.isAdmin()} == false ? 'background-color: rgb(0, 177, 0)' : 'background: red'"></a>
@@ -79,10 +79,10 @@
                 </div>
                 <div  class="col-6 col-lg-3">
                     <div class="count-data text-center">
-                        <a th:if="${isAdmin} and ${user.isBlocked()}" th:href="@{'/users/user/' + ${user.getUsername()} + '/changeStatus/false'}"
+                        <a th:if="${isAdmin} and ${user.isBlocked()} and ${isCreator}" th:href="@{'/users/user/' + ${user.getUsername()} + '/changeStatus/false'}"
                            th:text="${'Unblock the user'}"
                            th:style="${user.isBlocked()} == true ? 'background-color: rgb(0, 177, 0)' : 'background: red'"></a>
-                        <a th:if="${isAdmin} and ${!user.isBlocked()}"th:href="@{'/users/user/' + ${user.getUsername()} + '/changeStatus/true'}"
+                        <a th:if="${isAdmin} and ${!user.isBlocked()} and ${isCreator}" th:href="@{'/users/user/' + ${user.getUsername()} + '/changeStatus/true'}"
                            th:text="${'Block the user'}"
                            th:style="${user.isBlocked()} == true ? 'background-color: rgb(0, 177, 0)' : 'background: red'"></a>
                     </div>
