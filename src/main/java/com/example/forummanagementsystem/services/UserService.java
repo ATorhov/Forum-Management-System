@@ -4,6 +4,7 @@ package com.example.forummanagementsystem.services;
 
 import com.example.forummanagementsystem.models.dtos.RegisterDto;
 import com.example.forummanagementsystem.models.User;
+import com.example.forummanagementsystem.models.UserAdditionalInfo;
 
 import java.util.List;
 import java.util.Optional;

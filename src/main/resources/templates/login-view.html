@@ -12,6 +12,8 @@
     <br/>
     <input type="text" required minlength="4" maxlength="32" th:field="*{username}"/>
     <label class="error" th:errors="*{username}">Username error placeholder</label>
+    <small th:if="${blocked}"  id="usernameUniqueError"
+           class="text-light form-text bg-danger rounded">This user is blocked.</small>
     <br/><br/>
 
     <label th:text="#{user.label.password}">Password</label>

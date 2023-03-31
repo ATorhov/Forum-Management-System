@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,7 +37,7 @@ public class User {
 
 
     @OneToOne(mappedBy = "user")
-    private UserAdditionalInfo phoneNumber;
+    private UserAdditionalInfo userAdditionalInfo;
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
@@ -49,6 +48,22 @@ public class User {
     public User() {
     }
 
+
+    public boolean isCreator() {
+        return isCreator;
+    }
+
+    public void setCreator(boolean creator) {
+        isCreator = creator;
+    }
+
+    public UserAdditionalInfo getUserAdditionalInfo() {
+        return userAdditionalInfo;
+    }
+
+    public void setUserAdditionalInfo(UserAdditionalInfo userAdditionalInfo) {
+        this.userAdditionalInfo = userAdditionalInfo;
+    }
 
     public List<Comment> getComments() {
         return comments;

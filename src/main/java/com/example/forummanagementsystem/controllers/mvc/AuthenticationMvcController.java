@@ -66,13 +66,20 @@ public class AuthenticationMvcController {
     @PostMapping("/login")
     public String handleLogin(@Valid @ModelAttribute("login") LoginDto login,
                               BindingResult bindingResult,
-                              HttpSession session) {
+                              HttpSession session,
+                              RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "login-view";
         }
 
         try {
             authenticationHelper.verifyAuthentication(login.getUsername(), login.getPassword());
+            User user = userService.get(login.getUsername());
+            if (user.isBlocked()){
+                redirectAttributes.addFlashAttribute("login", login);
+                redirectAttributes.addFlashAttribute("blocked", true);
+                return "redirect:/auth/login";
+            }
             session.setAttribute("currentUser", login.getUsername());
             return "redirect:/home";
         } catch (AuthorizationException e) {

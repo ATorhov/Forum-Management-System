@@ -3,6 +3,7 @@ package com.example.forummanagementsystem.services;
 import com.example.forummanagementsystem.exceptions.AuthorizationException;
 import com.example.forummanagementsystem.models.dtos.RegisterDto;
 import com.example.forummanagementsystem.models.User;
+import com.example.forummanagementsystem.models.UserAdditionalInfo;
 import com.example.forummanagementsystem.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 

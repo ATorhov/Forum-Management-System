@@ -1,5 +1,6 @@
 package com.example.forummanagementsystem.services.mappers;
 
+import com.example.forummanagementsystem.helpers.AuthenticationHelper;
 import com.example.forummanagementsystem.models.*;
 import com.example.forummanagementsystem.models.dtos.RegisterDto;
 import com.example.forummanagementsystem.models.dtos.UserAdditionalInfoDto;
@@ -8,19 +9,30 @@ import com.example.forummanagementsystem.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpSession;
+
 @Component
 public class UserMapper {
 
     private final UserRepository userRepository;
 
+
+    private final AuthenticationHelper authenticationHelper;
     @Autowired
-    public UserMapper(UserRepository userRepository) {
+    public UserMapper(UserRepository userRepository, AuthenticationHelper authenticationHelper) {
         this.userRepository = userRepository;
+        this.authenticationHelper = authenticationHelper;
     }
 
 
     public User fromDto(UserDto userDto) {
         User user = new User();
+        dtoToObject(userDto, user);
+        return user;
+    }
+
+    public User fromDtoInfo(UserDto userDto, HttpSession session) {
+        User user = authenticationHelper.tryGetUser(session);
         dtoToObject(userDto, user);
         return user;
     }
@@ -44,13 +56,26 @@ public class UserMapper {
     private void dtoToObject(UserDto userDto, User user) {
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
-        user.setPassword(userDto.getPassword());
+//        user.setPassword(userDto.getPassword());
         user.setEmail(userDto.getEmail());
-        user.setUsername(userDto.getUsername());
+//        user.setUsername(userDto.getUsername());
+    }
+
+    public UserAdditionalInfo userAdditionalInfoDtoToObject(UserAdditionalInfoDto userAdditionalInfoDto) {
+        UserAdditionalInfo userAdditionalInfo = new UserAdditionalInfo();
+        userAdditionalInfo.setPhoneNumber(userAdditionalInfoDto.getPhoneNumber());
+        userAdditionalInfo.setUser(userAdditionalInfoDto.getUser());
+        userAdditionalInfo.setAge(userAdditionalInfoDto.getAge());
+        userAdditionalInfo.setAddress(userAdditionalInfoDto.getAddress());
+        userAdditionalInfo.setBirthday(userAdditionalInfoDto.getBirthday());
+        userAdditionalInfo.setCountry(userAdditionalInfoDto.getCountry());
+        userAdditionalInfo.setProfession(userAdditionalInfoDto.getProfession());
+        userAdditionalInfo.setDescribeProfession(userAdditionalInfoDto.getDescribeProfession());
+        return userAdditionalInfo;
     }
 
     public UserAdditionalInfo userAdditionalInfoDtoToObject(UserAdditionalInfoDto userAdditionalInfoDto,
-                                                            UserAdditionalInfo userAdditionalInfo){
+                                                            UserAdditionalInfo userAdditionalInfo) {
         userAdditionalInfo.setPhoneNumber(userAdditionalInfoDto.getPhoneNumber());
         userAdditionalInfo.setUser(userAdditionalInfoDto.getUser());
         return userAdditionalInfo;
