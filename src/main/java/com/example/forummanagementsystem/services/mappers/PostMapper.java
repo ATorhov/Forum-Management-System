@@ -77,9 +77,9 @@ public class PostMapper {
         PostDto postDto = new PostDto();
         postDto.setTitle(post.getTitle());
         postDto.setContent(post.getContent());
-        postDto.setCreateTime();
+        postDto.setCreateTime(LocalDateTime.now());
         postDto.setRating(post.getRating());
-        postDto.setOpinions(post.getOpinions());
+        //postDto.setOpinions(post.getOpinions());
         return postDto;
     }
 

@@ -1,5 +1,6 @@
 package com.example.forummanagementsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -30,25 +31,27 @@ public class Post {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    // @JsonIgnore
+     @JsonIgnore
     @Column(name = "create_time", updatable = false)
     @CreationTimestamp
     private LocalDateTime createTime;
 
-    // @JsonIgnore
+     @JsonIgnore
     @Column(name = "update_time")
     @UpdateTimestamp
     private LocalDateTime updateTime;
 
     @ManyToOne
-    // @JsonIgnore
+     @JsonIgnore
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> comments;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "post_opinions",
             joinColumns = @JoinColumn(name = "post_id"),
@@ -121,6 +124,7 @@ public class Post {
         this.opinions = opinions;
     }
 
+    @JsonIgnore
     public long getLikes() {
         try {
             return opinions.values().stream()
@@ -130,6 +134,7 @@ public class Post {
         }
     }
 
+    @JsonIgnore
     public long getDislikes(){
         try {
             return opinions.values().stream()
@@ -151,11 +156,13 @@ public class Post {
         this.comments = comments;
     }
 
+    @JsonIgnore
     public String getFormattedCreateTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd 'at' HH:mm");
         return createTime.format(formatter);
     }
 
+    @JsonIgnore
     public String getFormattedUpdateTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd 'at' HH:mm");
         return updateTime.format(formatter);

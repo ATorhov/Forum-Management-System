@@ -2,6 +2,7 @@ package com.example.forummanagementsystem.models.dtos;
 
 import com.example.forummanagementsystem.models.Opinion;
 import com.example.forummanagementsystem.models.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -24,6 +25,7 @@ public class PostDto {
     private LocalDateTime createTime;
     private User user;
 
+    @JsonIgnore
     private Map<User, Opinion> opinions;
 
     public PostDto(){

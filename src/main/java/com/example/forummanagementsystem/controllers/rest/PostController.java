@@ -13,6 +13,7 @@ import com.example.forummanagementsystem.services.mappers.PostMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -51,7 +52,7 @@ public class PostController {
     public List<Post> filter(
             @RequestParam(required = false) Optional<String> title,
             @RequestParam(required = false) Optional<String> content,
-            @RequestParam(required = false) Optional<Integer> rating,
+            @RequestParam(required = false) Optional<Long> rating,
             @RequestParam(required = false) Optional<String> createTime,
             @RequestParam(required = false) Optional<String> updateTime,
             @RequestParam(required = false) Optional<String> sort

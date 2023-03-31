@@ -126,7 +126,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> filter(Optional<String> title,
                              Optional<String> content,
-                             Optional<Integer> rating,
+                             Optional<Long> rating,
                              Optional<String> createTime,
                              Optional<String> updateTime,
                              Optional<String> sort) {

@@ -63,12 +63,12 @@ public class MvcPostController {
         return "all-posts-page";
     }
 
-    @GetMapping("{id}")
-    public String getPost(@PathVariable Long id, Model model, HttpSession httpSession) {
+    @GetMapping("{postId}")
+    public String getPost(@PathVariable Long postId, Model model, HttpSession httpSession) {
         try {
-            Post post = postService.getById(id);
+            Post post = postService.getById(postId);
             model.addAttribute("post", post);
-            List<Comment> comments = postService.getCommentsByPostId(id);
+            List<Comment> comments = postService.getCommentsByPostId(postId);
             model.addAttribute("comments", comments);
             return "post";
         } catch (EntityNotFoundException e) {
@@ -109,15 +109,15 @@ public class MvcPostController {
         }
     }
 
-    @GetMapping("{id}/edit")
-    public String updatePost(@PathVariable("id") Long id, Model model, HttpSession session) {
+    @GetMapping("{postId}/edit")
+    public String updatePost(@PathVariable("postId") Long postId, Model model, HttpSession session) {
         try {
             User currentUser = authenticationHelper.tryGetUser(session);
-            authenticationHelper.checkAccessPermissions(postService.getById(id).getUser().getId(), currentUser);
+            authenticationHelper.checkAccessPermissions(postService.getById(postId).getUser().getId(), currentUser);
 
-            Post post = postService.getById(id);
+            Post post = postService.getById(postId);
             PostDtoEdit postDto = postMapper.updateObjectToDto(post);
-            model.addAttribute("postId", id);
+            model.addAttribute("postId", postId);
             model.addAttribute("post", postDto);
             return "post_edit";
         } catch (AuthorizationException e) {
@@ -131,19 +131,19 @@ public class MvcPostController {
         }
     }
 
-    @PostMapping("{id}/edit")
-    public String updatePost(@PathVariable("id") Long id, @Valid @ModelAttribute("postDto") PostDtoEdit postDtoEdit,
+    @PostMapping("{postId}/edit")
+    public String updatePost(@PathVariable("postId") Long postId, @Valid @ModelAttribute("postDto") PostDtoEdit postDtoEdit,
                              BindingResult bindingResult,
                              Model model,
                              HttpSession session) {
         try {
             User user = authenticationHelper.tryGetUser(session);
-            authenticationHelper.checkAccessPermissions(postService.getById(id).getUser().getId(), user);
+            authenticationHelper.checkAccessPermissions(postService.getById(postId).getUser().getId(), user);
             if (bindingResult.hasErrors()) {
                 return "post_edit";
             }
-            Post post = postService.getById(id);
-            post = postMapper.fromDtoEdit(postDtoEdit, id);
+            Post post = postService.getById(postId);
+            post = postMapper.fromDtoEdit(postDtoEdit, postId);
             postService.update(post);
             return "redirect:/posts/" + post.getPostId();
         } catch (AuthorizationException e) {
@@ -158,12 +158,12 @@ public class MvcPostController {
     }
 
 
-    @GetMapping("{id}/delete")
-    public String deletePost(@PathVariable("id") Long id, Model model, HttpSession session) {
+    @GetMapping("{postId}/delete")
+    public String deletePost(@PathVariable("postId") Long postId, Model model, HttpSession session) {
         try {
             User user = authenticationHelper.tryGetUser(session);
-            authenticationHelper.checkAccessPermissions(postService.getById(id).getUser().getId(), user);
-            postService.delete(id);
+            authenticationHelper.checkAccessPermissions(postService.getById(postId).getUser().getId(), user);
+            postService.delete(postId);
             return "redirect:/home";
         } catch (AuthorizationException e) {
             return "redirect:/auth/login";
@@ -176,21 +176,21 @@ public class MvcPostController {
         }
     }
 
-    @GetMapping("{id}/opinion")
-    public String addOpinion(HttpSession session, @PathVariable Long id, @RequestParam Long opinion) {
+    @GetMapping("{postId}/opinion")
+    public String addOpinion(HttpSession session, @PathVariable Long postId, @RequestParam Long opinion) {
         User user;
         try {
             user = authenticationHelper.tryGetUser(session);
         } catch (AuthorizationException e){
             throw new AuthorizationException("User is not authenticated");
         }
-        Post post = postService.getById(id);
+        Post post = postService.getById(postId);
         postService.addOpinion(user, post, opinion);
         Map<String, Long> result = new HashMap<>();
         result.put("likes", postService.getLikes(post));
         result.put("dislikes", postService.getDislikes(post));
         post.setRealRating();
         postService.update(post);
-        return "redirect:/posts/"+id;
+        return "redirect:/posts/"+postId;
     }
 }

@@ -194,7 +194,7 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public List<Post> filter(Optional<String> title,
                              Optional<String> content,
-                             Optional<Integer> rating,
+                             Optional<Long> rating,
                              Optional<LocalDateTime> createDateTime,
                              Optional<LocalDateTime> updateDateTime,
                              Optional<String> sort) {

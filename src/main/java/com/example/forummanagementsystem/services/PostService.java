@@ -25,7 +25,7 @@ public interface PostService {
 
     List<Post> getPostsByUserId(Long id);
 
-    List<Post> filter(Optional<String> title, Optional<String> content, Optional<Integer> rating, Optional<String> createTime, Optional<String> updateTime, Optional<String> sort);
+    List<Post> filter(Optional<String> title, Optional<String> content, Optional<Long> rating, Optional<String> createTime, Optional<String> updateTime, Optional<String> sort);
 
     List<Post> getAllSearch(Optional<String> all);
 
