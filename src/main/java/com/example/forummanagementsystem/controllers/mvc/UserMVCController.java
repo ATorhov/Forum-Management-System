@@ -98,7 +98,7 @@ public class UserMVCController {
     public String updateUserInfo(@PathVariable String username, HttpSession httpSession, Model model){
         try {
             User user = authenticationHelper.tryGetUser(httpSession);
-            if (!user.getUsername().equals(username)){
+            if (!user.getUsername().equals(username) && !user.isAdmin() && !user.isCreator() && user.isBlocked()){
                 throw new AuthorizationException("You cannot update another user info!");
             }
             model.addAttribute("userUpdate", new UserDto());
@@ -115,22 +115,29 @@ public class UserMVCController {
                                        @ModelAttribute UserAdditionalInfoDto userUpdateAdditionInfo,
                                        HttpSession session){
         try {
-            User userCheck = authenticationHelper.tryGetUser(session);
-            if (!userCheck.isAdmin() || !userCheck.isCreator()){
-                return "access_denied";
-            }
-            User user = userService.get(username);
-            userUpdateAdditionInfo.setUser(user);
             User user1 = userMapper.fromDtoInfo(userUpdate, session);
             userService.update(user1);
             UserAdditionalInfo userAdditionalInfo = userMapper.userAdditionalInfoDtoToObject(userUpdateAdditionInfo);
-            userAdditionalInfoService.updateAdditionalUserInfo(userAdditionalInfo);
+            if (userAdditionalInfoService.findByUser(user1) == null){
+                userAdditionalInfo.setUser(user1);
+                userAdditionalInfoService.create(userAdditionalInfo);
+            } else {
+                UserAdditionalInfo userAdditionalInfoFinal = userAdditionalInfoService.findByUser(user1);
+                userAdditionalInfoFinal.setPhoneNumber(userAdditionalInfo.getPhoneNumber());
+                userAdditionalInfoFinal.setAge(userAdditionalInfo.getAge());
+                userAdditionalInfoFinal.setAddress(userAdditionalInfo.getAddress());
+                userAdditionalInfoFinal.setBirthday(userAdditionalInfo.getBirthday());
+                userAdditionalInfoFinal.setCountry(userAdditionalInfo.getCountry());
+                userAdditionalInfoFinal.setProfession(userAdditionalInfo.getProfession());
+                userAdditionalInfoFinal.setDescribeProfession(userAdditionalInfo.getDescribeProfession());
+                userAdditionalInfoService.updateAdditionalUserInfo(userAdditionalInfoFinal);
+            }
         } catch (EntityNotFoundException e){
             throw new EntityNotFoundException(userUpdateAdditionInfo.getUser().getUsername(),
                     userUpdateAdditionInfo.getUser().getFirstName(), userUpdateAdditionInfo.getUser().getLastName());
         }
 
-        return "redirect:/user-details/" + username;
+        return "redirect:/users/user-details/" + username;
     }
 
     @GetMapping("/user/{username}/changeRole/{to}")

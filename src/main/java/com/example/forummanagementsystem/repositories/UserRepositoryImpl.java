@@ -79,7 +79,7 @@ public class UserRepositoryImpl implements UserRepository {
     public void update(User user) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+//            user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
             session.update(user);
             session.getTransaction().commit();
         } catch (EntityNotFoundException e){

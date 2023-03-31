@@ -1,5 +1,6 @@
 package com.example.forummanagementsystem.services;
 
+import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.models.UserAdditionalInfo;
 import com.example.forummanagementsystem.repositories.UserAdditionalInfoRepository;
 import org.springframework.stereotype.Service;
@@ -21,5 +22,10 @@ public class UserAdditionalInfoServiceImpl implements UserAdditionalInfoService 
     @Override
     public void updateAdditionalUserInfo(UserAdditionalInfo userAdditionalInfo) {
         userAdditionalInfoRepository.updateAdditionalUserInfo(userAdditionalInfo);
+    }
+
+    @Override
+    public UserAdditionalInfo findByUser(User user1) {
+        return userAdditionalInfoRepository.findByUser(user1);
     }
 }
