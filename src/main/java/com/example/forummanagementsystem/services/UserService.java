@@ -2,7 +2,7 @@ package com.example.forummanagementsystem.services;
 
 
 
-import com.example.forummanagementsystem.models.RegisterDto;
+import com.example.forummanagementsystem.models.dtos.RegisterDto;
 import com.example.forummanagementsystem.models.User;
 
 import java.util.List;

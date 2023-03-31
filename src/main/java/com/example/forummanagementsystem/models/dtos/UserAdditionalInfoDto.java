@@ -1,5 +1,6 @@
-package com.example.forummanagementsystem.models;
+package com.example.forummanagementsystem.models.dtos;
 
+import com.example.forummanagementsystem.models.User;
 import org.springframework.stereotype.Repository;
 
 import javax.validation.constraints.NotNull;

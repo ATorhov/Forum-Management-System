@@ -3,6 +3,7 @@ package com.example.forummanagementsystem.controllers.mvc;
 import com.example.forummanagementsystem.exceptions.AuthorizationException;
 import com.example.forummanagementsystem.helpers.AuthenticationHelper;
 import com.example.forummanagementsystem.models.*;
+import com.example.forummanagementsystem.models.dtos.CommentFilterDto;
 import com.example.forummanagementsystem.services.CommentService;
 import com.example.forummanagementsystem.services.PostService;
 import com.example.forummanagementsystem.services.UserService;

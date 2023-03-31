@@ -3,7 +3,7 @@ package com.example.forummanagementsystem.repositories;
 import com.example.forummanagementsystem.exceptions.AlreadyHasThisBooleanException;
 import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
-import com.example.forummanagementsystem.models.RegisterDto;
+import com.example.forummanagementsystem.models.dtos.RegisterDto;
 import com.example.forummanagementsystem.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

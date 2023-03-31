@@ -6,6 +6,7 @@ import com.example.forummanagementsystem.models.*;
 
 import com.example.forummanagementsystem.models.Post;
 import com.example.forummanagementsystem.models.User;
+import com.example.forummanagementsystem.models.dtos.CommentDto;
 import com.example.forummanagementsystem.services.PostService;
 import com.example.forummanagementsystem.services.mappers.PostMapper;
 

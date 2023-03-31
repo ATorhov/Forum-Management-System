@@ -1,4 +1,6 @@
-package com.example.forummanagementsystem.models;
+package com.example.forummanagementsystem.models.dtos;
+
+import com.example.forummanagementsystem.models.dtos.LoginDto;
 
 import javax.validation.constraints.NotEmpty;
 

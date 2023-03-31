@@ -1,12 +1,12 @@
 package com.example.forummanagementsystem;
 
 import com.example.forummanagementsystem.models.*;
+import com.example.forummanagementsystem.models.dtos.PostDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Helpers {
 

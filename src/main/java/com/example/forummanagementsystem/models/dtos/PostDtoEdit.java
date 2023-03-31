@@ -1,4 +1,7 @@
-package com.example.forummanagementsystem.models;
+package com.example.forummanagementsystem.models.dtos;
+
+import com.example.forummanagementsystem.models.Opinion;
+import com.example.forummanagementsystem.models.User;
 
 import javax.validation.constraints.Size;
 import java.util.Map;

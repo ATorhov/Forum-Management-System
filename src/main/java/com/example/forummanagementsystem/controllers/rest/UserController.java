@@ -4,7 +4,7 @@ import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.helpers.AuthenticationHelper;
 import com.example.forummanagementsystem.models.User;
-import com.example.forummanagementsystem.models.UserDto;
+import com.example.forummanagementsystem.models.dtos.UserDto;
 import com.example.forummanagementsystem.services.mappers.UserMapper;
 import com.example.forummanagementsystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

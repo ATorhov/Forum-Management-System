@@ -1,13 +1,12 @@
 package com.example.forummanagementsystem.controllers.rest;
 
 import com.example.forummanagementsystem.exceptions.AuthorizationException;
-import com.example.forummanagementsystem.exceptions.BlockedUserException;
 import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.helpers.AuthenticationHelper;
 import com.example.forummanagementsystem.models.Comment;
 import com.example.forummanagementsystem.models.Post;
-import com.example.forummanagementsystem.models.PostDto;
+import com.example.forummanagementsystem.models.dtos.PostDto;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.services.PostService;
 import com.example.forummanagementsystem.services.mappers.PostMapper;

@@ -4,7 +4,7 @@ package com.example.forummanagementsystem.repositories;
 
 
 
-import com.example.forummanagementsystem.models.RegisterDto;
+import com.example.forummanagementsystem.models.dtos.RegisterDto;
 import com.example.forummanagementsystem.models.User;
 
 import java.time.LocalDateTime;

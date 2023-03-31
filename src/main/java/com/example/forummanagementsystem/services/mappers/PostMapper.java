@@ -1,8 +1,8 @@
 package com.example.forummanagementsystem.services.mappers;
 
 import com.example.forummanagementsystem.models.Post;
-import com.example.forummanagementsystem.models.PostDto;
-import com.example.forummanagementsystem.models.PostDtoEdit;
+import com.example.forummanagementsystem.models.dtos.PostDto;
+import com.example.forummanagementsystem.models.dtos.PostDtoEdit;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.repositories.PostRepository;
 import com.example.forummanagementsystem.repositories.UserRepository;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.stream.Collectors;
 
 @Component
 public class PostMapper {

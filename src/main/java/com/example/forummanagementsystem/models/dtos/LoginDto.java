@@ -1,4 +1,4 @@
-package com.example.forummanagementsystem.models;
+package com.example.forummanagementsystem.models.dtos;
 
 import javax.validation.constraints.NotEmpty;
 

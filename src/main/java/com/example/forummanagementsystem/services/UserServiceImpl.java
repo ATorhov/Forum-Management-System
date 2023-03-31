@@ -1,17 +1,13 @@
 package com.example.forummanagementsystem.services;
 
 import com.example.forummanagementsystem.exceptions.AuthorizationException;
-import com.example.forummanagementsystem.models.RegisterDto;
+import com.example.forummanagementsystem.models.dtos.RegisterDto;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.repositories.UserRepository;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
