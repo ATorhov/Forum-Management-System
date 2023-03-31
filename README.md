@@ -46,20 +46,20 @@ Anonymous users able to see a list of the top 10 most commented posts and a list
 - [x] Create 'Guest page' (for non-registered/logged in users) [HTML page]
 - [x] Create 'Login' [HTML page]
 - [x] Create 'Register' [HTML page]
-- [ ] Create User dashboard  [HTML page]
-- [ ] Create Admin dashboard [HTML page]
+- [x] Create User dashboard  [HTML page]
+- [x] Create Admin dashboard [HTML page]
 - [x] Create 'Post view' [HTML page]
 - [x] Create 'Create new post' [HTML page]
 - [x] Create 'Edit post' [HTML page]
 - [x] Implement LIKES / DISLIKES on 'Post view' page [CRUD + Thymeleaf] **<ins> Very Important**
 - [x] Integrate list of comments to 'Post view' page [Thymeleaf]
 - [x] Implement add/delete comment in 'Post view' page [Thymeleaf]
-- [ ] Implement MVC authentication for User.
+- [x] Implement MVC authentication for User.
 - [x] Implement MVC authentication for Post.
 - [x] Implement MVC authentication for Comment.
-- [ ] Implement MVC Search and Filtering for Post.
+- [x] Implement MVC Search and Filtering for Post.
 - [ ] Implement MVC Search and Filtering for User.
-- [ ] Implement MVC Search and Filtering for Comment.
+- [x] Implement MVC Search and Filtering for Comment.
 - [ ] Create and provide a link to the Swagger documentation. **<ins> Very Important**
 - [ ] Instructions on how to set up and run the project locally **<ins> Very Important**
 
