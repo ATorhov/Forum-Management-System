@@ -2,6 +2,7 @@ package com.example.forummanagementsystem.controllers.mvc;
 
 import com.example.forummanagementsystem.exceptions.AuthorizationException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
+import com.example.forummanagementsystem.exceptions.UnauthorizerOperationException;
 import com.example.forummanagementsystem.helpers.AuthenticationHelper;
 import com.example.forummanagementsystem.models.*;
 import com.example.forummanagementsystem.models.dtos.PostDto;
@@ -39,7 +40,13 @@ public class MvcPostController {
 
     @ModelAttribute("user")
     public User getUser(HttpSession httpSession) {
-        return authenticationHelper.tryGetUser(httpSession);
+        User user = null;
+        try {
+            user =  authenticationHelper.tryGetUser(httpSession);
+        } catch (AuthorizationException e){
+
+        }
+        return user;
     }
 
     @ModelAttribute("isAuthenticated")
@@ -59,7 +66,11 @@ public class MvcPostController {
     @GetMapping("/all")
     public String getUsers(Model model, HttpSession session){
         User user = authenticationHelper.tryGetUser(session);
-        model.addAttribute("posts", postService.getAll(user));
+        try{
+            model.addAttribute("posts", postService.getAll(user));
+        } catch (UnauthorizerOperationException e){
+            return "access_denied";
+        }
         return "all-posts-page";
     }
 
@@ -125,7 +136,7 @@ public class MvcPostController {
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
             return "error";
-        } catch (ResponseStatusException e) {
+        } catch (UnauthorizerOperationException e) {
             model.addAttribute("error", e.getMessage());
             return "access_denied";
         }
@@ -151,7 +162,7 @@ public class MvcPostController {
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
             return "error";
-        } catch (ResponseStatusException e) {
+        } catch (UnauthorizerOperationException e) {
             model.addAttribute("error", e.getMessage());
             return "access_denied";
         }
@@ -170,7 +181,7 @@ public class MvcPostController {
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
             return "error";
-        } catch (ResponseStatusException e) {
+        } catch (UnauthorizerOperationException e) {
             model.addAttribute("error", e.getMessage());
             return "access_denied";
         }

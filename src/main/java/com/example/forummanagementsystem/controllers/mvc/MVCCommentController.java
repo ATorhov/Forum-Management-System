@@ -2,6 +2,7 @@ package com.example.forummanagementsystem.controllers.mvc;
 
 import com.example.forummanagementsystem.exceptions.AuthorizationException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
+import com.example.forummanagementsystem.exceptions.UnauthorizerOperationException;
 import com.example.forummanagementsystem.helpers.AuthenticationHelper;
 import com.example.forummanagementsystem.models.*;
 import com.example.forummanagementsystem.models.dtos.CommentDto;
@@ -45,9 +46,14 @@ public class MVCCommentController {
 
     @ModelAttribute("user")
     public User getUser(HttpSession httpSession) {
-        return authenticationHelper.tryGetUser(httpSession);
-    }
+        User user = null;
+        try {
+            user =  authenticationHelper.tryGetUser(httpSession);
+        } catch (AuthorizationException e){
 
+        }
+        return user;
+    }
     @ModelAttribute("isAuthenticated")
     public boolean isAuthenticated(HttpSession httpSession) {
         return httpSession.getAttribute("currentUser") != null;
@@ -107,7 +113,7 @@ public class MVCCommentController {
         User currentUser = authenticationHelper.tryGetUser(httpSession);
         try {
             authenticationHelper.checkAccessPermissions(commentService.getById(commentId).getUser().getId(), currentUser);
-        } catch (ResponseStatusException e) {
+        } catch (UnauthorizerOperationException e) {
             model.addAttribute("error", e.getMessage());
             return "access_denied";
         }
@@ -128,7 +134,7 @@ public class MVCCommentController {
         }
         try {
             authenticationHelper.checkAccessPermissions(commentService.getById(commentId).getUser().getId(), user);
-        } catch (ResponseStatusException e) {
+        } catch (UnauthorizerOperationException e) {
             model.addAttribute("error", e.getMessage());
             return "access_denied";
         }
@@ -155,7 +161,7 @@ public class MVCCommentController {
         User user = authenticationHelper.tryGetUser(httpSession);
         try {
             authenticationHelper.checkAccessPermissions(commentService.getById(commentId).getUser().getId(), user);
-        } catch (ResponseStatusException e) {
+        } catch (UnauthorizerOperationException e) {
             model.addAttribute("error", e.getMessage());
             return "access_denied";
         }

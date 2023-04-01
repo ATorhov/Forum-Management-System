@@ -1,6 +1,7 @@
 package com.example.forummanagementsystem.controllers.mvc;
 
 import com.example.forummanagementsystem.exceptions.AuthorizationException;
+import com.example.forummanagementsystem.exceptions.UnauthorizerOperationException;
 import com.example.forummanagementsystem.helpers.AuthenticationHelper;
 import com.example.forummanagementsystem.models.*;
 import com.example.forummanagementsystem.models.dtos.CommentFilterDto;
@@ -81,7 +82,9 @@ public class MVCFilteringCommentController {
             User user = authenticationHelper.tryGetUser(session);
             model.addAttribute("comments", commentService.getAll(user));
         } catch (AuthorizationException e) {
-            return "redirect:/auth/login";
+            return "redirect: /auth/login";
+        } catch (UnauthorizerOperationException e){
+            return "access_denied";
         }
 
         CommentFilterOptions filterCommentOptions = new CommentFilterOptions(

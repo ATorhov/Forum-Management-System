@@ -35,7 +35,13 @@ public class HomeController {
 
     @ModelAttribute("user")
     public User getUser(HttpSession httpSession) {
-        return authenticationHelper.tryGetUser(httpSession);
+        User user = null;
+        try {
+            user =  authenticationHelper.tryGetUser(httpSession);
+        } catch (AuthorizationException e){
+            
+        }
+        return user;
     }
 
     @ModelAttribute("isAuthenticated")

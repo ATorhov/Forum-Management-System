@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>Access Denied</title>
-  <link rel="stylesheet" th:href="@{/css/style.css}">
+<head th:replace="fragments/header :: head">
 </head>
 <body>
-<div class="container">
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<header class="masthead"  style="background-image: url('../static/assets/img/cryptocurrency-business-1.jpg')" th:style="'background-image: url(' + @{/assets/img/cryptocurrency-business-1.jpg} + ');' + 'padding-top: 1.5rem'"></header>
+
+<div class="container" th:style="'background-color: black'">
   <div class="row">
     <div class="col-md-12 text-center">
-      <h1>Access Denied</h1>
-      <p>Sorry, you don't have permission to access this page.</p>
+      <h1 th:style="'color: red'">Access Denied</h1>
+      <p th:style="'color: red'">Sorry, you don't have permission to access this page.</p>
       <a th:href="@{/home}" class="btn btn-primary">Go to Home</a>
     </div>
   </div>
 </div>
 </body>
+<footer th:replace="fragments/footer :: footer"></footer>
 </html>

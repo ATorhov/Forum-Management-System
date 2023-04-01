@@ -76,7 +76,7 @@ public class AuthenticationHelper {
 
     public void checkAccessPermissions(Long targetUserId, User executingUser) {
         if (!executingUser.isAdmin() && executingUser.getId() != targetUserId) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ERROR_MESSAGE);
+            throw new UnauthorizerOperationException(ERROR_MESSAGE);
         }
     }
 

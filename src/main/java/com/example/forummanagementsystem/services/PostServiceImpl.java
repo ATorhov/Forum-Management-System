@@ -1,9 +1,6 @@
 package com.example.forummanagementsystem.services;
 
-import com.example.forummanagementsystem.exceptions.AuthorizationException;
-import com.example.forummanagementsystem.exceptions.BlockedUserException;
-import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
-import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
+import com.example.forummanagementsystem.exceptions.*;
 import com.example.forummanagementsystem.models.*;
 import com.example.forummanagementsystem.repositories.CommentRepository;
 import com.example.forummanagementsystem.repositories.OpinionRepository;
@@ -42,7 +39,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getAll(User user) {
         if (!user.isAdmin()) {
-            throw new AuthorizationException("Only admin can see all the users!");
+            throw new UnauthorizerOperationException("Only admin can see all the users!");
         }
         return repository.getAll();
     }
