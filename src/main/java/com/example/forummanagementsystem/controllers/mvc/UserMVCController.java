@@ -11,19 +11,16 @@ import com.example.forummanagementsystem.models.UserFilterOptions;
 import com.example.forummanagementsystem.models.dtos.UserAdditionalInfoDto;
 import com.example.forummanagementsystem.models.dtos.UserDto;
 import com.example.forummanagementsystem.models.dtos.UserFilterDto;
+import com.example.forummanagementsystem.services.CommentService;
 import com.example.forummanagementsystem.services.PostService;
 import com.example.forummanagementsystem.services.UserAdditionalInfoService;
 import com.example.forummanagementsystem.services.UserService;
 import com.example.forummanagementsystem.services.mappers.UserMapper;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -33,14 +30,17 @@ public class UserMVCController {
     private final UserService userService;
     private final AuthenticationHelper authenticationHelper;
     private final PostService postService;
+
+    private final CommentService commentService;
     private final UserMapper userMapper;
 
     private final UserAdditionalInfoService userAdditionalInfoService;
 
-    public UserMVCController(UserService userService, AuthenticationHelper authenticationHelper, PostService postService, UserMapper userMapper, UserAdditionalInfoService userAdditionalInfoService) {
+    public UserMVCController(UserService userService, AuthenticationHelper authenticationHelper, PostService postService, CommentService commentService, UserMapper userMapper, UserAdditionalInfoService userAdditionalInfoService) {
         this.userService = userService;
         this.authenticationHelper = authenticationHelper;
         this.postService = postService;
+        this.commentService = commentService;
         this.userMapper = userMapper;
         this.userAdditionalInfoService = userAdditionalInfoService;
     }
@@ -129,6 +129,7 @@ public class UserMVCController {
         }
         model.addAttribute("usersCount", userService.getUsersCount());
         model.addAttribute("postsCount", postService.getPostsCount());
+        model.addAttribute("commentsCount", commentService.getCommentsCount());
 
         return "admin-dashboard";
     }
@@ -160,7 +161,7 @@ public class UserMVCController {
                     }
                 }
             }
-            if (user.isBlocked()){
+            if (user.isBlocked()) {
                 throw new UnauthorizerOperationException("");
             }
             model.addAttribute("userUpdate", new UserDto());

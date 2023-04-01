@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -18,9 +19,13 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     private final SessionFactory sessionFactory;
 
+
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    public CommentRepositoryImpl(SessionFactory sessionFactory) {
+    public CommentRepositoryImpl(SessionFactory sessionFactory, JdbcTemplate jdbcTemplate) {
         this.sessionFactory = sessionFactory;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
@@ -192,5 +197,17 @@ public class CommentRepositoryImpl implements CommentRepository {
             queryString.append(" desc ");
         }
         return queryString.toString();
+    }
+
+
+
+    @Override
+    public int getCommentsCount() {
+        try {
+            String sql = "SELECT COUNT(*) FROM comments";
+            return jdbcTemplate.queryForObject(sql, Integer.class);
+        } catch (NullPointerException e){
+            throw new NullPointerException(e.getMessage());
+        }
     }
 }

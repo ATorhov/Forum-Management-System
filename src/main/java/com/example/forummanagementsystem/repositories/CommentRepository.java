@@ -32,4 +32,6 @@ public interface CommentRepository {
     List<Comment> getCommentsFilterCommentOptions(CommentFilterOptions filterCommentOptions);
 
     List<Comment> getAll(Optional<String> search);
+
+    int getCommentsCount();
 }

@@ -98,6 +98,11 @@ public class CommentServiceImpl implements CommentService {
         return repository.getCommentsFilterCommentOptions(filterCommentOptions);
     }
 
+    @Override
+    public int getCommentsCount() {
+        return repository.getCommentsCount();
+    }
+
     private void checkModifyPermissions(int commentId, User user) {
         Comment comment = repository.getById(commentId);
         if (!(user.isAdmin() || comment.getUser().equals(user))) {
