@@ -17,7 +17,14 @@
     </div>
     <div class="main">
 
+        <form action="#" th:action="@{/users/all}" method="get" th:object="${userFilterOptions}">
+            <label th:text="#{user.filter.username}" style="font-weight: bold;"> Username: </label>
 
+            <label for="username"></label>
+            <input id="username" type="text" placeholder="username" th:field="*{username}"/>
+
+            <input type="submit" value="Search">
+        </form>
 
         <div class="report-container">
             <div class="report-header">

@@ -1,6 +1,7 @@
 package com.example.forummanagementsystem.services;
 
 import com.example.forummanagementsystem.exceptions.AuthorizationException;
+import com.example.forummanagementsystem.models.UserFilterOptions;
 import com.example.forummanagementsystem.models.dtos.RegisterDto;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.models.UserAdditionalInfo;
@@ -56,6 +57,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User deleteUser(User user) {
         return userRepository.delete(user);
+    }
+
+    @Override
+    public List<User> filter(UserFilterOptions userFilterOptions) {
+        return userRepository.filter(userFilterOptions);
     }
 
     @Override

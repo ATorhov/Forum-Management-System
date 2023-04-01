@@ -6,8 +6,10 @@ import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
 import com.example.forummanagementsystem.helpers.AuthenticationHelper;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.models.UserAdditionalInfo;
+import com.example.forummanagementsystem.models.UserFilterOptions;
 import com.example.forummanagementsystem.models.dtos.UserAdditionalInfoDto;
 import com.example.forummanagementsystem.models.dtos.UserDto;
+import com.example.forummanagementsystem.models.dtos.UserFilterDto;
 import com.example.forummanagementsystem.services.PostService;
 import com.example.forummanagementsystem.services.UserAdditionalInfoService;
 import com.example.forummanagementsystem.services.UserService;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/users")
@@ -70,16 +74,40 @@ public class UserMVCController {
 
 
     @GetMapping("/all")
+    public String getUsers(@ModelAttribute("userFilterOptions") UserFilterDto userFilterDto, Model model, HttpSession session) {
+        User user;
+        try {
+            user = authenticationHelper.tryGetUser(session);
+            authenticationHelper.verifyIsAdmin(user);
+        } catch (AuthorizationException e) {
+            return "access_denied";
+        }
+
+        UserFilterOptions userFilterOptions = new UserFilterOptions(
+                userFilterDto.getUsername()
+        );
+
+        model.addAttribute("users", userService.filter(userFilterOptions));
+        model.addAttribute("userFilterDto", userFilterDto);
+        return "all-users-page";
+    }
+
+    @PostMapping("/all")
     public String getUsers(Model model, HttpSession session){
         User user = authenticationHelper.tryGetUser(session);
-        model.addAttribute("users", userService.getAll(user));
+        List<User> users = userService.getAll(user);
+        model.addAttribute("users", users);
         return "all-users-page";
     }
 
     @GetMapping("/admin/dashboard")
-    public String getAdminDashboard(Model model, HttpSession session){
-        User user = authenticationHelper.tryGetUser(session);
-        authenticationHelper.verifyIsAdmin(user);
+    public String getAdminDashboard(Model model, HttpSession session) {
+        try {
+            User user = authenticationHelper.tryGetUser(session);
+            authenticationHelper.verifyIsAdmin(user);
+        } catch (AuthorizationException e) {
+            return "access_denied";
+        }
         model.addAttribute("usersCount", userService.getUsersCount());
         model.addAttribute("postsCount", postService.getPostsCount());
 
@@ -87,25 +115,30 @@ public class UserMVCController {
     }
 
     @GetMapping("/user-details/{username}")
-    public String getUserDetails(@PathVariable String username, Model model, HttpSession session){
-        authenticationHelper.tryGetUser(session);
-        User user = userService.get(username);
+    public String getUserDetails(@PathVariable String username, Model model, HttpSession session) {
+        User user;
+        try {
+            authenticationHelper.tryGetUser(session);
+            user = userService.get(username);
+        } catch (AuthorizationException | EntityNotFoundException e) {
+            return "access_denied";
+        }
         model.addAttribute("user", userService.get(user.getUsername()));
         model.addAttribute("postsCount", userService.getPostsCountToUser(user));
         return "user-details-page";
     }
 
     @GetMapping("/user/update/{username}")
-    public String updateUserInfo(@PathVariable String username, HttpSession httpSession, Model model){
+    public String updateUserInfo(@PathVariable String username, HttpSession httpSession, Model model) {
         try {
             User user = authenticationHelper.tryGetUser(httpSession);
-            if (!user.getUsername().equals(username) && !user.isAdmin() && !user.isCreator() && user.isBlocked()){
+            if (!user.getUsername().equals(username) && !user.isAdmin() && !user.isCreator() && user.isBlocked()) {
                 throw new AuthorizationException("You cannot update another user info!");
             }
             model.addAttribute("userUpdate", new UserDto());
             model.addAttribute("userUpdateAdditionInfo", new UserAdditionalInfoDto());
             return "update-user-info-page";
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
 //            throw new AuthorizationException(e.getMessage());
             return "access_denied";
         }
@@ -114,12 +147,12 @@ public class UserMVCController {
     @PostMapping("/user/update/{username}")
     public String handleUpdateUserInfo(@PathVariable String username, @ModelAttribute UserDto userUpdate,
                                        @ModelAttribute UserAdditionalInfoDto userUpdateAdditionInfo,
-                                       HttpSession session){
+                                       HttpSession session) {
         try {
             User user1 = userMapper.fromDtoInfo(userUpdate, session);
             userService.update(user1);
             UserAdditionalInfo userAdditionalInfo = userMapper.userAdditionalInfoDtoToObject(userUpdateAdditionInfo);
-            if (userAdditionalInfoService.findByUser(user1) == null){
+            if (userAdditionalInfoService.findByUser(user1) == null) {
                 userAdditionalInfo.setUser(user1);
                 userAdditionalInfoService.create(userAdditionalInfo);
             } else {
@@ -133,7 +166,7 @@ public class UserMVCController {
                 userAdditionalInfoFinal.setDescribeProfession(userAdditionalInfo.getDescribeProfession());
                 userAdditionalInfoService.updateAdditionalUserInfo(userAdditionalInfoFinal);
             }
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException(userUpdateAdditionInfo.getUser().getUsername(),
                     userUpdateAdditionInfo.getUser().getFirstName(), userUpdateAdditionInfo.getUser().getLastName());
         }
@@ -142,38 +175,40 @@ public class UserMVCController {
     }
 
     @GetMapping("/user/{username}/changeRole/{to}")
-    public String changeIsAdmin(@PathVariable String username, @PathVariable boolean to, HttpSession httpSession){
+    public String changeIsAdmin(@PathVariable String username, @PathVariable boolean to, HttpSession httpSession) {
         try {
             User userCheck = authenticationHelper.tryGetUser(httpSession);
-            if (!userCheck.isAdmin()){
+            if (!userCheck.isAdmin()) {
                 return "access_denied";
             }
             authenticationHelper.tryGetUser(httpSession);
             User user = userService.get(username);
             userService.changeIsAdmin(user, to);
             return "redirect:/users/user-details/" + username;
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
     @GetMapping("user/{username}/changeStatus/{to}")
-    public String changeStatus(@PathVariable String username, @PathVariable boolean to, HttpSession session){
+    public String changeStatus(@PathVariable String username, @PathVariable boolean to, HttpSession session) {
         try {
             User userCheck = authenticationHelper.tryGetUser(session);
-            if (!userCheck.isAdmin()){
+            if (!userCheck.isAdmin()) {
                 return "access_denied";
             }
             authenticationHelper.tryGetUser(session);
             User user = userService.get(username);
             userService.changeIsBlocked(user, to);
             return "redirect:/users/user-details/" + username;
-        } catch (AuthorizationException e){
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
+
+
 }

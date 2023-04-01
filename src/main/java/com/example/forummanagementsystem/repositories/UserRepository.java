@@ -4,6 +4,7 @@ package com.example.forummanagementsystem.repositories;
 
 
 
+import com.example.forummanagementsystem.models.UserFilterOptions;
 import com.example.forummanagementsystem.models.dtos.RegisterDto;
 import com.example.forummanagementsystem.models.User;
 
@@ -26,6 +27,8 @@ public interface UserRepository {
     void createUser(User user);
 
     User delete(User user);
+
+    List<User> filter(UserFilterOptions userFilterOptions);
 
     List<User> filter(Optional<String> name,
                       Optional<Integer> userId,

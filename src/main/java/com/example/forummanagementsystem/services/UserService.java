@@ -2,6 +2,7 @@ package com.example.forummanagementsystem.services;
 
 
 
+import com.example.forummanagementsystem.models.UserFilterOptions;
 import com.example.forummanagementsystem.models.dtos.RegisterDto;
 import com.example.forummanagementsystem.models.User;
 import com.example.forummanagementsystem.models.UserAdditionalInfo;
@@ -23,6 +24,8 @@ public interface UserService {
     void create(User user);
 
     User deleteUser(User user);
+
+    List<User> filter(UserFilterOptions userFilterOptions);
 
     List<User> filter(Optional<String> name,
                       Optional<Integer> userId,

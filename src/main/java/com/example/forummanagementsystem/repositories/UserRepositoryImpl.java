@@ -3,6 +3,7 @@ package com.example.forummanagementsystem.repositories;
 import com.example.forummanagementsystem.exceptions.AlreadyHasThisBooleanException;
 import com.example.forummanagementsystem.exceptions.EntityDuplicateException;
 import com.example.forummanagementsystem.exceptions.EntityNotFoundException;
+import com.example.forummanagementsystem.models.UserFilterOptions;
 import com.example.forummanagementsystem.models.dtos.RegisterDto;
 import com.example.forummanagementsystem.models.User;
 import org.hibernate.Session;
@@ -170,6 +171,31 @@ public class UserRepositoryImpl implements UserRepository {
             sort.ifPresent(v -> {
                 queryString.append(generateStringFromSort(v));
             });
+
+            Query<User> queryList = session.createQuery(queryString.toString(), User.class);
+            queryList.setProperties(queryParams);
+
+            return queryList.list();
+        }
+    }
+
+
+    @Override
+    public List<User> filter(UserFilterOptions userFilterOptions) {
+        try(Session session = sessionFactory.openSession()){
+            StringBuilder queryString = new StringBuilder(" from User ");
+
+            Map<String, Object> queryParams = new HashMap<>();
+            ArrayList<String> filter = new ArrayList<>();
+
+            userFilterOptions.getUsername().ifPresent(v -> {
+                filter.add(" username like :username ");
+                queryParams.put("username", "%" + v + "%");
+            });
+
+            if (!filter.isEmpty()){
+                queryString.append(" where ").append(String.join(" and ", filter));
+            }
 
             Query<User> queryList = session.createQuery(queryString.toString(), User.class);
             queryList.setProperties(queryParams);
