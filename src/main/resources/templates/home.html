@@ -43,7 +43,7 @@
         <h4 class="post-subtitle" th:text="${#strings.length(post.content) > 200 ? #strings.substring(post.content, 0, 200) + '...' : post.content}">Content</h4>
       </a>
       <p class="post-meta">
-        Posted by <span th:text="${post.user.username}"></span>
+        Posted by <span><a th:href="@{'/users/user-details/' + ${post.getUser().getUsername()}}" th:text="${post.user.username}"></a></span>
         <span th:if="${post.createTime != post.updateTime}">
           on <span th:text="${post.getFormattedCreateTime()}"></span> and updated on <span th:text="${post.getFormattedUpdateTime()}"></span>
         </span>
