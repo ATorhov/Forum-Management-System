@@ -42,4 +42,6 @@ public interface UserRepository {
     int getUsersCount();
 
     boolean userExists(RegisterDto register);
+
+    int getPostsCountToUser(User user);
 }

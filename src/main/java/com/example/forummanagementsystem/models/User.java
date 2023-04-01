@@ -1,6 +1,7 @@
 package com.example.forummanagementsystem.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 
@@ -27,6 +28,7 @@ public class User {
     @Column
     private String password;
     @Column(name = "registration_date")
+    @CreationTimestamp
     private LocalDateTime registeredTime;
     @Column(name = "is_admin")
     private boolean isAdmin;

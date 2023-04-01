@@ -91,6 +91,7 @@ public class UserMVCController {
         authenticationHelper.tryGetUser(session);
         User user = userService.get(username);
         model.addAttribute("user", userService.get(user.getUsername()));
+        model.addAttribute("postsCount", userService.getPostsCountToUser(user));
         return "user-details-page";
     }
 

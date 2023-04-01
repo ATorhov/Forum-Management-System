@@ -91,4 +91,9 @@ public class UserServiceImpl implements UserService {
     public boolean userExists(RegisterDto register) {
         return userRepository.userExists(register);
     }
+
+    @Override
+    public int getPostsCountToUser(User user) {
+        return userRepository.getPostsCountToUser(user);
+    }
 }

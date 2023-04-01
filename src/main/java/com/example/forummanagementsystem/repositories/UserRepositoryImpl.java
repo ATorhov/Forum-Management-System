@@ -276,4 +276,14 @@ public class UserRepositoryImpl implements UserRepository {
         }
         return exists;
     }
+
+    @Override
+    public int getPostsCountToUser(User user) {
+        try {
+            String sql = "SELECT COUNT(*) FROM posts WHERE user_id = ?";
+            return jdbcTemplate.queryForObject(sql, Integer.class, user.getId());
+        } catch (NullPointerException e){
+            throw new NullPointerException(e.getMessage());
+        }
+    }
 }

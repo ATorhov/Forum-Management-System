@@ -39,4 +39,6 @@ public interface UserService {
     int getUsersCount();
 
     boolean userExists(RegisterDto register);
+
+    int getPostsCountToUser(User user);
 }
