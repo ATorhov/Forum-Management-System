@@ -58,7 +58,7 @@ Anonymous users able to see a list of the top 10 most commented posts and a list
 - [x] Implement MVC authentication for Post.
 - [x] Implement MVC authentication for Comment.
 - [x] Implement MVC Search and Filtering for Post.
-- [ ] Implement MVC Search and Filtering for User.
+- [x] Implement MVC Search and Filtering for User.
 - [x] Implement MVC Search and Filtering for Comment.
 - [ ] Create and provide a link to the Swagger documentation. **<ins> Very Important**
 - [ ] Instructions on how to set up and run the project locally **<ins> Very Important**
