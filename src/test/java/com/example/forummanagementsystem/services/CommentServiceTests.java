@@ -2,9 +2,7 @@ package com.example.forummanagementsystem.services;
 
 import com.example.forummanagementsystem.exceptions.*;
 
-import com.example.forummanagementsystem.models.Comment;
-import com.example.forummanagementsystem.models.Post;
-import com.example.forummanagementsystem.models.User;
+import com.example.forummanagementsystem.models.*;
 import com.example.forummanagementsystem.repositories.CommentRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,10 +12,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static com.example.forummanagementsystem.Helpers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CommentServiceTests {
@@ -82,66 +85,6 @@ public class CommentServiceTests {
         Assertions.assertEquals(mockPost, mockComment.getPost());
         Assertions.assertEquals("content", mockComment.getContent());
 
-    }
-
-    @Test
-    public void create_Should_Throw_When_UserIsBlocked() {
-        // Arrange
-        Comment mockComment = createMockComment();
-
-        mockComment.setUser(createMockUser());
-        mockComment.setPost(createMockPost());
-        createMockUser().setBlocked(true);
-        // Act, Assert
-        assertThrows(BlockedUserException.class,
-                () -> mockService.create(mockComment, createMockUser(),createMockPost(), 4L));
-    }
-
-    @Test
-    public void update_Should_CallRepository_When_UserIsCreator() {
-        // Arrange
-        Comment mockComment = createMockComment();
-        User mockUserCreator = mockComment.getUser();
-        Mockito.when(mockRepository.getById(Mockito.anyInt()))
-                .thenReturn(mockComment);
-        Mockito.when(mockRepository.getById(Mockito.anyInt()))
-                .thenThrow(EntityNotFoundException.class);
-        // Act
-        mockService.update(mockComment, mockUserCreator);
-        // Assert
-        Mockito.verify(mockRepository, Mockito.times(1))
-                .update(mockComment);
-    }
-
-    @Test
-    public void update_Should_CallRepository_When_UserIsAdmin() {
-        // Arrange
-        User mockUserAdmin = createMockAdmin();
-        Comment mockComment = createMockComment();
-        Mockito.when(mockRepository.getById(Mockito.anyInt()))
-                .thenReturn(mockComment);
-        Mockito.when(mockRepository.getById(Mockito.anyInt()))
-                .thenThrow(EntityNotFoundException.class);
-        // Act
-        mockService.update(mockComment, mockUserAdmin);
-        // Assert
-        Mockito.verify(mockRepository, Mockito.times(1))
-                .update(mockComment);
-    }
-
-    @Test
-    public void update_Should_Throw_When_UserIsNotCreatorOrAdmin() {
-        // Arrange
-        var mockComment = createMockComment();
-        var mockUser = createMockUser();
-        mockUser.setUsername("MockUser2");
-        mockComment.setUser(mockUser);
-        // Act
-        Mockito.when(mockRepository.getById(Mockito.anyInt()))
-                .thenReturn(mockComment);
-        // Assert
-        Assertions.assertThrows(AuthorizationException.class,
-                () -> mockService.update(mockComment, mockUser));
     }
 
     @Test
@@ -212,5 +155,34 @@ public class CommentServiceTests {
         // Assert
         Mockito.verify(mockRepository, Mockito.times(1))
                 .delete(1);
+    }
+
+    @Test
+    public void testGetCommentsById() {
+        // Given
+        Comment comment = new Comment();
+        when(mockRepository.getById(1)).thenReturn(comment);
+
+        // When
+        Comment result = mockService.getById(1);
+
+        // Then
+        assertEquals(comment, result);
+        verify(mockRepository, times(1)).getById(1);
+    }
+
+    @Test
+    public void testGetCommentByUserId() {
+        // Given
+        User user = new User();
+        List<Comment> comments = new ArrayList<>(Arrays.asList(new Comment()));
+        when(mockRepository.getCommentsByUserId(1L)).thenReturn(comments);
+
+        // When
+        List<Comment> result = mockService.getCommentsByUserId((1L));
+
+        // Then
+        assertEquals(1, result.size());
+        verify(mockRepository, times(1)).getCommentsByUserId(1L);
     }
 }

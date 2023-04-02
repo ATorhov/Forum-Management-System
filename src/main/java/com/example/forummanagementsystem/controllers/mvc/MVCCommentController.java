@@ -11,6 +11,9 @@ import com.example.forummanagementsystem.services.PostService;
 import com.example.forummanagementsystem.services.UserService;
 import com.example.forummanagementsystem.services.mappers.CommentMapper;
 import com.example.forummanagementsystem.services.mappers.PostMapper;
+//import io.swagger.annotations.ApiOperation;
+//import io.swagger.annotations.ApiResponse;
+//import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,12 +51,13 @@ public class MVCCommentController {
     public User getUser(HttpSession httpSession) {
         User user = null;
         try {
-            user =  authenticationHelper.tryGetUser(httpSession);
-        } catch (AuthorizationException e){
+            user = authenticationHelper.tryGetUser(httpSession);
+        } catch (AuthorizationException e) {
 
         }
         return user;
     }
+
     @ModelAttribute("isAuthenticated")
     public boolean isAuthenticated(HttpSession httpSession) {
         return httpSession.getAttribute("currentUser") != null;
@@ -68,6 +72,11 @@ public class MVCCommentController {
         }
     }
 
+    //    @ApiOperation(value = "Create new comment", notes = "Get mapping for new comment")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Successfully adds new comment"),
+//            @ApiResponse(code = 404, message = "Not found - The comment was not created successfully")
+//    })
     @GetMapping("{postId}/comments/new")
     public String createNewComment(Model model, @PathVariable Long postId, HttpSession httpSession) {
         User user;
@@ -81,6 +90,12 @@ public class MVCCommentController {
         return "comment_new";
     }
 
+
+//    @ApiOperation(value = "Create new comment", notes = "Post mapping for new comment")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Successfully adds new comment"),
+//            @ApiResponse(code = 404, message = "Not found - The comment was not created successfully")
+//    })
     @PostMapping("{postId}/comments/new")
     public String createNewComment(@Valid @ModelAttribute("commentDto") CommentDto commentDto, @PathVariable Long postId, BindingResult bindingResult, Model model, HttpSession httpSession) {
         User user;
@@ -101,6 +116,13 @@ public class MVCCommentController {
             return "error";
         }
     }
+
+
+//    @ApiOperation(value = "Get comment for edit", notes = "Returns comment for edit")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Successfully edits comment"),
+//            @ApiResponse(code = 404, message = "Not found - The comment with such id was not found")
+//    })
 
     @GetMapping("{postId}/comments/{commentId}/edit")
     public String updateComment(@PathVariable Long postId, @PathVariable int commentId, Model model, HttpSession httpSession) {
@@ -123,6 +145,12 @@ public class MVCCommentController {
         return "comment_edit";
     }
 
+//
+//    @ApiOperation(value = "Post comment for edit", notes = "Returns comment for edit")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Successfully edits comment"),
+//            @ApiResponse(code = 404, message = "Not found - The comment with such id was not found")
+//    })
     @PostMapping("{postId}/comments/{commentId}/edit")
 
     public String getCommentForEdit(@PathVariable Long postId, @Valid @ModelAttribute("commentDto") CommentDto commentDto, @PathVariable int commentId, Model model, BindingResult bindingResult, HttpSession httpSession) {
@@ -151,6 +179,12 @@ public class MVCCommentController {
         }
     }
 
+
+//    @ApiOperation(value = "Delete a comment by id", notes = "Returns nothing")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Successfully deleted"),
+//            @ApiResponse(code = 404, message = "Not found - The comment with such was not found")
+//    })
     @GetMapping("{postId}/comments/{commentId}/delete")
     public String deleteComment(@PathVariable Long postId, @PathVariable int commentId, Model model, HttpSession httpSession) {
         try {

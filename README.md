@@ -60,7 +60,7 @@ Anonymous users able to see a list of the top 10 most commented posts and a list
 - [x] Implement MVC Search and Filtering for Post.
 - [ ] Implement MVC Search and Filtering for User.
 - [x] Implement MVC Search and Filtering for Comment.
-- [ ] Create and provide a link to the Swagger documentation. **<ins> Very Important**
+- [x] Create and provide a link to the Swagger documentation. **<ins> Very Important**
 - [ ] Instructions on how to set up and run the project locally **<ins> Very Important**
 
 #### Optional features:
@@ -78,7 +78,8 @@ Anonymous users able to see a list of the top 10 most commented posts and a list
 
 ### Swagger documentation
 
-***<ins>Documentation is pending to be completed...***
+## [Swagger documentation](https://app.swaggerhub.com/apis-docs/IVANBELEV69/api-documentation/1.0#/)
+
 
 ---
 
