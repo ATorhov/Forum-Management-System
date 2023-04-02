@@ -15,7 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
+//import io.swagger.annotations.ApiOperation;
+//import io.swagger.annotations.ApiResponse;
+//import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -63,7 +66,7 @@ public class MvcPostController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("all")
     public String getUsers(Model model, HttpSession session){
         User user = authenticationHelper.tryGetUser(session);
         try{
@@ -75,6 +78,11 @@ public class MvcPostController {
     }
 
     @GetMapping("{postId}")
+//    @ApiOperation(value = "Get a post by id", notes = "Returns post by id")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Success"),
+//            @ApiResponse(code = 404, message = "Not found - The post with such id was not found")
+//    })
     public String getPost(@PathVariable Long postId, Model model, HttpSession httpSession) {
         try {
             Post post = postService.getById(postId);
@@ -101,6 +109,10 @@ public class MvcPostController {
         }
 
     @PostMapping("new")
+//    @ApiOperation(value = "Create a post by id", notes = "Returns nothing")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Successfully created"),
+//    })
     public String createNewPost(@Valid @ModelAttribute("postDto") PostDto postDto, BindingResult bindingResult,
                                 Model model,
                                 HttpSession session) {
@@ -143,6 +155,11 @@ public class MvcPostController {
     }
 
     @PostMapping("{postId}/edit")
+//    @ApiOperation(value = "Edit a post by id", notes = "Returns nothing")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Successfully updated"),
+//            @ApiResponse(code = 404, message = "Not found - The post with such id was not found")
+//    })
     public String updatePost(@PathVariable("postId") Long postId, @Valid @ModelAttribute("postDto") PostDtoEdit postDtoEdit,
                              BindingResult bindingResult,
                              Model model,
@@ -170,6 +187,11 @@ public class MvcPostController {
 
 
     @GetMapping("{postId}/delete")
+//    @ApiOperation(value = "Delete a post by id", notes = "Returns nothing")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Successfully deleted"),
+//            @ApiResponse(code = 404, message = "Not found - The post with such id was not found")
+//    })
     public String deletePost(@PathVariable("postId") Long postId, Model model, HttpSession session) {
         try {
             User user = authenticationHelper.tryGetUser(session);
@@ -188,6 +210,10 @@ public class MvcPostController {
     }
 
     @GetMapping("{postId}/opinion")
+//    @ApiOperation(value = "Add opinion to database", notes = "Returns nothing")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Successfully added"),
+//    })
     public String addOpinion(HttpSession session, @PathVariable Long postId, @RequestParam Long opinion) {
         User user;
         try {
